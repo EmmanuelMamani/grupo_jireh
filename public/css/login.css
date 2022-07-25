@@ -1,0 +1,64 @@
+.navbar{
+    background-color:#125149;
+}
+#titulo{
+    color: white;
+}
+#cont_nav{
+    margin: auto;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+#login{
+    margin-left: 35%;
+    margin-right: 35%;
+    border: black solid 1px;
+    margin-top: 3%;
+    padding: 2%;
+    box-shadow: 5px 5px 3px 0px rgba(231,159,86,1);
+}
+h3{
+    text-align: center;
+    color: #DA7922;
+    margin-bottom: 9%;
+}
+#acceder{
+    display: block;
+    color: black;
+    text-decoration: none;
+    width: 100%;
+    padding: 2%;
+    border-radius: 0px;
+    background-color: #DA7922;
+    border: #DA7922 solid 1px;
+    text-align: center;
+}
+#acceder:hover{
+    cursor: pointer;
+}
+.form-control{
+    background-color: #DEBC83;
+    border-radius: 0px;
+}
+#sup{
+    height: 10px;
+    background-color: #125149;
+    margin-bottom: 3px;
+}
+#inf{
+    height: 10px;
+    background-color: #125149;
+    margin-top: 3px;
+}
+@media (max-width: 920px){
+    #login{
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+}
+@media (max-width: 600px){
+    #login{
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+}

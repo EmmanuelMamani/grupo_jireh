@@ -1,0 +1,29 @@
+.opcion{
+    background-color: #E79F56;
+    border: #4D2507 solid 2px;
+    border-radius: 40px;
+    padding: 1%;
+    margin-top: 2%;
+}
+.funciones{
+    padding-left: 30%;
+    color: #4D2507;
+}
+.icono{
+    color: #4D2507;
+}
+#opciones{
+    width: 30%;
+    margin-left: 35%;
+    margin-right: 35%;
+    margin-top: 5%;
+}
+a{text-decoration: none;}
+@media (max-width: 850px){
+    #opciones{
+        width: 60%;
+        margin-left: 20%;
+        margin-right: 20%;
+        margin-top: 5%;
+    }
+}

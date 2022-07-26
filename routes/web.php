@@ -1,5 +1,6 @@
 <?php
 
+use Facade\FlareClient\View;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('login');
 });
+Route::get("/menu", function(){return view("menu");});
+Route::get("/venta", function(){return view("venta");});

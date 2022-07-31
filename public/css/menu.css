@@ -27,3 +27,16 @@ a{text-decoration: none;}
         margin-top: 5%;
     }
 }
+@media (max-width: 300px){
+    #opciones{
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 5%;
+        font-size: 16px;
+    }
+    .funciones{
+        padding-left: 20%;
+        color: #4D2507;
+    }
+}

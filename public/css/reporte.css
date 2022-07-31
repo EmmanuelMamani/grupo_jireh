@@ -1,0 +1,14 @@
+#tabla_wrapper{
+    width: 70%;
+    margin-left: 15%;
+}
+.fila{
+    background-color: #f8c796;
+    margin-bottom: 5px;
+    color:#4D2507 ;
+}
+@media (max-width: 290px){
+    #tabla_wrapper, .page-link{
+        font-size: 12px;
+    }
+}

@@ -23,9 +23,13 @@
         <span class="material-symbols-outlined icono col">local_shipping</span>
     </div>
     <a class="opcion row" href="/venta">
-        <span class="funciones col-8">Ventas</span>
+        <span class="funciones col-8">Pre-Venta</span>
         <span class="material-symbols-outlined icono col">shopping_cart</span>
     </a>
+    <div class="opcion row">
+        <span class="funciones col-8">Venta rapida</span>
+        <span class="material-symbols-outlined icono col">shopping_cart_checkout</span>
+    </div>
     <div class="opcion row">
         <span class="funciones col-8">Saldos</span>
         <span class="material-symbols-outlined icono col">payments</span>

@@ -1,38 +1,27 @@
-@extends("header")
-@section("titulo","Grupo JIREH")
+@extends('header')
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
+@section("titulo","Grupo JIREH")
 @section("contenido")
 <form id="formulario">
-    <h3>Pre-Venta</h3>
-    @csrf
-    <label class="form-label">Zona:</label>
-    <select name="zona" id="zona" class="form-select">
-        <option value="0">Elije la zona</option>
-        <option value="0">Norte</option>
-    </select>
-    <label class="form-label">Cliente:</label>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="0" id="tipo">
-        <label class="form-check-label">
-          Cliente empresa
-        </label>
-    </div>
-    <select name="cliente" id="cliente" class="form-select">
-        <option value="0">Elije un cliente</option>
-        <option value="0">Martin Mamani</option>
-    </select>
-    <label class="form-label">Producto:</label>
-    <select name="producto" id="producto" class="form-select">
-        <option value="0">Elije un producto</option>
-        <option value="0">Mozarella por kilo</option>
-    </select>
-    <label class="form-label">Lote:</label>
+<h3>Venta rapida</h3>
+<label class="form-label">Producto:</label>
+<select name="producto" id="producto" class="form-select">
+    <option value="0">Elije un producto</option>
+    <option value="0">Mozarella por kilo</option>
+</select>
+<label class="form-label">Lote:</label>
     <select name="lote" id="lote" class="form-select">
         <option value="0">Elije un lote</option>
         <option value="0">Martin Mamani - 100 - 27/07/2022</option>
     </select>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="0" id="tipo">
+        <label class="form-check-label">
+          Con centavos
+        </label>
+    </div>
     <div class="row">
         <div class="col">
             <label class="form-label">Cantidad de moldes:</label>
@@ -59,8 +48,6 @@
         </div>
     </div>
     <h5 id="total">Costo total: 0 Bs</h5>
-    <label class="form-label">Comprobante:</label>
-    <input type="file" name="comprobante" id="comprobante" class="form-control">
     <div class="row" id="cont_btn">
         <div class="col"><button id="cancelar">Cancelar</button></div>
         <div class="col"><button id="enviar" disabled>Vender</button></div>
@@ -74,7 +61,7 @@
     var precio=document.getElementById("precio");
     var costo=document.getElementById("costo")
     var total=document.getElementById("total")
-    var vender=document.getElementById("enviar")
+    var vender=document.getElementById("vender")
     tipo.onclick=function(){
         if(tipo.value =="0"){
             tipo.value ="1"

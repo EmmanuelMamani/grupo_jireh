@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Salida extends Controller
+class IngresoController extends Controller
 {
     public function vistaRegistro(){
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Zona extends Controller
+class ClienteController extends Controller
 {
     public function vistaRegistro(){
 
@@ -24,5 +24,5 @@ class Zona extends Controller
 
     public function vistaReporte(){
         
-    } 
+    }
 }

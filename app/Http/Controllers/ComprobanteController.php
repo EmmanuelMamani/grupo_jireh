@@ -4,16 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Saldo extends Controller
+class ComprobanteController extends Controller
 {
-    public function vistaRegistro(){
-
-    }
-    
-    public function registro(){
-
-    }
-
     public function vistaReporte(){
         
     }

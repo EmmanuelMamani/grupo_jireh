@@ -4,10 +4,15 @@
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @section("contenido")
-<form id="formulario">
+<form id="formulario" action="{{route('registro_zona')}}" method="post">
     <h3>Registro de zona</h3>
+    @csrf
     <label class="form-label">Nombre de zona:</label>
-    <input type="text" name="nombre" class="form-control">
+    <input type="text" name="Nombre" class="form-control">
+    @if ($errors->has('Nombre'))
+      <span class="error text-danger">{{ $errors->first('Nombre') }}</span>
+      @endif
+      <br>
     <div class="row" id="cont_btn">
         <div class="col"><button id="cancelar">Cancelar</button></div>
         <div class="col"><button id="enviar">Registrar</button></div>

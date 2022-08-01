@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Comprobante extends Controller
+class MermaController extends Controller
 {
+    
     public function vistaReporte(){
         
     }

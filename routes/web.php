@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Zona;
+use App\Http\Controllers\ZonaController;
 use Facade\FlareClient\View;
 use Illuminate\Support\Facades\Route;
 
@@ -25,10 +27,12 @@ Route::get("/registro_lote", function(){return view("registro_lote");});
 Route::get("/registro_cliente", function(){return view("registro_cliente");});
 Route::get("/registro_producto", function(){return view("registro_producto");});
 Route::get("/registro_gasto", function(){return view("registro_gasto");});
-Route::get("/registro_zona", function(){return view("registro_zona");});
 Route::get("/registro_empleado", function(){return view("registro_empleado");});
 Route::get("/reporte_cliente", function(){return view("reporte_cliente");});
 Route::get("/saldos", function(){return view("saldos");});
 Route::get("/saldo_pasado", function(){return view("saldo_pasado");});
 Route::get("/reporte_empleados", function(){return view("reporte_empleados");});
 Route::get("/reporte_lote", function(){return view("reporte_lote");});
+
+Route::get("/registro_zona",[ZonaController::class,"vistaRegistro"])->name("registro_zona");
+Route::post("registro_zona",[ZonaController::class,"registro"])->name("registro_zona");

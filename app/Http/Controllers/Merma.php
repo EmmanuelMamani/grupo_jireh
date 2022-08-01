@@ -6,5 +6,8 @@ use Illuminate\Http\Request;
 
 class Merma extends Controller
 {
-    //
+    
+    public function vistaReporte(){
+        
+    }
 }

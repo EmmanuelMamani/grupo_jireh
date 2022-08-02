@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Asignacion extends Controller
+class AsignacionController extends Controller
 {
     //
     public function vistaRegistro(){

@@ -36,3 +36,5 @@ Route::get("/reporte_lote", function(){return view("reporte_lote");});
 
 Route::get("/registro_zona",[ZonaController::class,"vistaRegistro"])->name("registro_zona");
 Route::post("registro_zona",[ZonaController::class,"registro"])->name("registro_zona");
+
+Route::get("/alerta", function(){return view("alerta");});

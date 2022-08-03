@@ -26,5 +26,17 @@
       </nav> <div id="inf"></div>
     </header>
     @yield("contenido")
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('registrar')=='ok')
+    <script>
+      Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Registro exitoso',
+      showConfirmButton: false,
+      timer: 1500
+  })
+</script>
+@endif
   </body>
 </html>

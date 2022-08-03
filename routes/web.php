@@ -16,13 +16,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
+Route::middleware(['guest'])->group(function() {
+    //rutas para login
+    Route::get('/', function () {
+        return view('login');
+    });
 });
-Route::get("/menu", function(){return view("menu");});
-Route::get("/venta", function(){return view("venta");});
-Route::get("/venta_rapida", function(){return view("venta_rapida");});
-Route::get("/transferir_lote", function(){return view("transferir_lote");});
+
+Route::middleware(['auth'])->group(function() {
+    //rutas para usuarios identificados
+    Route::get("/menu", function(){return view("menu");});
+    Route::get("/venta", function(){return view("venta");});
+    Route::get("/venta_rapida", function(){return view("venta_rapida");});
+    Route::get("/transferir_lote", function(){return view("transferir_lote");});
+    Route::middleware(['rol'])->group(function(){
+        //rutas para usuario administrador
+    });
+});
+
+Route::get("/NoPermitido", function(){return view("alerta");});
+
+
+
+
+
 Route::get("/registro_lote", function(){return view("registro_lote");});
 Route::get("/registro_cliente", function(){return view("registro_cliente");});
 Route::get("/registro_producto", function(){return view("registro_producto");});

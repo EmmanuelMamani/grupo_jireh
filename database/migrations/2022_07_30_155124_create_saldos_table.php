@@ -18,6 +18,7 @@ class CreateSaldosTable extends Migration
             $table->integer('cliente_id');
             $table->double('Monto',8,2);
             $table->double('Saldo',8,2);
+            $table->string('Detalle');
             $table->timestamps();
         });
     }

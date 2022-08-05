@@ -19,6 +19,7 @@ class CreateClientesTable extends Migration
             $table->string('Direccion');
             $table->string('zona_id');
             $table->integer('Telefono')->unique();
+            $table->boolean('Activo')->default(true);
             $table->timestamps();
         });
     }

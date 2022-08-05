@@ -1,5 +1,7 @@
 .navbar{
     background-color:#125149;
+    padding-right: 5%;
+    padding-left: 5%;
 }
 #titulo{
     color: white;
@@ -49,6 +51,10 @@ h3{
     height: 10px;
     background-color: #125149;
     margin-top: 3px;
+}
+.opciones_head{
+    color: white;
+    text-decoration: none;
 }
 @media (max-width: 920px){
     #login{

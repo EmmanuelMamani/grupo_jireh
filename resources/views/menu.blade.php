@@ -1,4 +1,7 @@
 @extends("header")
+@section("opciones")
+<a href="#" class="opciones_head">salir</a>
+@endsection
 @section("estilos")
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <link rel="stylesheet" href="{{asset("css/menu.css")}}">

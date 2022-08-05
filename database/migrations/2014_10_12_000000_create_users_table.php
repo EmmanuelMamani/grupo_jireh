@@ -20,8 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('Email')->unique();
             $table->integer('Telefono')->unique();
             $table->string('Rol');
-            $table->string('Usuario');
+            $table->string('Usuario')->unique();
             $table->string('Contrasenia');
+            $table->boolean('Activo')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

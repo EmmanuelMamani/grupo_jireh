@@ -4,15 +4,18 @@
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @section("contenido")
-<form id="formulario">
+<form id="formulario" method="post" action="{{route('registro_producto')}}">
+    @csrf
     <h3>Registro de producto</h3>
-    <label class="form-label">Nomnre de producto:</label>
+    <label class="form-label">Nombre de producto:</label>
     <input type="text" name="nombre" class="form-control">
+    @if ($errors->has('nombre'))
+    <span class="error text-danger">{{ $errors->first('nombre') }}</span>
+    @endif <br>
     <label class="form-label">Tipo de producto:</label>
     <select name="tipo" id="tipo" class="form-select">
-        <option value="0">Elije un tipo</option>
-        <option value="1">Por kilo</option>
-        <option value="2">Por unidad</option>
+        <option value="Por Kilo">Por kilo</option>
+        <option value="Por Unidad">Por unidad</option>
     </select>
     <div class="row" id="cont_btn">
         <div class="col"><button id="cancelar">Cancelar</button></div>

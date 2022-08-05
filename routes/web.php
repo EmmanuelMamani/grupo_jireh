@@ -1,7 +1,10 @@
 <?php
 
-use App\Http\Controllers\Zona;
+use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ZonaController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\IngresoController;
+use App\Http\Controllers\SaldoController;
 use Facade\FlareClient\View;
 use Illuminate\Support\Facades\Route;
 
@@ -40,8 +43,7 @@ Route::get("/NoPermitido", function(){return view("alerta");});
 
 
 
-Route::get("/registro_lote", function(){return view("registro_lote");});
-Route::get("/registro_cliente", function(){return view("registro_cliente");});
+
 Route::get("/registro_producto", function(){return view("registro_producto");});
 Route::get("/registro_gasto", function(){return view("registro_gasto");});
 Route::get("/registro_empleado", function(){return view("registro_empleado");});
@@ -53,5 +55,12 @@ Route::get("/reporte_lote", function(){return view("reporte_lote");});
 
 Route::get("/registro_zona",[ZonaController::class,"vistaRegistro"])->name("registro_zona");
 Route::post("registro_zona",[ZonaController::class,"registro"])->name("registro_zona");
-
+Route::get("/registro_producto",[ProductoController::class,"vistaRegistro"])->name("registro_producto");
+Route::post("registro_producto",[ProductoController::class,"registro"])->name("registro_producto");
+Route::get("/registro_lote",[IngresoController::class,"vistaRegistro"])->name("registro_lote");
+Route::post("registro_lote",[IngresoController::class,"registro"])->name("registro_lote");
+Route::get("/registro_cliente",[ClienteController::class,"vistaRegistro"])->name("registro_cliente");
+Route::post("registro_cliente",[ClienteController::class,"registro"])->name("registro_cliente");
+Route::get("saldo_pasado",[SaldoController::class,"vistaRegistro"])->name("saldo_pasado");
+Route::post("saldo_pasado",[SaldoController::class,"registro"])->name("saldo_pasado");
 Route::get("/alerta", function(){return view("alerta");});

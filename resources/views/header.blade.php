@@ -22,6 +22,7 @@
             <img src="{{asset('img/logo.png')}}" alt="" width="60" class="d-inline-block align-text-top">
            <span id="titulo">@yield("titulo")</span>
           </a>
+          @yield("opciones")
         </div>
       </nav> <div id="inf"></div>
     </header>

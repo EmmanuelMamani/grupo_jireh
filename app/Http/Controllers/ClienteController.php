@@ -34,6 +34,7 @@ class ClienteController extends Controller
     }
 
     public function vistaReporte(){
-        
+        $clientes= Cliente::all();
+        return view("reporte_cliente",['clientes'=>$clientes]);
     }
 }

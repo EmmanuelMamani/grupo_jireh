@@ -56,6 +56,12 @@ h3{
     color: white;
     text-decoration: none;
 }
+.opciones_head:active{
+    color: white;
+}
+.opciones_head:hover{
+    color: white;
+}
 @media (max-width: 920px){
     #login{
         margin-left: 20%;

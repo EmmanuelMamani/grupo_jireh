@@ -20,9 +20,12 @@
     @endif <br>
     <label class="form-label">Motivo de deuda:</label>
     <input type="text" class="form-control" name="motivo">
+    @if ($errors->has('motivo'))
+    <span class="error text-danger">{{ $errors->first('motivo') }}</span>
+    @endif <br>
     <div class="row" id="cont_btn">
         <div class="col"><button id="cancelar">Cancelar</button></div>
-        <div class="col"><button id="enviar">Pagar</button></div>
+        <div class="col"><button id="enviar">Registrar</button></div>
     </div>
 </form>
 @endsection

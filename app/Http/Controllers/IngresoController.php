@@ -6,6 +6,8 @@ use App\Models\Ingreso;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use App\Http\Requests\loteRule;
+use App\Models\Asignacion;
+use Illuminate\Support\Facades\Auth;
 class IngresoController extends Controller
 {
     public function vistaRegistro(){
@@ -21,6 +23,13 @@ class IngresoController extends Controller
         $lote->Precio= $request->costo;
         $lote->producto_id= $request->producto;
         $lote->save();
+        $lotes=Ingreso::all()->last();
+        $asignacion= new Asignacion();
+        $asignacion->cantMoldes=$request->moldes;
+        $asignacion->ingreso_id=$lotes->id;
+        $asignacion->asignado_id=Auth::user()->id;
+        $asignacion->asignador_id=Auth::user()->id;
+        $asignacion->save();
         return redirect()->route('registro_lote')->with('registrar', 'ok');
 
     }

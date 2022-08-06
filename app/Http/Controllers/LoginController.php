@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\loginRequest;
 use App\Models\User;
+use Illuminate\Filesystem\Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Cache as FacadesCache;
 
 class LoginController extends Controller
 {
@@ -18,7 +19,7 @@ class LoginController extends Controller
      */
 
     public function autentificacion(loginRequest $request){
-       
+   
         $usuario = User::query()
             ->where('Usuario', $request['usuario'])
             ->where('Contrasenia', $request['contrasenia'])
@@ -26,12 +27,24 @@ class LoginController extends Controller
             ->first();
         
         if ($usuario) {
-                Auth::login($usuario);
+                Auth::login($usuario, $remember = true);
                 $request->session()->regenerate();
-                return redirect()->intended('/menu')->with('id',$usuario->id);
+                return redirect()->intended('/menu');
         }  
         return back()->withErrors([
             'contrasenia' => 'Contraseña incorrecta',
         ])->withInput();
+    }
+
+    public function logout(Request $request){
+        
+
+       
+        
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+       
+        return redirect('/');
     }
 }

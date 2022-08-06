@@ -34,6 +34,10 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/menu', function () {return view('menu');})->name('menu');
     Route::get("/registro_gasto",[CuentaController::class,"vistaRegistro"])->name("registro_gasto");
     Route::post("/registro_gasto",[CuentaController::class,"registro"])->name("registro_gasto");
+    Route::get("/venta",[VentaController::class,"vistaRegistro"])->name("venta");
+    Route::post("/venta",[VentaController::class,"registro"])->name("ventao");
+    Route::get("/venta_rapida",[VentaController::class,"vistaRegistroRapido"])->name("venta_rapida");
+    Route::post("/venta_rapida",[VentaController::class,"registroRapido"])->name("venta_rapida");
         Route::middleware(['rol'])->group(function(){
             //rutas para usuario administrador
             Route::get("/registro_zona",[ZonaController::class,"vistaRegistro"])->name("registro_zona");

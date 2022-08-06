@@ -56,6 +56,9 @@ h3{
     color: white;
     text-decoration: none;
 }
+.opciones_head:active{
+    color: white;
+}
 .opciones_head:hover{
     color: white;
 }

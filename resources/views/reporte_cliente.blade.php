@@ -23,7 +23,12 @@
           <td>0</td>
           <td>{{$cliente->Nombre}}</td>
           <td>{{$cliente->Telefono}}</td>
-          <td>0</td>
+          @if ($cliente->saldos->isNotEmpty())
+          <td>{{$cliente->saldos->last()->Saldo}}</td>
+          @else
+            <td>0</td>
+          @endif
+
         </tr>
       @endforeach
     </tbody>

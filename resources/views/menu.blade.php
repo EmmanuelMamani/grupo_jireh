@@ -1,11 +1,7 @@
 
 @extends("header")
 @section("opciones")
-<<<<<<< HEAD
-<a href="#" class="opciones_head">salir</a>
-=======
-<a href="{{route('logout')}}" class="opciones_heald">salir</a>
->>>>>>> 499050095ba350d8da0b493cb855887f4454207f
+<a href="{{route('logout')}}" class="opciones_head">salir</a>
 @endsection
 @section("estilos")
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
@@ -15,10 +11,10 @@
 @section("contenido")
 <div id="opciones" >
     @if (Auth::user()->Rol=='Administrador')
-        <div class="opcion row">
+        <a href="/reporte_cliente" class="opcion row">
             <span class="funciones col-8">Clientes</span>
             <span class="material-symbols-outlined icono col">group</span>
-        </div>
+        </a>
         <div class="opcion row">
             <span class="funciones col-8">Empleados</span>
             <span class="material-symbols-outlined icono col"> business_center</span>
@@ -32,9 +28,6 @@
             <span class="material-symbols-outlined icono col">local_shipping</span>
         </div>
     @endif
-   
-    
-    
     <a class="opcion row" href="/venta">
         <span class="funciones col-8">Pre-Venta</span>
         <span class="material-symbols-outlined icono col">shopping_cart</span>

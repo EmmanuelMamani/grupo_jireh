@@ -34,6 +34,9 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/menu', function () {
         return view('menu');
     })->name('menu');
+    Route::get('/venta', function () {
+        return view('venta');
+    });
     Route::get("saldo_pasado",[SaldoController::class,"vistaRegistro"])->name("saldo_pasado");
     Route::post("saldo_pasado",[SaldoController::class,"registro"])->name("saldo_pasado");
         Route::middleware(['rol'])->group(function(){

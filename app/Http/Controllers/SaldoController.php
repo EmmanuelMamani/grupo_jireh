@@ -16,8 +16,9 @@ class SaldoController extends Controller
     
     public function registro(saldoRequest $request){
         $saldo=new Saldo();
-        $saldo->Monto= $request->monto;
-        $saldo->Saldo= $request->monto;
+        $saldo->Monto= $request->monto*-1;
+        $saldo->Saldo= $request->monto*-1;
+        $saldo->Detalle= $request->motivo;
         $saldo->cliente_id= $request->cliente;
         $saldo->save();
         return redirect()->route('saldo_pasado')->with('registrar', 'ok');

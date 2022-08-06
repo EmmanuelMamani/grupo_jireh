@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class saldoRequest extends FormRequest
+class cuentaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +24,15 @@ class saldoRequest extends FormRequest
     public function rules()
     {
         return [
-            'monto'=> 'bail|required|numeric',
-            'motivo' => 'required'
+            'monto'=>'bail|required|numeric',
+            'detalle' => 'required'
         ];
     }
     public function messages()
     {
         return[
             'monto.required'=> 'El monto es obligatorio',
-            'monto.numeric' => 'El monto debe ser numerico',
-            'motivo.required' => 'El motivo es obligatorio'
-        ];
-    }
+            'monto.numeric' => 'El monto debe ser un numero',
+            'detalle' => 'El detalle es obligatorio'
+        ];}
 }

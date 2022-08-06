@@ -18,18 +18,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="fila">
-        <td>1</td>
-        <td>Mark Otto</td>
-        <td>79793177</td>
-        <td>3000 Bs</td>
-      </tr>
-      <tr class="fila">
-        <td>2</td>
-        <td>Mark Antoni</td>
-        <td>79793177</td>
-        <td>3000 Bs</td>
-      </tr>
+      @foreach ($clientes as  $cliente)
+        <tr class="fila">
+          <td>0</td>
+          <td>{{$cliente->Nombre}}</td>
+          <td>{{$cliente->Telefono}}</td>
+          <td>0</td>
+        </tr>
+      @endforeach
     </tbody>
   </table>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

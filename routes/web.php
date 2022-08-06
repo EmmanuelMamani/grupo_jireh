@@ -5,8 +5,10 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ZonaController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CuentaController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\SaldoController;
+use App\Models\Cuenta;
 use Facade\FlareClient\View;
 use Illuminate\Support\Facades\Route;
 
@@ -37,19 +39,21 @@ Route::middleware(['auth'])->group(function() {
     Route::get("/transferir_lote", function(){return view("transferir_lote");});
     Route::get("/saldos", function(){return view("saldos");});
     Route::get("/saldo_pasado", function(){return view("saldo_pasado");});
+    Route::get("/registro_gasto",[CuentaController::class,"vistaRegistro"])->name("registro_gasto");
+    Route::post("/registro_gasto",[CuentaController::class,"registro"])->name("registro_gasto");
         Route::middleware(['rol'])->group(function(){
             //rutas para usuario administrador
         Route::get("/registro_lote", function(){return view("registro_lote");});
         Route::get("/registro_cliente", function(){return view("registro_cliente");});
         Route::get("/registro_producto", function(){return view("registro_producto");});
-        Route::get("/registro_gasto", function(){return view("registro_gasto");});
         Route::get("/registro_empleado", function(){return view("registro_empleado");});
-        Route::get("/reporte_cliente", function(){return view("reporte_cliente");});
         Route::get("/reporte_empleados", function(){return view("reporte_empleados");});
         Route::get("/reporte_lote", function(){return view("reporte_lote");});
         Route::get("/registro_zona",[ZonaController::class,"vistaRegistro"])->name("registro_zona");
         Route::post("registro_zona",[ZonaController::class,"registro"])->name("registro_zona");
+        Route::get("reporte_cliente",[ClienteController::class,"vistaReporte"])->name("reporte_cliente");
         });
+
 });
 
 Route::get("/NoPermitido", function(){return view("alerta");});
@@ -57,9 +61,7 @@ Route::get("/NoPermitido", function(){return view("alerta");});
 
 
 Route::get("/registro_producto", function(){return view("registro_producto");});
-Route::get("/registro_gasto", function(){return view("registro_gasto");});
 Route::get("/registro_empleado", function(){return view("registro_empleado");});
-Route::get("/reporte_cliente", function(){return view("reporte_cliente");});
 Route::get("/saldos", function(){return view("saldos");});
 Route::get("/saldo_pasado", function(){return view("saldo_pasado");});
 Route::get("/reporte_empleados", function(){return view("reporte_empleados");});

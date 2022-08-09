@@ -14,4 +14,10 @@ class Venta extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+    public function ingreso(){
+        return $this->belongsTo(Ingreso::class);
+    }
+    public function salida(){
+        return $this->belongsTo(Salida::class);
+    }
 }

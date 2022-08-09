@@ -15,31 +15,43 @@
             <span class="funciones col-8">Clientes</span>
             <span class="material-symbols-outlined icono col">group</span>
         </a>
-        <div class="opcion row">
+        <a href="/registro_empleado" class="opcion row">
             <span class="funciones col-8">Empleados</span>
             <span class="material-symbols-outlined icono col"> business_center</span>
-        </div>
-        <div class="opcion row">
+        </a>
+      {{-- <div class="opcion row">
             <span class="funciones col-8">Cuentas</span>
             <span class="material-symbols-outlined icono col">monetization_on</span>
-        </div>
-        <div class="opcion row">
+        </div>--}}
+        <a href="/registro_lote" class="opcion row">
             <span class="funciones col-8">Lotes</span>
             <span class="material-symbols-outlined icono col">local_shipping</span>
-        </div>
+        </a>
     @endif
     <a class="opcion row" href="/venta">
         <span class="funciones col-8">Pre-Venta</span>
         <span class="material-symbols-outlined icono col">shopping_cart</span>
     </a>
-    <div class="opcion row">
+    <a href="/venta_rapida" class="opcion row">
         <span class="funciones col-8">Venta rapida</span>
         <span class="material-symbols-outlined icono col">shopping_cart_checkout</span>
-    </div>
-    <div class="opcion row">
+    </a>
+    <a href="/saldos" class="opcion row">
         <span class="funciones col-8">Saldos</span>
         <span class="material-symbols-outlined icono col">payments</span>
-    </div>
+    </a>
+    <a href="/transferir_lote" class="opcion row">
+        <span class="funciones col-8">Transferir lote</span>
+        <span class="material-symbols-outlined icono col"> swap_horiz</span>
+    </a>
+    <a href="/registro_producto" class="opcion row">
+        <span class="funciones col-8">Productos</span>
+        <span class="material-symbols-outlined icono col">local_pizza</span>
+    </a>
+    <a href="/registro_zona" class="opcion row">
+        <span class="funciones col-8">Zonas</span>
+        <span class="material-symbols-outlined icono col">map</span>
+    </a>
 </div>
 
 @endsection

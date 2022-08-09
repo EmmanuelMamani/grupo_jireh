@@ -9,6 +9,7 @@ use App\Models\Cliente;
 use App\Models\Comprobante;
 use App\Models\Ingreso;
 use App\Models\Producto;
+use App\Models\Saldo;
 use App\Models\Salida;
 use App\Models\Venta;
 use App\Models\Zona;
@@ -45,7 +46,7 @@ class VentaController extends Controller
         }else{
             $salida->Total=round($total,0);
         }
-
+        
         $salida->save();
        
         $venta=new Venta();
@@ -69,14 +70,20 @@ class VentaController extends Controller
                 $prueba->Comprobante=$file;
                 $prueba->save();
             }
+            
         }
 
         $asignacion=Asignacion::where('asignado_id',Auth::user()->id)->where('ingreso_id',$request->lote)->get();
         echo($asignacion);
         $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
         $asignacion[0]->save();
-
         
+        $saldo=new Saldo();
+        $saldo->Monto=$total;
+        $saldo->Saldo=Saldo::all()->where('cliente_id',$request->cliente)->last()->Saldo + $total;
+        $saldo->Detalle="Pre-Venta";
+
+        $saldo->save();
 
 
        return redirect()->route('venta')->with('registrar','ok');
@@ -88,7 +95,35 @@ class VentaController extends Controller
     }
 
     public function registroRapido(ventaRapidaRequest $request){
-        echo($request);
+        
+        $salida=new Salida();
+        $salida->CantMoldes=$request->cantidad_moldes;
+        $salida->Peso=$request->peso;
+        $salida->Precio=$request->precio;
+        $total=0;
+        $tipo=Producto::all()->where('id',$request->producto)[0]->Tipo;
+        if($tipo=="Por kilo"){
+            $total=$request->peso*$request->precio;
+        }else{
+            $total=$request->peso*$request->cantidad_moldes;
+        }
+        if($request->centavos==0){
+            $salida->Total=round($total,2);
+        }else{
+            $salida->Total=round($total,0);
+        }
+
+        $salida->save();
+       
+        $venta=new Venta();
+        $venta->cliente_id = $request->cliente; 
+        $venta->user_id=Auth::user()->id;
+        $venta->ingreso_id=$request->lote;
+        $venta->salida_id=$salida->id;
+
+        $venta->save();
+
+        
     }
     public function vistaReporte(){
         

@@ -5,7 +5,7 @@
 @section("titulo","Grupo JIREH")
 @section("contenido")
 <form action="{{route('venta_rapida')}}" id="formulario" method="POST" >
-<h3>Venta rapida</h3>
+    @csrf
 <label class="form-label">Producto:</label>
 <select name="producto" id="producto" class="form-select">
     <option >Elije un producto</option>
@@ -28,7 +28,7 @@
                     lote.innerHTML="<option>Elije un lote</option>";
                     if(producto_id=={{$lote->ingreso->producto_id}}){
                         lote.innerHTML+="<option value='{{$lote->ingreso->id}}' @if(old('lote') == $lote->ingreso->id) selected @endif>{{$lote->ingreso->Proveedor}} - {{$lote->ingreso->CantMoldes}} - {{$lote->ingreso->created_at->format('Y-m-d')}}</option>";
-                        if("{{old('lote')}}"=={{$lote->ingreso->id}}){
+                        if({{old('lote')}} == {{$lote->ingreso->id}}){
                             label.innerHTML="Cantidad restante en el lote: {{$lote->CantMoldes}}";
                         }
                     }
@@ -89,14 +89,14 @@
         });
     </script> 
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="0" id="tipo">
-        <label class="form-check-label" name="centavos">
+        <input class="form-check-input" type="checkbox" value="0" id="centavos" name="centavos">
+        <label class="form-check-label">
           Con centavos
         </label>
     </div>
     <div class="row">
         <div class="col">
-            <label class="form-label">Cantidad de moldes:</label>
+            <label class="form-label" >Cantidad de moldes:</label>
         </div>
         <div class="col">
             <label class="form-label">Peso total:</label>

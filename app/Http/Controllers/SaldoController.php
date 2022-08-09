@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\pagoRequest;
 use App\Http\Requests\saldoRequest;
 use App\Models\Cliente;
 use App\Models\Saldo;
@@ -29,6 +30,19 @@ class SaldoController extends Controller
     }
 
     public function vistaReporte(){
-        
+    }
+    public function vistaPago(){
+        $clientes=Cliente::all();
+        return view("saldos",["clientes"=>$clientes]);
+    }
+    public function Pago(pagoRequest $request){
+        $pasado=Saldo::all()->where("cliente_id",$request->cliente)->last()->Saldo;
+        $saldo=new Saldo();
+        $saldo->cliente_id=$request->cliente;
+        $saldo->Monto=$request->monto;
+        $saldo->Saldo=$pasado - $request->monto;
+        $saldo->Detalle="Pago de deuda";
+        $saldo->save();
+        return redirect()->route('saldos')->with('registrar', 'ok');
     }
 }

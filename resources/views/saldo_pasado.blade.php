@@ -1,5 +1,11 @@
 @extends("header")
 @section("titulo", "Grupo JIREH")
+@section("opciones")
+<a href="/saldos" class="opciones_head">Saldos</a>
+@if (Auth::user()->Rol=='Administrador')
+<a href="/saldo_pasado" class="opciones_head">S. Pasados</a>
+@endif
+@endsection
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
@@ -24,7 +30,7 @@
     <span class="error text-danger">{{ $errors->first('motivo') }}</span>
     @endif <br>
     <div class="row" id="cont_btn">
-        <div class="col"><button id="cancelar">Cancelar</button></div>
+        <div class="col"><a href="/menu" id="cancelar">Cancelar</a></div>
         <div class="col"><button id="enviar">Registrar</button></div>
     </div>
 </form>

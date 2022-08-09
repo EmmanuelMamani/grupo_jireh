@@ -8,6 +8,10 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CuentaController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\SaldoController;
+use App\Http\Controllers\AsignacionController;
+use App\Http\Controllers\PendienteController;
+use App\Http\Controllers\UserController;
+
 use App\Http\Controllers\VentaController;
 use App\Models\Cuenta;
 use Facade\FlareClient\View;
@@ -23,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get("/base",[UserController::class,"registro"])->name("base");
 Route::middleware(['guest'])->group(function() {
     //rutas para login
     Route::get('/', function () {return view('login');})->name('login');
@@ -40,6 +44,13 @@ Route::middleware(['auth'])->group(function() {
     Route::post("/venta",[VentaController::class,"registro"])->name("venta");
     Route::get("/venta_rapida",[VentaController::class,"vistaRegistroRapido"])->name("venta_rapida");
     Route::post("/venta_rapida",[VentaController::class,"registroRapido"])->name("venta_rapida");
+    Route::get("/transferir_lote",[AsignacionController::class,"vistaRegistro"])->name("transferir_lote");
+    Route::post("/transferir_lote",[AsignacionController::class,"registro"])->name("transferir_lote");
+    Route::get("/saldos",[SaldoController::class,"vistaPago"])->name("saldos");
+    Route::post("/saldos",[SaldoController::class,"Pago"])->name("saldos");
+    Route::get("/ventas_pendientes",[PendienteController::class,"reporte"])->name("ventas_pendientes");
+    Route::post("/ventas_pendientes/{id}/{tipo}",[PendienteController::class,"modificar"])->name("modificar");
+
 
         Route::middleware(['rol'])->group(function(){
             //rutas para usuario administrador
@@ -54,6 +65,8 @@ Route::middleware(['auth'])->group(function() {
             Route::post("registro_lote",[IngresoController::class,"registro"])->name("registro_lote");
             Route::get("/registro_cliente",[ClienteController::class,"vistaRegistro"])->name("registro_cliente");
             Route::post("registro_cliente",[ClienteController::class,"registro"])->name("registro_cliente");
+            Route::get("reporte_cuenta",[CuentaController::class,"vistaReporte"])->name("reporte_cuenta");
+            Route::get("/registro_empleado",[UserController::class,"vistaRegistro"])->name("registro_empleado");
         });
 
 

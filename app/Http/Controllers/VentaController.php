@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ventaRapidaRequest;
 use App\Http\Requests\ventaRequest;
 use App\Models\Asignacion;
 use App\Models\Cliente;
@@ -81,12 +82,13 @@ class VentaController extends Controller
        return redirect()->route('venta')->with('registrar','ok');
     }
     public function vistaRegistroRapido(){
-
-
+        $productos=Producto::all();
+        $asignaciones=Asignacion::where('asignado_id',Auth::user()->id)->get();
+        return view("venta_rapida",['productos'=>$productos,'lotes'=>$asignaciones]);
     }
 
-    public function registroRapido(){
-
+    public function registroRapido(ventaRapidaRequest $request){
+        echo($request);
     }
     public function vistaReporte(){
         

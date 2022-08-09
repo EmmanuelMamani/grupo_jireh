@@ -26,6 +26,13 @@ class CuentaController extends Controller
     }
 
     public function vistaReporte(){
-        
+        $cuentas=Cuenta::all();
+        $multiplied = $cuentas->map(function ($item, $key) {
+            return $item->created_at->format('Y-m-d');
+        });
+        /*for($i=0;$i<sizeof($cuentas);$i++){
+            echo($cuentas[$i]->created_at->format('Y-m-d')."<br>");
+        }*/
+        echo($multiplied);
     }
 }

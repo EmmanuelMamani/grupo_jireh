@@ -1,5 +1,10 @@
 @extends("header")
 @section("titulo", "Grupo JIREH")
+@section("opciones")
+<a href="/menu" class="opciones_head">Inicio</a>
+<a href="/registro_cliente" class="opciones_head">Registro</a>
+<a href="/reporte_cliente" class="opciones_head">Reporte</a>
+@endsection
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
@@ -29,7 +34,7 @@
         @endforeach
     </select>
     <div class="row" id="cont_btn">
-        <div class="col"><button id="cancelar">Cancelar</button></div>
+        <div class="col"><a href="/menu" id="cancelar">Cancelar</a></div>
         <div class="col"><button id="enviar">Registrar</button></div>
     </div>
 </form>

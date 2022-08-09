@@ -119,13 +119,15 @@
         lote_elegido.addEventListener('change',(event)=>{
             var label=document.getElementById("cantidad_lotes");
             var id_lote=lote_elegido.options[lote_elegido.selectedIndex].value;
-            
+            var texto=lote_elegido.options[lote_elegido.selectedIndex].text;
             @foreach ($lotes as $lote)
                 if({{$lote->ingreso->id}}==id_lote){
                     label.innerHTML="Cantidad restante en el lote: {{$lote->CantMoldes}}";
                 }
             @endforeach
-            
+            if(texto== "Elije un lote"){
+                label.innerHTML="";
+            }
         });
 
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CuentaController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\SaldoController;
+use App\Http\Controllers\VentaController;
 use App\Models\Cuenta;
 use Facade\FlareClient\View;
 use Illuminate\Support\Facades\Route;
@@ -36,7 +37,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get("/registro_gasto",[CuentaController::class,"vistaRegistro"])->name("registro_gasto");
     Route::post("/registro_gasto",[CuentaController::class,"registro"])->name("registro_gasto");
     Route::get("/venta",[VentaController::class,"vistaRegistro"])->name("venta");
-    Route::post("/venta",[VentaController::class,"registro"])->name("ventao");
+    Route::post("/venta",[VentaController::class,"registro"])->name("venta");
     Route::get("/venta_rapida",[VentaController::class,"vistaRegistroRapido"])->name("venta_rapida");
     Route::post("/venta_rapida",[VentaController::class,"registroRapido"])->name("venta_rapida");
 

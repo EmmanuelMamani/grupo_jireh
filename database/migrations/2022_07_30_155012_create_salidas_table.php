@@ -16,7 +16,7 @@ class CreateSalidasTable extends Migration
         Schema::create('salidas', function (Blueprint $table) {
             $table->id();
             $table->integer('CantMoldes');
-            $table->double('Peso',8,3);
+            $table->double('Peso',8,3)->nullable();
             $table->double('Precio',8,2);
             $table->double('Total',8,2);
             $table->timestamps();

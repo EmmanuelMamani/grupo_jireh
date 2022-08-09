@@ -14,4 +14,7 @@ class Ingreso extends Model
     public function ventas(){
         return $this->hasMany(Venta::class);
     }
+    public function asignaciones(){
+        return $this->hasMany(Asignacion::class);
+    }
 }

@@ -2,16 +2,83 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ventaRequest;
+use App\Models\Asignacion;
+use App\Models\Cliente;
+use App\Models\Comprobante;
+use App\Models\Ingreso;
+use App\Models\Producto;
+use App\Models\Salida;
+use App\Models\Venta;
+use App\Models\Zona;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Nette\Utils\Image;
 
 class VentaController extends Controller
 {
     public function vistaRegistro(){
-        
+        $zonas=Zona::all();
+        $clientes=Cliente::all();
+        $productos=Producto::all();
+        $asignaciones=Asignacion::where('asignado_id',Auth::user()->id)->get();
+        return view("venta",['zonas'=>$zonas,'clientes'=>$clientes,'productos'=>$productos,'lotes'=>$asignaciones]);
+
     }
     
-    public function registro(){
+    public function registro(ventaRequest $request){
 
+        $salida=new Salida();
+        $salida->CantMoldes=$request->cantidad_moldes;
+        $salida->Peso=$request->peso;
+        $salida->Precio=$request->precio;
+        $total=0;
+        $tipo=Producto::all()->where('id',$request->producto)[0]->Tipo;
+        if($tipo=="Por kilo"){
+            $total=$request->peso*$request->precio;
+        }else{
+            $total=$request->peso*$request->cantidad_moldes;
+        }
+        if($request->tipo==0){
+            $salida->Total=round($total,2);
+        }else{
+            $salida->Total=round($total,0);
+        }
+
+        $salida->save();
+       
+        $venta=new Venta();
+        $venta->cliente_id = $request->cliente; 
+        $venta->user_id=Auth::user()->id;
+        $venta->ingreso_id=$request->lote;
+        $venta->salida_id=$salida->id;
+
+        $venta->save();
+
+        $fi=$request->file('comprobante');
+        
+        foreach ($fi as $fil) {
+            $tipo=$fil->getClientOriginalExtension();
+            if($tipo == "jpeg" || $tipo == "jpg" || $tipo == "png" || $tipo == "gif" || $tipo == "svg"){
+                $archivo=$fil->getClientOriginalName();
+                $file=Image::fromFile($fil)->resize(300, null);
+    
+                $prueba=new Comprobante();
+                $prueba->venta_id= $venta->id;
+                $prueba->Comprobante=$file;
+                $prueba->save();
+            }
+        }
+
+        $asignacion=Asignacion::where('asignado_id',Auth::user()->id)->where('ingreso_id',$request->lote)->get();
+        echo($asignacion);
+        $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
+        $asignacion[0]->save();
+
+        
+
+
+       return redirect()->route('venta')->with('registrar','ok');
     }
     public function vistaRegistroRapido(){
 

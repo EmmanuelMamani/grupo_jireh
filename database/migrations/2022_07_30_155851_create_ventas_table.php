@@ -19,7 +19,6 @@ class CreateVentasTable extends Migration
             $table->integer('user_id');
             $table->integer('ingreso_id');
             $table->integer('salida_id');
-            $table->integer('Cantidad');
             $table->boolean('Estado')->default(false);
             $table->timestamps();
         });

@@ -33,7 +33,7 @@
     var moldes=document.getElementById("moldes");
     var alerta=document.getElementById("alerta");
     enviar.onclick=function(e){
-        if(lote.innerHTML="\n"){
+        if(lote.innerHTML=="\n"){
             alerta.innerHTML="No hay lotes para transferir"
             e.preventDefault();
         }else{

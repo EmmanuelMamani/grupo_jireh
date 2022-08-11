@@ -82,6 +82,7 @@ class VentaController extends Controller
         $saldo->Monto=$total;
         $saldo->Saldo=Saldo::all()->where('cliente_id',$request->cliente)->last()->Saldo + $total;
         $saldo->Detalle="Pre-Venta";
+        $saldo->cliente_id= $request->cliente;
 
         $saldo->save();
 
@@ -126,6 +127,7 @@ class VentaController extends Controller
         
     }
     public function vistaReporte(){
-        
+        $pru=Comprobante::all();
+        return view("vistaPrueba",["pru"=>$pru]);
     }
 }

@@ -18,6 +18,7 @@ class CreateCuentasTable extends Migration
             $table->integer('user_id');
             $table->double('Monto',8,2);
             $table->string('Detalle');
+            $table->date('Fecha');
             $table->timestamps();
         });
     }

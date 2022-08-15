@@ -1,0 +1,66 @@
+@extends("header")
+@section("titulo","Grupo JIREH")
+@section("estilos")
+<link rel="stylesheet" href="{{asset("css/reporte.css")}}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+@endsection
+@section("contenido")
+<h3>Reporte de empleados</h3>
+<table id="tabla" class="table ">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Cliente</th>
+        <th>Empleado</th>
+        <th>Monto</th>
+        <th>Fecha</th>
+        <th>Detalle</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach ($ventas as $venta)
+        <tr class="fila">
+          <td>0</td>
+          <td>{{$venta->cliente->Nombre}}</td>
+          <td>{{$venta->user->Nombre}}</td>
+          <td>{{$venta->salida->Total}}</td>
+          <td>{{$venta->created_at->format('Y-m-d')}}</td>
+          <td><a href="{{route('Detalle')}}">Ver detalle</a></td>
+        </tr>
+      @endforeach
+      
+      <tr class="fila">
+        <td>2</td>
+        <td>Mark Otto1</td>
+        <td>12365479</td>
+        <td>78965412</td>
+        <td>correo1@gmail.com</td>
+      </tr>
+    </tbody>
+  </table>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+  <script>
+         $('#tabla').DataTable({
+      responsive:true,
+      autoWidth:false,
+      "language": {
+            "lengthMenu": "Mostrar _MENU_  ",
+            "zeroRecords": "No hay resultados",
+            "info": "Mostrando la página _PAGE_ de _PAGES_",
+            "infoEmpty": "No records available",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search":"Buscar",
+            "paginate":{
+                  "next":"Siguiente",
+                  "previous":"Anterior"
+            }
+        }
+      });
+</script>
+@endsection

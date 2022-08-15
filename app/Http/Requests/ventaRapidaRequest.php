@@ -34,6 +34,7 @@ class ventaRapidaRequest extends FormRequest
             'cantidad_moldes'=>['required','numeric','integer',new RuleCantMoldes],
             'peso'=>['bail',new RulePeso,'numeric','regex:/^[\d]{0,11}(\.[\d]{1,3})?$/'],
             'precio'=>'required|numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/', 
+            'comprobante'=>'required', 
         ];
     }
 
@@ -49,7 +50,8 @@ class ventaRapidaRequest extends FormRequest
             'peso.regex'=>'Máximo 3 decimales',
             'precio.required'=>'El campo es obligatorio',
             'precio.numeric'=>'Solo se admiten números',
-            'precio.regex'=>'Máximo 2 decimales'
+            'precio.regex'=>'Máximo 2 decimales',
+            'comprobante.required'=>'El campo es obligatorio'
         ];
     }
 }

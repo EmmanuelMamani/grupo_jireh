@@ -30,9 +30,9 @@ class zonaRule extends FormRequest
     public function messages()
     {
         return[
-            'Nombre.required'=>'El campo \'Nombre\' es obligatorio',
+            'Nombre.required'=>'El campo es obligatorio',
             'Nombre.regex' => 'Solo se aceptan caracteres alfabéticos y espacios.',
-            'Nombre.unique'=> 'Ya existe una carrera registrada con ese nombre.',
+            'Nombre.unique'=> 'Ya existe una zona registrada con ese nombre.',
         ];
     }
 }

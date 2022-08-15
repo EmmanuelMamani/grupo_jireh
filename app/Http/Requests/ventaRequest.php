@@ -30,7 +30,6 @@ class ventaRequest extends FormRequest
     public function rules()
     {
         return [
-            'zona'=>[new RuleZona],
             'cliente'=>[new RuleCliente],
             'producto'=>[new RuleProducto],
             'lote'=>[new RuleLote],
@@ -55,7 +54,8 @@ class ventaRequest extends FormRequest
             'peso.regex'=>'Máximo 3 decimales',
             'precio.required'=>'El campo es obligatorio',
             'precio.numeric'=>'Solo se admiten números',
-            'precio.regex'=>'Máximo 2 decimales'
+            'precio.regex'=>'Máximo 2 decimales',
+            'comprobante.required'=>'El campo es obligatorio'
         ];
     }
 }

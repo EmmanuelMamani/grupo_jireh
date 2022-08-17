@@ -16,6 +16,8 @@ use App\Models\Zona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Nette\Utils\Image;
+use DateTime;
+use DateTimeZone;
 
 class VentaController extends Controller
 {
@@ -23,7 +25,7 @@ class VentaController extends Controller
         $zonas=Zona::all();
         $clientes=Cliente::all();
         $productos=Producto::all();
-        $asignaciones=Asignacion::where('asignado_id',Auth::user()->id)->get();
+        $asignaciones=Asignacion::where('asignado_id',Auth::user()->id)->where('CantMoldes','>',0)->get();
         return view("venta",['zonas'=>$zonas,'clientes'=>$clientes,'productos'=>$productos,'lotes'=>$asignaciones]);
 
     }
@@ -35,7 +37,7 @@ class VentaController extends Controller
         $salida->Peso=$request->peso;
         $salida->Precio=$request->precio;
         $total=0;
-        $tipo=Producto::all()->where('id',$request->producto)[0]->Tipo;
+        $tipo=Producto::all()->where('id',$request->producto)["1"]->Tipo;
         if($tipo=="Por kilo"){
             $total=$request->peso*$request->precio;
         }else{
@@ -74,24 +76,30 @@ class VentaController extends Controller
         }
 
         $asignacion=Asignacion::where('asignado_id',Auth::user()->id)->where('ingreso_id',$request->lote)->get();
-        echo($asignacion);
+        
         $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
         $asignacion[0]->save();
         
         $saldo=new Saldo();
         $saldo->Monto=$total;
-        $saldo->Saldo=Saldo::all()->where('cliente_id',$request->cliente)->last()->Saldo + $total;
+        $saldoActual=Saldo::all()->where('cliente_id',$request->cliente)->last();
+       
+        if($saldoActual==""){
+            $saldo->Saldo=$total;
+        }else{
+            $saldo->Saldo=$saldoActual->Saldo + $total;
+        }
+        
         $saldo->Detalle="Pre-Venta";
         $saldo->cliente_id= $request->cliente;
 
         $saldo->save();
 
-
        return redirect()->route('venta')->with('registrar','ok');
     }
     public function vistaRegistroRapido(){
         $productos=Producto::all();
-        $asignaciones=Asignacion::where('asignado_id',Auth::user()->id)->get();
+        $asignaciones=Asignacion::where('asignado_id',Auth::user()->id)->where('CantMoldes','>',0)->get();
         return view("venta_rapida",['productos'=>$productos,'lotes'=>$asignaciones]);
     }
 
@@ -102,8 +110,8 @@ class VentaController extends Controller
         $salida->Peso=$request->peso;
         $salida->Precio=$request->precio;
         $total=0;
-        $tipo=Producto::all()->where('id',$request->producto)[0]->Tipo;
-        if($tipo=="Por kilo"){
+        $tipo=Producto::all()->where('id',$request->producto)["1"]->Tipo;
+        if($tipo=="Por Kilo"){
             $total=$request->peso*$request->precio;
         }else{
             $total=$request->peso*$request->cantidad_moldes;
@@ -123,11 +131,22 @@ class VentaController extends Controller
         $venta->salida_id=$salida->id;
 
         $venta->save();
-
         
+        $asignacion=Asignacion::where('asignado_id',Auth::user()->id)->where('ingreso_id',$request->lote)->get();
+        
+        $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
+        $asignacion[0]->save();
+
+        return redirect()->route('venta_rapida')->with('registrar','ok');
     }
+    
     public function vistaReporte(){
-        $pru=Comprobante::all();
-        return view("vistaPrueba",["pru"=>$pru]);
+        $ventas=Venta::all();
+        return view("reporte_ventas",["ventas"=>$ventas]);
+    }
+    public function detalle($id){
+        $venta=Venta::find($id);
+        $comprobantes=Comprobante::where("venta_id",$id)->get();
+        return view("detalle_venta",["venta"=>$venta,"comprobantes"=>$comprobantes]);
     }
 }

@@ -8,7 +8,7 @@
     <h3>Registro de zona</h3>
     @csrf
     <label class="form-label">Nombre de zona:</label>
-    <input type="text" name="Nombre" class="form-control">
+    <input type="text" name="Nombre" class="form-control" value="{{old('Nombre')}}">
     @if ($errors->has('Nombre'))
       <span class="error text-danger">{{ $errors->first('Nombre') }}</span>
       @endif

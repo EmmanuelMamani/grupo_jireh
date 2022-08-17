@@ -28,10 +28,11 @@ class CuentaController extends Controller
     }
 
     public function vistaReporte(){
-      $fecha=date("Y-m-d");
-      
-      $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
-      $cuentas=[];
+        $fecha=date("Y-m-d H:i:s");
+        $fecha=strtotime("-4 hour",strtotime($fecha));
+        $fecha=date ( 'Y-m-d' , $fecha);
+        $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
+        $cuentas=[];
         foreach($consultas as $c){
             if($c->Fecha==$fecha){
                 array_push($cuentas,$c);
@@ -50,10 +51,25 @@ class CuentaController extends Controller
     public function ReportePeriodo(periodoRequest $request){
        $inicio=$request->inicio;
         $fin=$request->fin;
-       // echo($inicio ."<br>". $fin);
-       /*$fecha=date("Y-m-d H:i:s");
-       $fecha=strtotime("-4 hour",strtotime($fecha));
-       $fecha=date ( 'Y-m-d H:i:s' , $fecha);
-       echo($fecha);*/
+        $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
+        $cuentas=[];
+        $monto=0;
+        foreach($consultas as $c){
+            if($c->Fecha>=$inicio && $c->Fecha<=$fin){
+                array_push($cuentas,$c);
+                $monto+=$c->monto;
+           }
+        }
+        $usuarios=User::all();
+        return view("reporte_periodo",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"monto"=>$monto]);
+    }
+    public function reporteHistorico(){
+        $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
+        $cuentas=[];
+        foreach($consultas as $c){
+                array_push($cuentas,$c);
+        }
+        $usuarios=User::all();
+        return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios]);
     }
 }

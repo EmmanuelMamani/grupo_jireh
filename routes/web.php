@@ -9,6 +9,7 @@ use App\Http\Controllers\CuentaController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\SaldoController;
 use App\Http\Controllers\AsignacionController;
+use App\Http\Controllers\ListaController;
 use App\Http\Controllers\PendienteController;
 use App\Http\Controllers\UserController;
 
@@ -71,6 +72,8 @@ Route::middleware(['auth'])->group(function() {
             Route::get("/detalle_cuenta/{id}/{fecha}",[CuentaController::class,"DetalleCuenta"])->name("detalle_cuenta");
             Route::get("/cuentas_periodo",[CuentaController::class,"VistaPeriodo"])->name("cuentas_periodo");
             Route::get("/reporte_periodo",[CuentaController::class,"ReportePeriodo"])->name("reporte_periodo");
+            Route::get("/reporte_historico",[CuentaController::class,"reporteHistorico"])->name("reporte_histprico");
+            Route::get("/registro_lista",[ListaController::class,"vistaRegistro"])->name("registro_lista");
         });
 
 

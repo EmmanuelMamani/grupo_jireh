@@ -35,6 +35,7 @@ class IngresoController extends Controller
     }
 
     public function vistaReporte(){
-        
+        $lotes=Ingreso::all()->orderBy('id','desc');
+        return view("reporte_lote",['lotes'=>$lotes]);
     }
 }

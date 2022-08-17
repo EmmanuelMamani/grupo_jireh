@@ -27,17 +27,11 @@
           <td>{{$venta->user->Nombre}}</td>
           <td>{{$venta->salida->Total}}</td>
           <td>{{$venta->created_at->format('Y-m-d')}}</td>
-          <td><a href="{{route('Detalle')}}">Ver detalle</a></td>
+          <td><a href="{{route('venta_detalle',['id'=>$venta->id])}}">Ver detalle</a></td>
         </tr>
       @endforeach
       
-      <tr class="fila">
-        <td>2</td>
-        <td>Mark Otto1</td>
-        <td>12365479</td>
-        <td>78965412</td>
-        <td>correo1@gmail.com</td>
-      </tr>
+      
     </tbody>
   </table>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

@@ -37,6 +37,7 @@ Route::middleware(['guest'])->group(function() {
 Route::middleware(['auth'])->group(function() {
     //rutas para usuarios identificados
     Route::get("/reporte_venta",[VentaController::class,"vistaReporte"])->name("reporte_ventas");
+    Route::get("/reporte_lote",[IngresoController::class,"vistaReporte"])->name("reporte_lotes");
     Route::get("/detalle_venta/{id}",[VentaController::class,"detalle"])->name("venta_detalle");
 
     Route::get('/menu', function () {return view('menu');})->name('menu');

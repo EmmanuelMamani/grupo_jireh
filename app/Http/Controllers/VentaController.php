@@ -146,6 +146,7 @@ class VentaController extends Controller
     }
     public function detalle($id){
         $venta=Venta::find($id);
-        return view("");
+        $comprobantes=Comprobante::where("venta_id",$id)->get();
+        return view("detalle_venta",["venta"=>$venta,"comprobantes"=>$comprobantes]);
     }
 }

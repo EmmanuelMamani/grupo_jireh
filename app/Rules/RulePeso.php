@@ -35,8 +35,8 @@ class RulePeso implements Rule,DataAwareRule
     {
         $bool=true;
         if($this->data['producto']!="Elije un producto"){
-            echo(Producto::all()->where('id',$this->data['producto']));
-            $tipo=Producto::all()->where('id',$this->data['producto'])["1"]->Tipo; 
+            //echo(Producto::all()->where('id',$this->data['producto']));
+            $tipo=Producto::all()->where('id',$this->data['producto'])->last()->Tipo; 
            
             if($tipo=='Por kilo' && $value=="0.00"){
                 $bool=false;

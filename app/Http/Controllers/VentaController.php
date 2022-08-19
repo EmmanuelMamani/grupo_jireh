@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\devolucionRequest;
 use App\Http\Requests\ventaRapidaRequest;
 use App\Http\Requests\ventaRequest;
 use App\Models\Asignacion;
@@ -148,5 +149,12 @@ class VentaController extends Controller
         $venta=Venta::find($id);
         $comprobantes=Comprobante::where("venta_id",$id)->get();
         return view("detalle_venta",["venta"=>$venta,"comprobantes"=>$comprobantes]);
+    }
+    public function VistaDevolucion($id){
+        $venta=Venta::find($id);
+        return view("devolucion",["venta"=>$venta]);
+    }
+    public function Devolucion(devolucionRequest $request, $id){
+        
     }
 }

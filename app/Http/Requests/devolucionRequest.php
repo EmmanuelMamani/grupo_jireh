@@ -1,10 +1,14 @@
 <?php
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\RuleCantMoldes;
 use App\Rules\RuleCliente;
+use App\Rules\RuleLote;
+use App\Rules\RulePeso;
 use App\Rules\RuleProducto;
-class listaRequest extends FormRequest
+class devolucionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +28,17 @@ class listaRequest extends FormRequest
     public function rules()
     {
         return [
-            'cliente'=>[new RuleCliente],
-            'producto'=>[new RuleProducto],
-            'unidades'=>"required|integer"
+            "unidades"=>"required|integer",
+            "monto"=>"required|numeric"
         ];
     }
     public function messages()
     {
         return[
-            "unidades.required"=>"Las unidades son obligatorias",
-            "unidades.integer"=>"Las unidades deben ser un numero entero"
+            "unidades.required"=>"Las unidades son requeridas",
+            "unidades.integer"=>"Las unidades deben ser enteros",
+            "monto.required"=>"El monto es requerido",
+            "monto.numeric"=>"El monto debe ser un número"
         ];
     }
 }

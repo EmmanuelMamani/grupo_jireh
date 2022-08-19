@@ -17,6 +17,7 @@
         <th>Monto</th>
         <th>Fecha</th>
         <th>Detalle</th>
+        <th>Devolver</th>
       </tr>
     </thead>
     <tbody>
@@ -28,6 +29,7 @@
           <td>{{$venta->salida->Total}}</td>
           <td>{{$venta->created_at->format('Y-m-d')}}</td>
           <td><a href="{{route('venta_detalle',['id'=>$venta->id])}}">Ver detalle</a></td>
+          <td><a href="{{route("venta_devolucion",['id'=>$venta->id])}}">Devolver</a></td>
         </tr>
       @endforeach
       

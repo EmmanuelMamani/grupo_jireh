@@ -14,9 +14,20 @@
         <th>Nombre</th>
         <th>Producto</th>
         <th>Unidades</th>
+        <th>Cancelar</th>
+        <th>Completar</th>
       </tr>
     </thead>
     <tbody>
+      @foreach ($listas as $lista )
+        <tr class="fila">
+          <td>{{$lista->cliente->Nombre}}</td>
+          <td>{{$lista->producto->Nombre}}</td>
+          <td>{{$lista->Unidades}}</td>
+          <td><button>Cancelar</button></td>
+          <td><button>Completar</button></td>
+        </tr>
+      @endforeach
     </tbody>
   </table>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

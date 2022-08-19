@@ -20,9 +20,9 @@
       </tr>
     </thead>
     <tbody>
-      @foreach ($ventas as $venta)
+      @foreach ($ventas as $key=>$venta)
         <tr class="fila">
-          <td>0</td>
+          <td>{{$key+1}}</td>
           <td>{{$venta->cliente->Nombre}}</td>
           <td>{{$venta->user->Nombre}}</td>
           <td>{{$venta->salida->Total}}</td>

@@ -23,28 +23,24 @@
       </tr>
     </thead>
     <tbody>
+      @foreach ($lotes as $key=>$lote)
         <tr class="fila">
-            <td>1</td>
-            <td>Marko Quispe</td>
-            <td>Mozzarella por kilo</td>
-            <td>120</td>
-            <td>5530</td>
-            <td>26</td>
-            <td>143780</td>
-            <td>10</td>
-            <td>54600</td>
+          <td>{{$key+1}}</td>
+          <td>{{$lote->Proveedor}}</td>
+          <td>{{$lote->producto->Nombre}} {{$lote->producto->Tipo}}</td>
+          <td>{{$lote->CantMoldes}}</td>
+          <td>{{$lote->Peso}}</td>
+          <td>{{$lote->Precio}}</td>
+          @if($lote->producto->Tipo=="Por Kilo")
+            <td>{{$lote->Peso * $lote->Precio}}</td>
+          @else
+            <td>{{$lote->CantMoldes * $lote->Precio}}</td>
+          @endif
+          
+          <td>{{$lote->salidas->sum('CantMoldes')}}</td>
+          <td>{{$lote->salidas->sum('Total')}}</td>
         </tr>
-        <tr class="fila">
-            <td>2</td>
-            <td>Mario Rosa</td>
-            <td>Mozzarella por pepa</td>
-            <td>100</td>
-            <td>-</td>
-            <td>26</td>
-            <td>2600</td>
-            <td>15</td>
-            <td>420</td>
-        </tr>
+      @endforeach
     </tbody>
   </table>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

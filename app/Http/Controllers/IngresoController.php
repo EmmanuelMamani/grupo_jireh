@@ -7,6 +7,7 @@ use App\Models\Producto;
 use Illuminate\Http\Request;
 use App\Http\Requests\loteRule;
 use App\Models\Asignacion;
+use App\Models\Venta;
 use Illuminate\Support\Facades\Auth;
 class IngresoController extends Controller
 {
@@ -35,7 +36,7 @@ class IngresoController extends Controller
     }
 
     public function vistaReporte(){
-        $lotes=Ingreso::all()->orderBy('id','desc');
-        return view("reporte_lote",['lotes'=>$lotes]);
+        $lotes=Ingreso::orderBy('id','desc')->get();
+       return view("reporte_lote",['lotes'=>$lotes]);
     }
 }

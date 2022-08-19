@@ -9,6 +9,10 @@ class Salida extends Model
 {
     use HasFactory;
     public function venta(){
-        return $this->belongsTo(Venta::class);
+        return $this->hasOne(Venta::class);
+    }
+
+    public function lotes(){
+        return $this->belongsToMany(Ingreso::class);
     }
 }

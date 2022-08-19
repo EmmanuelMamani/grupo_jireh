@@ -23,9 +23,9 @@
       </tr>
     </thead>
     <tbody>
-      @foreach ($clientes as  $cliente)
+      @foreach ($clientes as  $key=>$cliente)
         <tr class="fila">
-          <td>0</td>
+          <td>{{$key+1}}</td>
           <td>{{$cliente->Nombre}}</td>
           <td>{{$cliente->Telefono}}</td>
           @if ($cliente->saldos->isNotEmpty())

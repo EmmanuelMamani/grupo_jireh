@@ -19,20 +19,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="fila">
-        <td>1</td>
-        <td>Mark Otto</td>
-        <td>12365478</td>
-        <td>79793177</td>
-        <td>correo@gmail.com</td>
-      </tr>
-      <tr class="fila">
-        <td>2</td>
-        <td>Mark Otto1</td>
-        <td>12365479</td>
-        <td>78965412</td>
-        <td>correo1@gmail.com</td>
-      </tr>
+      @foreach ($empleados as $key=>$empleado)
+        <tr class="fila">
+          <td>{{$key+1}}</td>
+          <td>{{$empleado->Nombre}}</td>
+          <td>{{$empleado->CI}}</td>
+          <td>{{$empleado->Telefono}}</td>
+          <td>{{$empleado->Email}}</td>
+        </tr> 
+      @endforeach
     </tbody>
   </table>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

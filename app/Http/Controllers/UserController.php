@@ -33,6 +33,7 @@ class UserController extends Controller
     }
 
     public function vistaReporte(){
-        
+        $user=User::all();
+        return view("reporte_empleados",["empleados"=>$user]);
     }
 }

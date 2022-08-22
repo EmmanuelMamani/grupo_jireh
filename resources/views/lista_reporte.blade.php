@@ -24,8 +24,8 @@
           <td>{{$lista->cliente->Nombre}}</td>
           <td>{{$lista->producto->Nombre}}</td>
           <td>{{$lista->Unidades}}</td>
-          <td><button>Cancelar</button></td>
-          <td><button>Completar</button></td>
+          <td><a href="{{route("cancelar_lista",['id'=>$lista->id])}}">Cancelar</a></td>
+          <td><a>Completar</a></td>
         </tr>
       @endforeach
     </tbody>

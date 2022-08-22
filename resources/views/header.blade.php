@@ -41,6 +41,17 @@
       timer: 1500
   })
 </script>
+@if (session('eliminar')=='ok')
+<script>
+  Swal.fire({
+  position: 'center',
+  icon: 'success',
+  title: 'Registro eliminado',
+  showConfirmButton: false,
+  timer: 1500
+  })
+</script>
+@endif
 @endif
   </body>
 </html>

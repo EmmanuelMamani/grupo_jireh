@@ -32,4 +32,10 @@ class ListaController extends Controller
         $listas=Lista::all()->where("user_id",Auth::user()->id);
         return view("lista_reporte",["listas"=>$listas]);
     }
+
+    public function eliminar($id){
+        $lista=Lista::find($id);
+        $lista->delete();
+        return redirect()->route('lista_reporte')->with('eliminar','ok');
+    }
 }

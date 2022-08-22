@@ -28,9 +28,7 @@ class CuentaController extends Controller
     }
 
     public function vistaReporte(){
-        $fecha=date("Y-m-d H:i:s");
-        $fecha=strtotime("-4 hour",strtotime($fecha));
-        $fecha=date ( 'Y-m-d' , $fecha);
+        $fecha=date('Y-m-d');
         $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
         $cuentas=[];
         foreach($consultas as $c){
@@ -41,6 +39,13 @@ class CuentaController extends Controller
         $usuarios=User::all();
         return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios]);
     }
+
+    public function reporteDiario(){
+        $fecha=date('Y-m-d');
+        $cuentas=Cuenta::where('user_id',Auth::user()->id)->where("Fecha",$fecha)->get();
+        return view("detalle_cuenta",["cuentas"=>$cuentas]);
+    }
+
     public function DetalleCuenta($id,$fecha){
         $cuentas=Cuenta::all()->where("user_id",$id)->where("Fecha",$fecha);
      return view("detalle_cuenta",["cuentas"=>$cuentas]);

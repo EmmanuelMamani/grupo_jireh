@@ -32,7 +32,6 @@ class IngresoController extends Controller
         $asignacion->asignador_id=Auth::user()->id;
         $asignacion->save();
         return redirect()->route('registro_lote')->with('registrar', 'ok');
-
     }
 
     public function vistaReporte(){

@@ -15,6 +15,7 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\VentaController;
 use App\Models\Cuenta;
+use App\Models\User;
 use Facade\FlareClient\View;
 use Illuminate\Support\Facades\Route;
 
@@ -37,9 +38,8 @@ Route::middleware(['guest'])->group(function() {
 
 Route::middleware(['auth'])->group(function() {
     //rutas para usuarios identificados
-    Route::get("/reporte_venta",[VentaController::class,"vistaReporte"])->name("reporte_ventas");
-    Route::get("/reporte_lote",[IngresoController::class,"vistaReporte"])->name("reporte_lotes");
-    Route::get("/detalle_venta/{id}",[VentaController::class,"detalle"])->name("venta_detalle");
+    Route::get("/cancelar_lista/{id}",[ListaController::class,"eliminar"])->name("cancelar_lista");
+    Route::get("/reporte_diario",[CuentaController::class,"reporteDiario"])->name("reporte_diario");
     Route::get("/venta_devolucion/{id}",[VentaController::class,"VistaDevolucion"])->name("venta_devolucion");
     Route::post("/devolucion/{id}",[VentaController::class,"Devolucion"])->name("devolucion");
     Route::get('/menu', function () {return view('menu');})->name('menu');
@@ -59,6 +59,10 @@ Route::middleware(['auth'])->group(function() {
 
         Route::middleware(['rol'])->group(function(){
             //rutas para usuario administrador
+            Route::get("/reporte_empleados",[UserController::class,"vistaReporte"])->name("reporte_empleados");
+            Route::get("/reporte_venta",[VentaController::class,"vistaReporte"])->name("reporte_ventas");
+            Route::get("/reporte_lote",[IngresoController::class,"vistaReporte"])->name("reporte_lotes");
+            Route::get("/detalle_venta/{id}",[VentaController::class,"detalle"])->name("venta_detalle");
             Route::get("/registro_zona",[ZonaController::class,"vistaRegistro"])->name("registro_zona");
             Route::post("registro_zona",[ZonaController::class,"registro"])->name("registro_zona");
             Route::get("reporte_cliente",[ClienteController::class,"vistaReporte"])->name("reporte_cliente");

@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="utf-8"/>
-    <link rel="icon" href="{{asset('img/logo1.ico')}}"/>
+    <link rel="icon" href="{{secure_asset('img/logo1.ico')}}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
@@ -41,6 +41,7 @@
       timer: 1500
   })
 </script>
+@endif
 @if (session('eliminar')=='ok')
 <script>
   Swal.fire({
@@ -52,6 +53,6 @@
   })
 </script>
 @endif
-@endif
+
   </body>
 </html>

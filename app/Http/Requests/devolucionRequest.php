@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\RuleCantMoldes;
 use App\Rules\RuleCliente;
+use App\Rules\RuleDevolucion;
 use App\Rules\RuleLote;
 use App\Rules\RulePeso;
 use App\Rules\RuleProducto;
@@ -28,7 +29,7 @@ class devolucionRequest extends FormRequest
     public function rules()
     {
         return [
-            "unidades"=>"required|integer",
+            "unidades"=>["required","numeric",new RuleDevolucion],
             "monto"=>"required|numeric"
         ];
     }

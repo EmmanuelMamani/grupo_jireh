@@ -28,12 +28,15 @@ class UserController extends Controller
 
     }
     
-    public function eliminar(){
-
+    public function eliminar($id){
+        $empleado=User::find($id);
+       $empleado->Activo=0;
+       $empleado->save();
+       return redirect()->route('reporte_empleados')->with('eliminar', 'ok');
     }
 
     public function vistaReporte(){
-        $user=User::all();
+        $user=User::all()->where("Activo",1);
         return view("reporte_empleados",["empleados"=>$user]);
     }
 }

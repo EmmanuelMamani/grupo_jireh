@@ -20,6 +20,7 @@
         <th>Nombre</th>
         <th>Teléfono</th>
         <th>Deuda</th>
+        <th>Eliminar</th>
       </tr>
     </thead>
     <tbody>
@@ -33,7 +34,7 @@
           @else
             <td>0</td>
           @endif
-
+          <td><form class="Eliminar" action="{{route("eliminar_cliente",["id"=>$cliente->id])}}" method="post"> @csrf <button>Eliminar</button></form></td>
         </tr>
       @endforeach
     </tbody>
@@ -59,6 +60,22 @@
                   "previous":"Anterior"
             }
         }
+      });
+      $('.Eliminar').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+            title: '¿Estás seguro que quieres eliminar el cliente?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No'
+            }).then((result) => {
+                  if (result.isConfirmed) {
+                  this.submit();
+            }
+            })
       });
 </script>
 @endsection

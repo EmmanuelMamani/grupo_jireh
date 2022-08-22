@@ -154,7 +154,26 @@ class VentaController extends Controller
         $venta=Venta::find($id);
         return view("devolucion",["venta"=>$venta]);
     }
-    public function Devolucion(devolucionRequest $request, $id){
-        
+    public function Devolucion(Request $request, $id){
+        $venta=Venta::find($id);
+        $salida=$venta->salida;
+        $request->validate([
+            "unidades"=>"required|integer|lte:". $salida->CantMoldes,
+            "monto"=>"required|numeric"
+        ]);
+        $cuenta=$venta->cliente->saldos->last();
+        $salida->Total=$salida->Total - $request->monto;
+        $salida->CantMoldes= $salida->CantMoldes - $request->unidades;
+        $saldo= new Saldo();
+        $saldo->Monto= $request->monto;
+        $saldo->Saldo= $cuenta->Saldo - $request->monto;
+        $saldo->Detalle="Devolucion";
+        $saldo->cliente_id=$venta->cliente_id;/*
+        $saldo->save();
+        $salida->save();
+        $lote=Asignacion::all()->where("ingreso_id",$venta->ingreso_id)->where("asignado_id",$venta->user_id)->last();
+        $lote->CantMoldes=$lote->CantMoldes + $request->unidades;
+        $lote->save();
+        return redirect()->route('reporte_ventas')->with('registrar','ok');*/
     }
 }

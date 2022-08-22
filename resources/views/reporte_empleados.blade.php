@@ -16,6 +16,7 @@
         <th>CI</th>
         <th>Teléfono</th>
         <th>Correo</th>
+        <th>Eliminar</th>
       </tr>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
           <td>{{$empleado->CI}}</td>
           <td>{{$empleado->Telefono}}</td>
           <td>{{$empleado->Email}}</td>
+          <td><form class="Eliminar" action="{{route("eliminar_empleado",["id"=>$empleado->id])}}" method="post">@csrf <button>Eliminar</button></form></td>
         </tr> 
       @endforeach
     </tbody>
@@ -51,6 +53,22 @@
                   "previous":"Anterior"
             }
         }
+      });
+      $('.Eliminar').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+            title: '¿Estás seguro que quieres eliminar el empleado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No'
+            }).then((result) => {
+                  if (result.isConfirmed) {
+                  this.submit();
+            }
+            })
       });
 </script>
 @endsection

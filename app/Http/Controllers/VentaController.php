@@ -130,7 +130,7 @@ class VentaController extends Controller
         $venta->user_id=Auth::user()->id;
         $venta->ingreso_id=$request->lote;
         $venta->salida_id=$salida->id;
-
+        $venta->Estado=1;
         $venta->save();
         
         $asignacion=Asignacion::where('asignado_id',Auth::user()->id)->where('ingreso_id',$request->lote)->get();
@@ -168,12 +168,12 @@ class VentaController extends Controller
         $saldo->Monto= $request->monto;
         $saldo->Saldo= $cuenta->Saldo - $request->monto;
         $saldo->Detalle="Devolucion";
-        $saldo->cliente_id=$venta->cliente_id;/*
+        $saldo->cliente_id=$venta->cliente_id;
         $saldo->save();
         $salida->save();
         $lote=Asignacion::all()->where("ingreso_id",$venta->ingreso_id)->where("asignado_id",$venta->user_id)->last();
         $lote->CantMoldes=$lote->CantMoldes + $request->unidades;
         $lote->save();
-        return redirect()->route('reporte_ventas')->with('registrar','ok');*/
+        return redirect()->route('reporte_ventas')->with('registrar','ok');
     }
 }

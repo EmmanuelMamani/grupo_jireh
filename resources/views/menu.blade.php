@@ -15,15 +15,11 @@
             <span class="funciones col-8">Clientes</span>
             <span class="material-symbols-outlined icono col">group</span>
         </a>
-        <a href="/registro_empleado" class="opcion row">
+        <a href="/reporte_empleados" class="opcion row">
             <span class="funciones col-8">Empleados</span>
             <span class="material-symbols-outlined icono col"> business_center</span>
         </a>
-      {{-- <div class="opcion row">
-            <span class="funciones col-8">Cuentas</span>
-            <span class="material-symbols-outlined icono col">monetization_on</span>
-        </div>--}}
-        <a href="/registro_lote" class="opcion row">
+        <a href="{{route("reporte_lotes")}}" class="opcion row">
             <span class="funciones col-8">Lotes</span>
             <span class="material-symbols-outlined icono col">local_shipping</span>
         </a>
@@ -51,6 +47,10 @@
     <a href="/registro_zona" class="opcion row">
         <span class="funciones col-8">Zonas</span>
         <span class="material-symbols-outlined icono col">map</span>
+    </a>
+    <a class="opcion row" href="{{route("registro_gasto")}}">
+        <span class="funciones col-8">Cuentas</span>
+        <span class="material-symbols-outlined icono col">monetization_on</span>
     </a>
 </div>
 

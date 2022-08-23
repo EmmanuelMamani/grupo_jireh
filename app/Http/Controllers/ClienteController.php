@@ -29,8 +29,11 @@ class ClienteController extends Controller
 
     }
     
-    public function eliminar(){
-
+    public function eliminar($id){
+        $cliente=Cliente::find($id);
+        $cliente->Activo=0;
+        $cliente->save();
+        return redirect()->route('reporte_cliente')->with('eliminar', 'ok');
     }
 
     public function vistaReporte(){

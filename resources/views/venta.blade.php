@@ -1,5 +1,13 @@
 @extends("header")
 @section("titulo","Grupo JIREH")
+@section("opciones")
+<a href="{{route("menu")}}" class="opciones_head">Inicio</a>
+<a href="{{route("venta")}}" class="opciones_head">Venta</a>
+@if (Auth::user()->Rol=='Administrador')
+<a href="{{route("reporte_ventas")}}" class="opciones_head">Reporte</a> 
+@endif
+<a href="{{route("ventas_pendientes")}}" class="opciones_head">Pendientes</a>
+@endsection
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection

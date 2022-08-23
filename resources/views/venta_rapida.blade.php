@@ -6,6 +6,7 @@
 @section("contenido")
 <form action="{{route('venta_rapida')}}" id="formulario" method="POST" >
     @csrf
+    <h3>Venta Rapida</h3>
 <label class="form-label">Producto:</label>
 <select name="producto" id="producto" class="form-select">
     <option >Elije un producto</option>

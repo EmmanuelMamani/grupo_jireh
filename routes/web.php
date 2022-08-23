@@ -63,6 +63,8 @@ Route::middleware(['auth'])->group(function() {
 
         Route::middleware(['rol'])->group(function(){
             //rutas para usuario administrador
+            Route::post("/eliminar_cliente/{id}",[ClienteController::class,"eliminar"])->name("eliminar_cliente");
+            Route::post("/eliminar_empleado/{id}",[UserController::class,"eliminar"])->name("eliminar_empleado");
             Route::get("/reporte_empleados",[UserController::class,"vistaReporte"])->name("reporte_empleados");
             Route::get("/reporte_venta",[VentaController::class,"vistaReporte"])->name("reporte_ventas");
             Route::get("/reporte_lote",[IngresoController::class,"vistaReporte"])->name("reporte_lotes");

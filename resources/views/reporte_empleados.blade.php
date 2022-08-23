@@ -1,5 +1,10 @@
 @extends("header")
 @section("titulo","Grupo JIREH")
+@section("opciones")
+<a href="{{route("menu")}}" class="opciones_head">Inicio</a>
+<a href="{{route("registro_empleado")}}" class="opciones_head">Registro</a>
+<a href="{{route("reporte_empleados")}}" class="opciones_head">Reporte</a>
+@endsection
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/reporte.css")}}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
@@ -16,6 +21,7 @@
         <th>CI</th>
         <th>Teléfono</th>
         <th>Correo</th>
+        <th>Eliminar</th>
       </tr>
     </thead>
     <tbody>
@@ -26,6 +32,7 @@
           <td>{{$empleado->CI}}</td>
           <td>{{$empleado->Telefono}}</td>
           <td>{{$empleado->Email}}</td>
+          <td><form class="Eliminar" action="{{route("eliminar_empleado",["id"=>$empleado->id])}}" method="post">@csrf <button>Eliminar</button></form></td>
         </tr> 
       @endforeach
     </tbody>
@@ -51,6 +58,22 @@
                   "previous":"Anterior"
             }
         }
+      });
+      $('.Eliminar').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+            title: '¿Estás seguro que quieres eliminar el empleado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No'
+            }).then((result) => {
+                  if (result.isConfirmed) {
+                  this.submit();
+            }
+            })
       });
 </script>
 @endsection

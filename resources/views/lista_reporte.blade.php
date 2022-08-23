@@ -24,8 +24,13 @@
           <td>{{$lista->cliente->Nombre}}</td>
           <td>{{$lista->producto->Nombre}}</td>
           <td>{{$lista->Unidades}}</td>
-          <td><a href="{{route("cancelar_lista",['id'=>$lista->id])}}">Cancelar</a></td>
-          <td><a>Completar</a></td>
+          <td>
+            <form class="Eliminar" action="{{route("cancelar_lista",['id'=>$lista->id])}}" method="POST">
+              @csrf
+              <button>Cancelar</button>
+            </form>
+          </td>
+          <td><a href="{{route("completar_lista",['id'=>$lista->id])}}">Completar</a></td>
         </tr>
       @endforeach
     </tbody>
@@ -51,6 +56,25 @@
                   "previous":"Anterior"
             }
         }
+      });
+
+</script>
+<script>
+  $('.Eliminar').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+            title: '¿Estás seguro que quieres este registro?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No'
+            }).then((result) => {
+                  if (result.isConfirmed) {
+                  this.submit();
+            }
+            })
       });
 </script>
 @endsection

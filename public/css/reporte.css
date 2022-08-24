@@ -8,6 +8,12 @@
     margin-bottom: 5px;
     color:#4D2507 ;
 }
+.btn-success{
+    background-color: #125149;
+}
+.btn-secondary{
+    background-color:#A1C0BF ;
+}
 @media (max-width: 290px){
     #tabla_wrapper, .page-link{
         font-size: 12px;

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\contraseñaRequest;
 use App\Http\Requests\usersRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -38,5 +40,14 @@ class UserController extends Controller
     public function vistaReporte(){
         $user=User::all()->where("Activo",1);
         return view("reporte_empleados",["empleados"=>$user]);
+    }
+    public function perfil(){
+        return view("perfil");
+    }
+    public function cambiar_contraseña(contraseñaRequest $request){
+        $usuario=User::all()->where("id",Auth::user()->id)->last();
+        $usuario->Contrasenia=$request->nueva;
+        $usuario->save();
+        return redirect()->route('perfil')->with('registrar', 'ok');
     }
 }

@@ -1,6 +1,7 @@
 @extends("header")
 @section("titulo", "Grupo JIREH")
 @section("opciones")
+<a href="{{route("menu")}}"  class="opciones_head">Inicio</a>
 <a href="/saldos" class="opciones_head">Saldos</a>
 @if (Auth::user()->Rol=='Administrador')
 <a href="/saldo_pasado" class="opciones_head">S. Pasados</a>

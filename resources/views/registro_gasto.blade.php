@@ -1,5 +1,15 @@
 @extends("header")
 @section("titulo", "Grupo JIREH")
+@section("opciones")
+<a href="{{route("menu")}}" class="opciones_head">Inicio</a>
+<a href="{{route("registro_gasto")}}" class="opciones_head">Registro</a>
+<a href="{{route("reporte_diario")}}" class="opciones_head">Reporte</a>
+@if (Auth::user()->Rol=='Administrador')
+<a href="{{route("reporte_cuenta")}}" class="opciones_head">R. Total</a>
+<a href="{{route("cuentas_periodo")}}" class="opciones_head">R. Periodo</a>
+<a href="{{route("reporte_historico")}}" class="opciones_head">R Historico</a>
+@endif
+@endsection
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection

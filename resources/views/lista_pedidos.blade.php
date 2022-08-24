@@ -1,5 +1,10 @@
 @extends("header")
 @section("titulo","Grupo JIREH")
+@section("opciones")
+<a href="{{route("menu")}}" class="opciones_head">Inicio</a>
+<a href="{{route("lista_reporte")}}" class="opciones_head">Lista</a>
+<a href="{{route("registro_lista")}}" class="opciones_head">Registro</a>
+@endsection
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection

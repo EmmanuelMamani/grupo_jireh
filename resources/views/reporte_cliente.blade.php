@@ -6,10 +6,10 @@
 <a href="/reporte_cliente" class="opciones_head">Reporte</a>
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/reporte.css")}}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+<link rel="stylesheet" href="{{asset("css/reporte.css")}}">
 @endsection
 @section("contenido")
 <h3>Reporte de clientes</h3>
@@ -34,7 +34,7 @@
           @else
             <td>0</td>
           @endif
-          <td><form class="Eliminar" action="{{route("eliminar_cliente",["id"=>$cliente->id])}}" method="post"> @csrf <button>Eliminar</button></form></td>
+          <td><form class="Eliminar" action="{{route("eliminar_cliente",["id"=>$cliente->id])}}" method="post" > @csrf <button class="btn btn-danger">Eliminar</button></form></td>
         </tr>
       @endforeach
     </tbody>

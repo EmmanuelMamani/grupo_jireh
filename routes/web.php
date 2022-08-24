@@ -55,7 +55,8 @@ Route::middleware(['auth'])->group(function() {
     Route::post("/saldos",[SaldoController::class,"Pago"])->name("saldos");
     Route::get("/ventas_pendientes",[PendienteController::class,"reporte"])->name("ventas_pendientes");
     Route::post("/ventas_pendientes/{id}/{tipo}",[PendienteController::class,"modificar"])->name("modificar");
-
+    Route::get("/perfil",[UserController::class,"perfil"])->name("perfil");
+    Route::post("/cambiar_contraseña",[UserController::class,"cambiar_contraseña"])->name("cambiar_contraseña");
 
         Route::middleware(['rol'])->group(function(){
             //rutas para usuario administrador

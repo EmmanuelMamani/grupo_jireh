@@ -22,12 +22,12 @@
       <nav class="navbar">
         <div class="container-fluid" id="navbar">
           <a class="navbar-brand" href="#" id="cont_nav">
-            <img src="{{asset('img/logo.png')}}" alt="" width="60" class="d-inline-block align-text-top">
+            <img src="{{asset('img/logo.png')}}" alt="" width="50" class="d-inline-block align-text-top">
            <span id="titulo">@yield("titulo")</span>
           </a>
           @yield("opciones")
         </div>
-      </nav> <div id="inf"></div>
+      </nav>
     </header>
     @yield("contenido")
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

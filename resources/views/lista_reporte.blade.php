@@ -29,18 +29,13 @@
           <td>{{$lista->cliente->Nombre}}</td>
           <td>{{$lista->producto->Nombre}}</td>
           <td>{{$lista->Unidades}}</td>
-<<<<<<< HEAD
-          <td><a href="{{route("cancelar_lista",['id'=>$lista->id])}}" class="btn btn-danger">Cancelar</a></td>
-          <td><a>Completar</a></td>
-=======
           <td>
             <form class="Eliminar" action="{{route("cancelar_lista",['id'=>$lista->id])}}" method="POST">
               @csrf
-              <button>Cancelar</button>
+              <button class="btn btn-danger">Cancelar</button>
             </form>
           </td>
-          <td><a href="{{route("completar_lista",['id'=>$lista->id])}}">Completar</a></td>
->>>>>>> d87cd779a0407441b92283d85b9b3cb586c44821
+          <td><a href="{{route("completar_lista",['id'=>$lista->id])}}" class="btn btn-success">Completar</a></td>
         </tr>
       @endforeach
     </tbody>

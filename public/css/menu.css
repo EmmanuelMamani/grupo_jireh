@@ -16,7 +16,6 @@
     width: 30%;
     margin-left: 35%;
     margin-right: 35%;
-    margin-top: 5%;
 }
 a{text-decoration: none;}
 @media (max-width: 850px){
@@ -25,6 +24,9 @@ a{text-decoration: none;}
         margin-left: 20%;
         margin-right: 20%;
         margin-top: 5%;
+    }
+    .funciones{
+        padding-left: 10%;
     }
 }
 @media (max-width: 300px){

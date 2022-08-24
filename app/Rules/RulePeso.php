@@ -38,7 +38,7 @@ class RulePeso implements Rule,DataAwareRule
             //echo(Producto::all()->where('id',$this->data['producto']));
             $tipo=Producto::all()->where('id',$this->data['producto'])->last()->Tipo; 
            
-            if($tipo=='Por kilo' && $value=="0.00"){
+            if($tipo=='Por Kilo' && $value=="0.00"){
                 $bool=false;
             }
         }

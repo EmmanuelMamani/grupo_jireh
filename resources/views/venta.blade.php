@@ -79,11 +79,13 @@
     <script>
         var producto_id=producto.options[producto.selectedIndex].value;
         var label=document.getElementById("cantidad_lotes");
+        var lote=document.getElementById("lote");
+        lote.innerHTML="<option>Elije un lote</option>";
         @foreach ($lotes as $lote)
-                var lote=document.getElementById("lote");
-                lote.innerHTML="<option>Elije un lote</option>";
+                
                 if(producto_id=={{$lote->ingreso->producto_id}}){
-                    lote.innerHTML+="<option value='{{$lote->ingreso->id}}' @if(old('lote') == $lote->ingreso->id) selected @endif>{{$lote->ingreso->Proveedor}} - {{$lote->ingreso->CantMoldes}} - {{$lote->ingreso->created_at->format('Y-m-d')}}</option>";
+                    lote.innerHTML=lote.innerHTML+"<option value='{{$lote->ingreso->id}}' @if(old('lote') == $lote->ingreso->id) selected @endif>{{$lote->ingreso->Proveedor}} - {{$lote->ingreso->CantMoldes}} - {{$lote->ingreso->created_at->format('Y-m-d')}}</option>";
+                    console.log(lote.innerHTML);
                     if("{{old('lote')}}"=={{$lote->ingreso->id}}){
                         label.innerHTML="Cantidad restante en el lote: {{$lote->CantMoldes}}";
                     }

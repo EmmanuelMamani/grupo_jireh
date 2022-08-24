@@ -21,7 +21,7 @@
     </select>
     <label class="form-label">Producto:</label>
     <select name="producto" id="producto" class="form-select">
-        <option value="{{$lista->producto->id}}">{{$lista->producto->Nombre}} {{$lista->producto->Tipo}}</option>
+        <option value="{{$lista->producto_id}}">{{$lista->producto->Nombre}} {{$lista->producto->Tipo}}</option>
     </select>
    
     <label class="form-label">Lote:</label>
@@ -42,10 +42,11 @@
     <script>
         var producto_id=producto.options[producto.selectedIndex].value;
         var label=document.getElementById("cantidad_lotes");
+        var lote=document.getElementById("lote");
+        lote.innerHTML="<option>Elije un lote</option>";
         @foreach ($lotes as $lote)
-                var lote=document.getElementById("lote");
-                lote.innerHTML="<option>Elije un lote</option>";
-                if({{$lote->ingreso->producto->Tipo}}=={{$lista->producto->Tipo}}){
+                
+                if("{{$lote->ingreso->producto->Tipo}}" == "{{$lista->producto->Tipo}}" && "{{$lote->ingreso->producto->Nombre}}"=="{{$lista->producto->Nombre}}"){
                     lote.innerHTML+="<option value='{{$lote->ingreso->id}}' @if(old('lote') == $lote->ingreso->id) selected @endif>{{$lote->ingreso->Proveedor}} - {{$lote->ingreso->CantMoldes}} - {{$lote->ingreso->created_at->format('Y-m-d')}}</option>";
                     if("{{old('lote')}}"=={{$lote->ingreso->id}}){
                         label.innerHTML="Cantidad restante en el lote: {{$lote->CantMoldes}}";
@@ -63,7 +64,9 @@
         lote_elegido.addEventListener('change',(event)=>{
             var label=document.getElementById("cantidad_lotes");
             var id_lote=lote_elegido.options[lote_elegido.selectedIndex].value;
+            console.log(lote_elegido.options[lote_elegido.selectedIndex].text);
             var texto=lote_elegido.options[lote_elegido.selectedIndex].text;
+           
             @foreach ($lotes as $lote)
                 if({{$lote->ingreso->id}}==id_lote){
                     label.innerHTML="Cantidad restante en el lote: {{$lote->CantMoldes}}";

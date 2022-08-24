@@ -38,7 +38,7 @@ class VentaController extends Controller
         $salida->Peso=$request->peso;
         $salida->Precio=$request->precio;
         $total=0;
-        $tipo=Producto::all()->where('id',$request->producto)["1"]->Tipo;
+        $tipo=Producto::all()->where('id',$request->producto)->last()->Tipo;
         if($tipo=="Por kilo"){
             $total=$request->peso*$request->precio;
         }else{

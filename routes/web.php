@@ -38,7 +38,8 @@ Route::middleware(['guest'])->group(function() {
 
 Route::middleware(['auth'])->group(function() {
     //rutas para usuarios identificados
-    Route::get("/cancelar_lista/{id}",[ListaController::class,"eliminar"])->name("cancelar_lista");
+    Route::get("/completar_lista/{id}",[ListaController::class,"completar"])->name("completar_lista");
+    Route::post("/cancelar_lista/{id}",[ListaController::class,"eliminar"])->name("cancelar_lista");
     Route::get("/reporte_diario",[CuentaController::class,"reporteDiario"])->name("reporte_diario");
     Route::get("/venta_devolucion/{id}",[VentaController::class,"VistaDevolucion"])->name("venta_devolucion");
     Route::post("/devolucion/{id}",[VentaController::class,"Devolucion"])->name("devolucion");
@@ -57,6 +58,9 @@ Route::middleware(['auth'])->group(function() {
     Route::post("/ventas_pendientes/{id}/{tipo}",[PendienteController::class,"modificar"])->name("modificar");
     Route::get("/perfil",[UserController::class,"perfil"])->name("perfil");
     Route::post("/cambiar_contraseña",[UserController::class,"cambiar_contraseña"])->name("cambiar_contraseña");
+    Route::get("/registro_lista",[ListaController::class,"vistaRegistro"])->name("registro_lista");
+    Route::post("/registro_lista",[ListaController::class,"Registro"])->name("registro_lista");
+    Route::get("/lista_reporte",[ListaController::class,"reporte"])->name("lista_reporte");
 
         Route::middleware(['rol'])->group(function(){
             //rutas para usuario administrador
@@ -84,9 +88,7 @@ Route::middleware(['auth'])->group(function() {
             Route::get("/cuentas_periodo",[CuentaController::class,"VistaPeriodo"])->name("cuentas_periodo");
             Route::get("/reporte_periodo",[CuentaController::class,"ReportePeriodo"])->name("reporte_periodo");
             Route::get("/reporte_historico",[CuentaController::class,"reporteHistorico"])->name("reporte_historico");
-            Route::get("/registro_lista",[ListaController::class,"vistaRegistro"])->name("registro_lista");
-            Route::post("/registro_lista",[ListaController::class,"Registro"])->name("registro_lista");
-            Route::get("/lista_reporte",[ListaController::class,"reporte"])->name("lista_reporte");
+           
         });
 
     Route::get('logout',[LoginController::class,'logout'])->name('logout');

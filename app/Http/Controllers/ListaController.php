@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\listaRequest;
+use App\Models\Asignacion;
 use App\Models\Cliente;
+use App\Models\Ingreso;
 use App\Models\Lista;
 use App\Models\Producto;
 use App\Models\Zona;
@@ -33,9 +35,15 @@ class ListaController extends Controller
         return view("lista_reporte",["listas"=>$listas]);
     }
 
-    public function eliminar($id){
+    public function eliminar(Request $request,$id){
         $lista=Lista::find($id);
         $lista->delete();
         return redirect()->route('lista_reporte')->with('eliminar','ok');
+    }
+
+    public function completar($id){
+        $lista=Lista::find($id);
+        $lotes=Asignacion::where('asignado_id',Auth::user()->id)->where('CantMoldes','>',0)->get();
+         return view("completar_venta",["lista"=>$lista,"lotes"=>$lotes]);
     }
 }

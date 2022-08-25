@@ -8,7 +8,7 @@
 @endif
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
+<link rel="stylesheet" href="{{secure_asset("css/formulario.css")}}">
 @endsection
 @section("contenido")
 <form id="formulario" action="{{route("saldos")}}" method="POST">

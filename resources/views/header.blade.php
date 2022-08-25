@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gruppo&family=Space+Grotesk:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     @yield('estilos')
     <title>Grupo Jireh</title>
   </head>
@@ -26,8 +27,10 @@
            <span id="titulo">@yield("titulo")</span>
           </a>
           @yield("opciones")
+          <span class="material-symbols-outlined" id="menu">menu</span>
+            
         </div>
-      </nav>
+      </nav><div id="inf"></div>
     </header>
     @yield("contenido")
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -53,6 +56,22 @@
   })
 </script>
 @endif
-
+  <script>
+    var menu=document.getElementById("menu");
+    var opt=document.getElementsByClassName("opciones_head")
+    menu.onclick=function(){
+      if(menu.innerHTML == "menu"){
+        for(var i=0;i<opt.length;i++){
+          opt[i].style.display="inline"
+        }
+        menu.innerHTML="close"
+      }else{
+        menu.innerHTML="menu"
+        for(var i=0;i<opt.length;i++){
+          opt[i].style.display="none"
+        }
+      }
+    }
+  </script>
   </body>
 </html>

@@ -19,7 +19,7 @@
     <span class="error text-danger" for="precio">{{ $errors->first('monto') }}</span>
  @endif  
     <div class="row" id="cont_btn">
-        <div class="col"><a href="/menu" id="cancelar">Cancelar</a></div>
+        <div class="col"><a href="{{route("reporte_ventas")}}" id="cancelar">Cancelar</a></div>
         <div class="col"><button id="enviar">Devolver</button></div>
     </div>
 </form>

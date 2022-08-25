@@ -1,15 +1,17 @@
 
 @extends("header")
 @section("opciones")
-<a href="{{route('logout')}}" class="opciones_head">salir</a>
+<a href="{{route('logout')}}" class="opciones_head">Salir</a>
+<a href="{{route("perfil")}}" class="opciones_head">{{Auth::user()->Nombre}}</a>
 @endsection
 @section("estilos")
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <link rel="stylesheet" href="{{asset("css/menu.css")}}">
 @endsection
-@section("titulo", "Menu")
+@section("titulo", "Grupo JIREH")
 @section("contenido")
 <div id="opciones" >
+    <h3>Menú</h3>
     @if (Auth::user()->Rol=='Administrador')
         <a href="/reporte_cliente" class="opcion row">
             <span class="funciones col-8">Clientes</span>
@@ -22,6 +24,14 @@
         <a href="{{route("reporte_lotes")}}" class="opcion row">
             <span class="funciones col-8">Lotes</span>
             <span class="material-symbols-outlined icono col">local_shipping</span>
+        </a>
+        <a href="/registro_producto" class="opcion row">
+            <span class="funciones col-8">Productos</span>
+            <span class="material-symbols-outlined icono col">local_pizza</span>
+        </a>
+        <a href="/registro_zona" class="opcion row">
+            <span class="funciones col-8">Zonas</span>
+            <span class="material-symbols-outlined icono col">map</span>
         </a>
     @endif
     <a class="opcion row" href="/venta">
@@ -40,17 +50,13 @@
         <span class="funciones col-8">Transferir lote</span>
         <span class="material-symbols-outlined icono col"> swap_horiz</span>
     </a>
-    <a href="/registro_producto" class="opcion row">
-        <span class="funciones col-8">Productos</span>
-        <span class="material-symbols-outlined icono col">local_pizza</span>
-    </a>
-    <a href="/registro_zona" class="opcion row">
-        <span class="funciones col-8">Zonas</span>
-        <span class="material-symbols-outlined icono col">map</span>
-    </a>
     <a class="opcion row" href="{{route("registro_gasto")}}">
         <span class="funciones col-8">Cuentas</span>
         <span class="material-symbols-outlined icono col">monetization_on</span>
+    </a>
+    <a class="opcion row" href="{{route("lista_reporte")}}">
+        <span class="funciones col-8">Lista</span>
+        <span class="material-symbols-outlined icono col">  receipt_long</span>
     </a>
 </div>
 

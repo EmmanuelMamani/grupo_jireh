@@ -11,7 +11,7 @@ body{
     font-family: 'Space Grotesk', sans-serif;
 }
 #cont_nav{
-    margin: auto;
+    
     padding-top: 1%;
     padding-bottom: 1%;
 }
@@ -61,6 +61,8 @@ h3{
     color: white;
     text-decoration: none;
     margin-left: 5%;
+    background-color: #125149;
+    display: none;
 }
 .opciones_head:active{
     color: white;
@@ -68,15 +70,27 @@ h3{
 .opciones_head:hover{
     color: white;
 }
+#menu{
+    color: white;
+    cursor: pointer;
+}
 @media (max-width: 920px){
     #login{
         margin-left: 20%;
         margin-right: 20%;
+    }
+    #opt{
+        margin-left: 70%;
+        width: 30%;
     }
 }
 @media (max-width: 600px){
     #login{
         margin-left: 5%;
         margin-right: 5%;
+    }
+    #opt{
+        margin-left: 70%;
+        width: 30%;
     }
 }

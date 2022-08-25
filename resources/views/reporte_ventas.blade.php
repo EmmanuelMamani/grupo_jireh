@@ -3,9 +3,7 @@
 @section("opciones")
 <a href="{{route("menu")}}" class="opciones_head">Inicio</a>
 <a href="{{route("venta")}}" class="opciones_head">Venta</a>
-@if (Auth::user()->Rol=='Administrador')
 <a href="{{route("reporte_ventas")}}" class="opciones_head">Reporte</a> 
-@endif
 <a href="{{route("ventas_pendientes")}}" class="opciones_head">Pendientes</a>
 @endsection
 @section("estilos")
@@ -36,8 +34,8 @@
           <td>{{$venta->user->Nombre}}</td>
           <td>{{$venta->salida->Total}}</td>
           <td>{{$venta->created_at->format('Y-m-d')}}</td>
-          <td><a href="{{route('venta_detalle',['id'=>$venta->id])}}">Ver detalle</a></td>
-          <td><a href="{{route("venta_devolucion",['id'=>$venta->id])}}">Devolver</a></td>
+          <td><a href="{{route('venta_detalle',['id'=>$venta->id])}}" class="btn btn-secondary">Ver detalle</a></td>
+          <td><a href="{{route("venta_devolucion",['id'=>$venta->id])}}" class="btn btn-secondary">Devolver</a></td>
         </tr>
       @endforeach
       

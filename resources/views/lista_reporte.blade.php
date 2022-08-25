@@ -1,9 +1,14 @@
 @extends("header")
+@section("opciones")
+<a href="{{route("menu")}}" class="opciones_head">Inicio</a>
+<a href="{{route("lista_reporte")}}" class="opciones_head">Lista</a>
+<a href="{{route("registro_lista")}}" class="opciones_head">Registro</a>
+@endsection
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/reporte.css")}}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+<link rel="stylesheet" href="{{asset("css/reporte.css")}}">
 @endsection
 @section("titulo","Grupo JIREH")
 @section("contenido")
@@ -27,10 +32,10 @@
           <td>
             <form class="Eliminar" action="{{route("cancelar_lista",['id'=>$lista->id])}}" method="POST">
               @csrf
-              <button>Cancelar</button>
+              <button class="btn btn-danger">Cancelar</button>
             </form>
           </td>
-          <td><a href="{{route("completar_lista",['id'=>$lista->id])}}">Completar</a></td>
+          <td><a href="{{route("completar_lista",['id'=>$lista->id])}}" class="btn btn-success">Completar</a></td>
         </tr>
       @endforeach
     </tbody>

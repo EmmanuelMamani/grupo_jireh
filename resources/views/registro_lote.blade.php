@@ -6,7 +6,7 @@
 <a href="{{route("reporte_lotes")}}" class="opciones_head">Reporte</a>
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{secure_asset("css/formulario.css")}}">
+<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @section("contenido")
 <form id="formulario" method="POST" action="{{route('registro_lote')}}">

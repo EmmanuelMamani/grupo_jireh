@@ -6,7 +6,7 @@
 <a href="{{route("registro_lista")}}" class="opciones_head">Registro</a>
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{secure_asset("css/formulario.css")}}">
+<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @section("contenido")
 <form action="{{route("registro_lista")}}" method="post" id="formulario">

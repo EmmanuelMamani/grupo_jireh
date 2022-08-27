@@ -1,7 +1,7 @@
 @extends("header")
 @section("titulo","Grupo JIREH")
 @section("estilos")
-<link rel="stylesheet" href="{{secure_asset("css/formulario.css")}}">
+<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @section("contenido")
 <form id="formulario" method="POST" action="{{route("transferir_lote")}}">

@@ -17,8 +17,8 @@ use App\Models\Zona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Nette\Utils\Image;
-use DateTime;
-use DateTimeZone;
+use PDF;
+
 
 class VentaController extends Controller
 {
@@ -143,7 +143,12 @@ class VentaController extends Controller
     
     public function vistaReporte(){
         $ventas=Venta::all();
+        $vista = view('reporte_ventas_pdf')
+        ->with('ventas', $ventas);
+       $pdf = PDF::setOptions(['dpi' => 96])->loadHTML($vista);
+      
         return view("reporte_ventas",["ventas"=>$ventas]);
+     //return  $pdf->download('archivo.pdf');
     }
     public function detalle($id){
         $venta=Venta::find($id);

@@ -30,7 +30,11 @@
       @foreach ($ventas as $key=>$venta)
         <tr class="fila">
           <td>{{$key+1}}</td>
+          @if ($venta->cliente==null)
+          <td>Sin nombre</td>
+          @else
           <td>{{$venta->cliente->Nombre}}</td>
+          @endif
           <td>{{$venta->user->Nombre}}</td>
           <td>{{$venta->salida->Total}}</td>
           <td>{{$venta->created_at->format('Y-m-d')}}</td>

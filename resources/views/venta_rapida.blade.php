@@ -2,6 +2,9 @@
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
+@section("opciones")
+<a href="{{route("menu")}}" class="opciones_head">Inicio</a>
+@endsection
 @section("titulo","Grupo JIREH")
 @section("contenido")
 <form action="{{route('venta_rapida')}}" id="formulario" method="POST" >

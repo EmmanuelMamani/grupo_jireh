@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @section("opciones")
-<a href="{{route('reporte_ventas')}}" class="opciones_head"><-</a>
+<a href="{{route('reporte_ventas')}}" class="opciones_head material-symbols-outlined" id="flecha">arrow_back</a>
 @endsection
 @section("contenido")
 <div id="formulario">
@@ -23,4 +23,8 @@
     @endforeach
 
 </div>
+<script>
+   // var flecha= document.getElementById("flecha");
+   // flecha.style.display="none"
+</script>
 @endsection

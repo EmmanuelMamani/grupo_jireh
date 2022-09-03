@@ -98,16 +98,16 @@
         var producto=document.getElementById("producto");
         producto.addEventListener('change',(event)=>{
             var producto_text=producto.options[producto.selectedIndex].text;
-            if(producto_text=="Elije un producto"){
+           
                 var label=document.getElementById("cantidad_lotes");
                 label.innerHTML="";
-            }
+            
             //-------------------------------------------
             producto_text=producto_text.split(" ");
             var unidad=producto_text[producto_text.length-1];
             var label=document.getElementById("cantidad_lotes");
             var peso=document.getElementById("peso");
-            if(unidad=="unidad"){
+            if(unidad=="Unidad"){
                 peso.disabled=true;
             }else{
                 peso.disabled=false;

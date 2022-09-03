@@ -37,7 +37,7 @@ class ClienteController extends Controller
     }
 
     public function vistaReporte(){
-        $clientes= Cliente::all();
+        $clientes= Cliente::all()->where("Activo",1);
         return view("reporte_cliente",['clientes'=>$clientes]);
     }
 }

@@ -38,7 +38,7 @@ class loteRule extends FormRequest
             'proveedor.regex' => 'Solo se aceptan caracteres alfabéticos y espacios.',
             'moldes.required'=> 'La cantidad de moldes es obligatoria',
             'moldes.integer' => 'La cantidad de moldes solo pueden ser numeros enteros',
-            'peso.requided' => 'El peso es requerido',
+            'peso.required' => 'El peso es requerido',
             'peso.numeric' => 'El peso tiene que ser numeros',
             'costo.required' => 'El costo es obligatorio',
             'costo.numeric' => 'El costo debe ser un número'

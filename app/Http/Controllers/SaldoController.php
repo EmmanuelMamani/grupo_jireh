@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\pagoRequest;
 use App\Http\Requests\saldoRequest;
 use App\Models\Cliente;
+use App\Models\Cuenta;
 use App\Models\Saldo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SaldoController extends Controller
 {
@@ -43,6 +45,14 @@ class SaldoController extends Controller
         $saldo->Saldo=$pasado - $request->monto;
         $saldo->Detalle="Pago de deuda";
         $saldo->save();
+        $cuenta=new Cuenta();
+        $usuario= Auth::user();
+        $cuenta->Monto=$request->monto;
+        $cuenta->user_id=$usuario->id;
+        $fecha=date('Y-m-d');
+        $cuenta->Fecha=$fecha;
+        $cuenta->Detalle="Pago de de saldo de " . $saldo->cliente->Nombre;
+        $cuenta->save();
         return redirect()->route('saldos')->with('registrar', 'ok');
     }
 }

@@ -29,8 +29,11 @@ class PendienteController extends Controller
            $saldo->cliente_id=$venta->cliente_id;
            $saldo->Monto=$venta->salida->Total;
            $saldo->Detalle="Venta cancelada";
-           $antiguo=Saldo::all()->where("cliente_id",$venta->cliente_id)->last();
-           $saldo->Saldo=$antiguo->Saldo - $saldo->Monto;
+           $antiguo=0;
+           if(Saldo::all()->where("cliente_id",$venta->cliente_id)->isNotEmpty()){
+            $antiguo=Saldo::all()->where("cliente_id",$venta->cliente_id)->last()->Saldo;
+           }
+           $saldo->Saldo=$antiguo - $saldo->Monto;
            $saldo->save();
            $venta->salida->delete();
            $venta->delete();

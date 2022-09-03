@@ -19,12 +19,18 @@ class CuentaController extends Controller
     public function registro(cuentaRequest $request){
         $cuenta=new Cuenta();
         $usuario= Auth::user();
-        $cuenta->Monto=$request->monto*-1;
+        $constante=-1;
+        if($request->cuenta==1){
+            $constante=1;
+        }
+        $cuenta->Monto=$request->monto * $constante;
         $cuenta->Detalle=$request->detalle;
         $cuenta->user_id=$usuario->id;
+        $fecha=date('Y-m-d');
+        $cuenta->Fecha=$fecha;
         $cuenta->save();
         return redirect()->route('registro_gasto')->with('registrar', 'ok');
-
+        
     }
 
     public function vistaReporte(){

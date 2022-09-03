@@ -20,6 +20,8 @@ class CreateIngresosTable extends Migration
             $table->double('Peso',8,3);
             $table->double('Precio',8,2);
             $table->string('Proveedor');
+            $table->boolean('Activo')->default(true);
+            $table->boolean('Pagado')->default(false);
             $table->timestamps();
         });
     }

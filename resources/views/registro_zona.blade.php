@@ -3,6 +3,9 @@
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
+@section("opciones")
+<a href="{{route("menu")}}" class="opciones_head">Inicio</a>
+@endsection
 @section("contenido")
 <form id="formulario" action="{{route('registro_zona')}}" method="post">
     <h3>Registro de zona</h3>

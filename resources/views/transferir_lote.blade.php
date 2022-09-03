@@ -3,6 +3,9 @@
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
+@section("opciones")
+<a href="{{route("menu")}}" class="opciones_head">Inicio</a>
+@endsection
 @section("contenido")
 <form id="formulario" method="POST" action="{{route("transferir_lote")}}">
     @csrf

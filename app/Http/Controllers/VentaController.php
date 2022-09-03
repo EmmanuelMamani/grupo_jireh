@@ -195,11 +195,12 @@ class VentaController extends Controller
     }
     
     public function vistaReporte(){
-        $ventas=Venta::all()->orderBy("DESC");
+        $ventas=Venta::orderByDesc("id")->get();
+       
         $vista = view('reporte_ventas_pdf')
         ->with('ventas', $ventas);
        $pdf = PDF::setOptions(['dpi' => 96])->loadHTML($vista);
-      
+     
         return view("reporte_ventas",["ventas"=>$ventas]);
      //return  $pdf->download('archivo.pdf');
     }

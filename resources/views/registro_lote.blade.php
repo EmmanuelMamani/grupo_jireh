@@ -13,7 +13,7 @@
     @csrf
     <h3>Nuevo lote</h3>
     <label class="form-label">Nombre del proveedor</label>
-    <input type="text" name="proveedor" class="form-control">
+    <input type="text" name="proveedor" class="form-control"  value="{{old('proveedor')}}">
     @if ($errors->has('proveedor'))
     <span class="error text-danger">{{ $errors->first('proveedor') }}</span>
     @endif <br>
@@ -24,17 +24,17 @@
         @endforeach
     </select>
     <label class="form-label">Cantidad de moldes</label>
-    <input type="text" name="moldes" class="form-control">
+    <input type="text" name="moldes" class="form-control"  value="{{old('moldes')}}">
     @if ($errors->has('moldes'))
     <span class="error text-danger">{{ $errors->first('moldes') }}</span>
     @endif <br>
     <label class="form-label">Peso total:</label>
-    <input type="text" name="peso" class="form-control">
+    <input type="text" name="peso" class="form-control"  value="{{old('peso')}}">
     @if ($errors->has('peso'))
     <span class="error text-danger">{{ $errors->first('peso') }}</span>
     @endif <br>
     <label class="form-label">Costo por kilo o unidad:</label>
-    <input type="text" name="costo" class="form-control">
+    <input type="text" name="costo" class="form-control"  value="{{old('costo')}}">
     @if ($errors->has('costo'))
     <span class="error text-danger">{{ $errors->first('costo') }}</span>
     @endif <br>

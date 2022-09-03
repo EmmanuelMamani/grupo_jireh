@@ -19,6 +19,17 @@
 .btn-secondary{
     background-color:#A1C0BF ;
 }
+#descarga{
+    background-color: #f8c796;
+    text-decoration: none;
+    color:#4D2507 ;
+    border-radius: 50%;
+    border: solid #4D2507 1px;
+    padding: 2px;
+    margin-left: 90%;
+    margin-top: 2%;
+    cursor: pointer;
+}
 @media (max-width: 290px){
     #tabla_wrapper, .page-link{
         font-size: 12px;

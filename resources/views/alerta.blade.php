@@ -1,7 +1,7 @@
 @extends("header")
 @section("titulo","ALERTA")
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/alerta.css")}}">
+<link rel="stylesheet" href="{{secure_asset("css/alerta.css")}}">
 @endsection
 @section("contenido")
 <div id="contenedor">

@@ -9,7 +9,12 @@
 <div id="formulario">
     <h3>Detalle</h3>
     <span>Fecha : {{$venta->created_at->format('Y-m-d')}}</span><br>
+    @if ($venta->cliente==null)
+    <span>Cliente : Sin nombre</span><br>
+    @else
     <span>Cliente : {{$venta->cliente->Nombre}}</span><br>
+    @endif
+    
     <span>Vendedor : {{$venta->user->Nombre}}</span><br>
     <span>Producto : {{$venta->ingreso->producto->Nombre}} {{$venta->ingreso->producto->Tipo}}</span><br>
     <span>Cantidad : {{$venta->salida->CantMoldes}}</span><br>

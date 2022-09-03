@@ -8,7 +8,9 @@ use App\Http\Requests\ventaRequest;
 use App\Models\Asignacion;
 use App\Models\Cliente;
 use App\Models\Comprobante;
+use App\Models\Cuenta;
 use App\Models\Ingreso;
+use App\Models\Merma;
 use App\Models\Producto;
 use App\Models\Saldo;
 use App\Models\Salida;
@@ -39,7 +41,7 @@ class VentaController extends Controller
         $salida->Precio=$request->precio;
         $total=0;
         $tipo=Producto::all()->where('id',$request->producto)->last()->Tipo;
-        if($tipo=="Por kilo"){
+        if($tipo=="Por Kilo"){
             $total=$request->peso*$request->precio;
         }else{
             $total=$request->peso*$request->cantidad_moldes;
@@ -63,8 +65,8 @@ class VentaController extends Controller
         $fi=$request->file('comprobante');
         
         foreach ($fi as $fil) {
-            $tipo=$fil->getClientOriginalExtension();
-            if($tipo == "jpeg" || $tipo == "jpg" || $tipo == "png" || $tipo == "gif" || $tipo == "svg"){
+            $tipo_ext=$fil->getClientOriginalExtension();
+            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
                 $archivo=$fil->getClientOriginalName();
                 $file=Image::fromFile($fil)->resize(300, null);
     
@@ -95,8 +97,23 @@ class VentaController extends Controller
         $saldo->cliente_id= $request->cliente;
 
         $saldo->save();
-
-       return redirect()->route('venta')->with('registrar','ok');
+        
+        $lote=Ingreso::firstWhere('id',$request->lote);
+       
+        if($tipo=="Por Kilo"){
+            $cantidad_saliente=$lote->salidas->sum('CantMoldes');
+        
+           
+            if(($cantidad_saliente-$lote->CantMoldes)==0){
+                
+                $merma=new Merma();
+                $merma->ingreso_id=$request->lote;
+                $merma->CantMerma=$lote->Peso-$lote->salidas->sum("Peso");
+                $merma->save();
+            }
+        }
+        
+      return redirect()->route('menu')->with('registrar','ok');
     }
     public function vistaRegistroRapido(){
         $productos=Producto::all();
@@ -111,7 +128,7 @@ class VentaController extends Controller
         $salida->Peso=$request->peso;
         $salida->Precio=$request->precio;
         $total=0;
-        $tipo=Producto::all()->where('id',$request->producto)["1"]->Tipo;
+        $tipo=Producto::all()->where('id',$request->producto)->last()->Tipo;
         if($tipo=="Por Kilo"){
             $total=$request->peso*$request->precio;
         }else{
@@ -132,13 +149,49 @@ class VentaController extends Controller
         $venta->salida_id=$salida->id;
         $venta->Estado=1;
         $venta->save();
+
+        $fi=$request->file('comprobante');
+        
+        foreach ($fi as $fil) {
+            $tipo_ext=$fil->getClientOriginalExtension();
+            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
+                $archivo=$fil->getClientOriginalName();
+                $file=Image::fromFile($fil)->resize(300, null);
+    
+                $prueba=new Comprobante();
+                $prueba->venta_id= $venta->id;
+                $prueba->Comprobante=$file;
+                $prueba->save();
+            }
+            
+        }
         
         $asignacion=Asignacion::where('asignado_id',Auth::user()->id)->where('ingreso_id',$request->lote)->get();
         
         $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
         $asignacion[0]->save();
 
-        return redirect()->route('venta_rapida')->with('registrar','ok');
+        $cuenta=new Cuenta();
+        $cuenta->user_id= Auth::user()->id;
+        $cuenta->Monto=$salida->Total;
+        $cuenta->Detalle="Venta rápida";
+        $cuenta->Fecha=date("Y-m-d");
+        $cuenta->save();
+
+        $lote=Ingreso::firstWhere('id',$request->lote);
+        if($tipo=="Por Kilo"){
+            $cantidad_saliente=$lote->salidas->sum('CantMoldes');
+        
+           
+            if(($cantidad_saliente-$lote->CantMoldes)==0){
+                
+                $merma=new Merma();
+                $merma->ingreso_id=$request->lote;
+                $merma->CantMerma=$lote->Peso-$lote->salidas->sum("Peso");
+                $merma->save();
+            }
+        }
+        return redirect()->route('menu')->with('registrar','ok');
     }
     
     public function vistaReporte(){

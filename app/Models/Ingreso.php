@@ -20,4 +20,7 @@ class Ingreso extends Model
     public function salidas(){
         return $this->belongsToMany(Salida::class,Venta::class);
     }
+    public function merma(){
+        return $this->hasOne(Merma::class);
+    }
 }

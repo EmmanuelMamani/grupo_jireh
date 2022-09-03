@@ -4,7 +4,7 @@
 @endsection
 @section("titulo","Grupo JIREH")
 @section("contenido")
-<form action="{{route('venta_rapida')}}" id="formulario" method="POST" >
+<form action="{{route('venta_rapida')}}" id="formulario" method="POST" enctype="multipart/form-data">
     @csrf
     <h3>Venta Rapida</h3>
 <label class="form-label">Producto:</label>

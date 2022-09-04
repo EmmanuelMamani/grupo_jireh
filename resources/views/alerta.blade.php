@@ -6,6 +6,6 @@
 @section("contenido")
 <div id="contenedor">
     <h1>USTED NO TIENE ACCESO AQUÍ</h1><br>
-    <img src="{{asset("img/warning.svg")}}" alt="error" width="250" id="warning">
+    <img src="{{secure_asset("img/warning.svg")}}" alt="error" width="250" id="warning">
 </div>
 @endsection

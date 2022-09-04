@@ -12,7 +12,7 @@ class AsignacionController extends Controller
     //
     public function vistaRegistro(){
         $user=Auth::user();
-        $usuarios=User::all()->where("id","!=",$user->id);
+        $usuarios=User::all()->where("id","!=",$user->id)->where("Activo",1);
         $asignaciones=Asignacion::all()->where("asignado_id","=",$user->id)->where("CantMoldes",">",0);
         return view("transferir_lote",["usuarios"=>$usuarios, "asignaciones" => $asignaciones, "user"=>$user]);
     }

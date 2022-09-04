@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
 @endsection
 @section("contenido")
-<h3>Reporte de cuentas</h3>
+<h3>Reporte de cuentas {{$titulo}}</h3>
 <table id="tabla" class="table ">
     <thead>
       <tr>

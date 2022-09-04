@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="{{secure_asset("css/reporte.css")}}">
 @endsection
 @section("contenido")
-<h3>Reporte de cuentas</h3>
+<h3>Reporte de cuentas {{$titulo}}</h3>
 <table id="tabla" class="table ">
     <thead>
       <tr>

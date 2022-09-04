@@ -28,7 +28,7 @@ class VentaController extends Controller
 
     public function vistaRegistro(){
         $zonas=Zona::all();
-        $clientes=Cliente::all();
+        $clientes=Cliente::all()->where("Activo",1);
         $productos=Producto::all();
         $asignaciones=Asignacion::where('asignado_id',Auth::user()->id)->where('CantMoldes','>',0)->get();
         return view("venta",['zonas'=>$zonas,'clientes'=>$clientes,'productos'=>$productos,'lotes'=>$asignaciones]);

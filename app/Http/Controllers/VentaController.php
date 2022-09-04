@@ -24,6 +24,8 @@ use PDF;
 
 class VentaController extends Controller
 {
+   
+
     public function vistaRegistro(){
         $zonas=Zona::all();
         $clientes=Cliente::all();
@@ -196,11 +198,7 @@ class VentaController extends Controller
     
     public function vistaReporte(){
         $ventas=Venta::orderByDesc("id")->get();
-       
-        $vista = view('reporte_ventas_pdf')
-        ->with('ventas', $ventas);
-       $pdf = PDF::setOptions(['dpi' => 96])->loadHTML($vista);
-     
+        
         return view("reporte_ventas",["ventas"=>$ventas]);
      //return  $pdf->download('archivo.pdf');
     }
@@ -234,5 +232,10 @@ class VentaController extends Controller
         $lote->CantMoldes=$lote->CantMoldes + $request->unidades;
         $lote->save();
         return redirect()->route('reporte_ventas')->with('registrar','ok');
+    }
+    public function descarga(){
+        $ventas=Venta::orderByDesc("id")->get();
+        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_ventas_pdf",compact('ventas'));
+        return  $pdf->download('reporteVentas.pdf');
     }
 }

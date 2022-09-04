@@ -9,6 +9,8 @@ use App\Http\Requests\loteRule;
 use App\Models\Asignacion;
 use App\Models\Venta;
 use Illuminate\Support\Facades\Auth;
+use PDF;
+
 class IngresoController extends Controller
 {
     public function vistaRegistro(){
@@ -37,5 +39,11 @@ class IngresoController extends Controller
     public function vistaReporte(){
         $lotes=Ingreso::orderBy('id','desc')->get();
        return view("reporte_lote",['lotes'=>$lotes]);
+    }
+
+    public function descarga(){
+        $lotes=Ingreso::orderBy('id','desc')->get();
+        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_lote_pdf",compact('lotes'));
+        return  $pdf->download('reporteLotes.pdf');
     }
 }

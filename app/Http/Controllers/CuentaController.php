@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 class CuentaController extends Controller
 {
     //
@@ -72,7 +73,7 @@ class CuentaController extends Controller
            }
         }
         $usuarios=User::all();
-        return view("reporte_periodo",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"monto"=>$monto]);
+        return view("reporte_periodo",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"monto"=>$monto,'inicio'=>$inicio,'fin'=>$fin]);
     }
     public function reporteHistorico(){
         $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
@@ -82,5 +83,29 @@ class CuentaController extends Controller
         }
         $usuarios=User::all();
         return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios]);
+    }
+    public function descarga(){
+        $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
+        $cuentas=[];
+        foreach($consultas as $c){
+                array_push($cuentas,$c);
+        }
+        $usuarios=User::all();
+        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_cuentas_pdf",['cuentas'=>$cuentas,'usuarios'=>$usuarios]);
+        return  $pdf->download('reporteCuentas.pdf'); 
+    }
+    public function descarga_periodo($inicio,$fin){
+        $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
+        $cuentas=[];
+        $monto=0;
+        foreach($consultas as $c){
+            if($c->Fecha>=$inicio && $c->Fecha<=$fin){
+                array_push($cuentas,$c);
+                $monto+=$c->monto;
+           }
+        }
+        $usuarios=User::all();
+        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_periodo_pdf",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"monto"=>$monto,'inicio'=>$inicio,'fin'=>$fin]);
+        return  $pdf->download('reportePeriodo.pdf'); 
     }
 }

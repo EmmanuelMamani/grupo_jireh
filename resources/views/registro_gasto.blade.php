@@ -20,12 +20,12 @@
     <label>gasto/ingreso</label><br>
     <input type="checkbox" name="cuenta" id="cuenta" value=-1><br>
     <label class="form-label" id="titulo_monto">Monto gastado:</label>
-    <input type="text" class="form-control" name="monto">
+    <input type="text" class="form-control" name="monto"  value="{{old('monto')}}">
     @if ($errors->has('monto'))
     <span class="error text-danger">{{ $errors->first('monto') }}</span>
     @endif <br>
     <label class="form-label" id="titulo_detalle">Detalle del gasto:</label>
-    <input type="text" class="form-control" name="detalle">
+    <input type="text" class="form-control" name="detalle"  value="{{old('detalle')}}">
     @if ($errors->has('detalle'))
     <span class="error text-danger">{{ $errors->first('detalle') }}</span>
     @endif <br>

@@ -6,10 +6,10 @@
 <a href="{{route("reporte_lotes")}}" class="opciones_head">Reporte</a>
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{secure_asset("css/reporte.css")}}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+<link rel="stylesheet" href="{{asset("css/reporte.css")}}">
 @endsection
 @section("contenido")
 <h3>Reporte de lotes</h3>
@@ -26,6 +26,8 @@
         <th>Unidades vendidas</th>
         <th>Ganancia de ventas</th>
         <th>Merma</th>
+        <th>Pagar</th>
+        <th>Eliminar</th>
       </tr>
     </thead>
     <tbody>
@@ -50,7 +52,14 @@
           @else
           <td>{{$lote->merma->CantMerma}} Kg</td>
           @endif
-          
+          @if ($lote->Pagado == 0)
+          <td> <form action="{{route("pagar_lote",["id"=>$lote->id])}}" method="post"> @csrf <button class="btn btn-success">Pagar</button></form></td>
+          @else
+           <td>Pagado</td> 
+          @endif
+          <td>
+            <form method="POST" action="{{route("eliminar_lote",['id'=>$lote->id])}}">@csrf <button class="btn btn-danger"> Eliminar</button></form>
+          </td>
         </tr>
       @endforeach
     </tbody>

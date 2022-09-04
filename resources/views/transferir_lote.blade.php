@@ -46,6 +46,10 @@
                 alerta.innerHTML="No cuentas con esa cantidad de moldes"
                 e.preventDefault();
             }
+            if(parseInt(moldes.value)<1){
+                alerta.innerHTML="Los moldes deben ser mayor a 0"
+                e.preventDefault();
+            }
         }else{
             alerta.innerHTML="Debe ser un número"
             e.preventDefault();

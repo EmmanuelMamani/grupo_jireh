@@ -31,9 +31,9 @@ class ventaRapidaRequest extends FormRequest
             'producto'=>[new RuleProducto],
             'lote'=>[new RuleLote],
             'centavos'=>'boolean',
-            'cantidad_moldes'=>['required','numeric','integer',new RuleCantMoldes],
+            'cantidad_moldes'=>['required','numeric','integer',new RuleCantMoldes,'gt:0'],
             'peso'=>['bail',new RulePeso,'numeric','regex:/^[\d]{0,11}(\.[\d]{1,3})?$/'],
-            'precio'=>'required|numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/', 
+            'precio'=>'required|numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/|gt:0', 
             'comprobante'=>'required', 
         ];
     }
@@ -41,7 +41,7 @@ class ventaRapidaRequest extends FormRequest
     public function messages()
     {
         return[
-            
+            'cantidad_moldes.gt'=>'Los moldes deben ser mayores a 0',
             'cantidad_moldes.required'=> 'El campo es obligatorio',
             'precio.required'=>'El campo es obligatorio',
             'cantidad_moldes.numeric'=>'Solo se admiten números',
@@ -51,6 +51,7 @@ class ventaRapidaRequest extends FormRequest
             'precio.required'=>'El campo es obligatorio',
             'precio.numeric'=>'Solo se admiten números',
             'precio.regex'=>'Máximo 2 decimales',
+            'precio.gt'=>'El precio debe ser mayor a 0',
             'comprobante.required'=>'El campo es obligatorio'
         ];
     }

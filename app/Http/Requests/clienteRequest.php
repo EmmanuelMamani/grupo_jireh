@@ -25,7 +25,7 @@ class clienteRequest extends FormRequest
     {
         return [
             'nombre' => 'bail|required|regex:/^[a-zA-Z\s áéíóúÁÉÍÓÚñÑ ()]+$/u',
-            'telefono' => 'bail|required|integer',
+            'telefono' => 'bail|required|integer|digits_between:6,10',
             'direccion' => 'bail|required'
         ];
     }

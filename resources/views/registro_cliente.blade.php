@@ -13,17 +13,17 @@
     @csrf
     <h3>Registro de cliente</h3>
     <label class="form-label">Nombre completo:</label>
-    <input type="text" name="nombre"  class="form-control">
+    <input type="text" name="nombre"  class="form-control"  value="{{old('nombre')}}">
     @if ($errors->has('nombre'))
     <span class="error text-danger">{{ $errors->first('nombre') }}</span>
     @endif <br>
     <label class="form-label">Telefono:</label>
-    <input type="text" name="telefono"  class="form-control">
+    <input type="text" name="telefono"  class="form-control"  value="{{old('telefono')}}">
     @if ($errors->has('telefono'))
     <span class="error text-danger">{{ $errors->first('telefono') }}</span>
     @endif <br>
     <label class="form-label">Direccion:</label>
-    <input type="text" name="direccion"  class="form-control">
+    <input type="text" name="direccion"  class="form-control"  value="{{old('direccion')}}">
     @if ($errors->has('direccion'))
     <span class="error text-danger">{{ $errors->first('direccion') }}</span>
     @endif <br>

@@ -35,7 +35,20 @@ class IngresoController extends Controller
     }
 
     public function vistaReporte(){
-        $lotes=Ingreso::orderBy('id','desc')->get();
+        $lotes=Ingreso::orderBy('id','desc')->where("Activo",1)->get();
        return view("reporte_lote",['lotes'=>$lotes]);
+    }
+    public function Eliminar($id){
+        $lote=Ingreso::find($id);
+        $lote->Activo=0;
+        $lote->save();
+        return redirect()->route('reporte_lotes')->with('eliminar', 'ok');
+    }
+    
+    public function Pagar($id){
+        $lote=Ingreso::find($id);
+        $lote->Pagado=1;
+        $lote->save();
+        return redirect()->route('reporte_lotes')->with('registrar', 'ok');
     }
 }

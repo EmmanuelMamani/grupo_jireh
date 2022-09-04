@@ -25,14 +25,15 @@ class pagoRequest extends FormRequest
     public function rules()
     {
         return [
-            "monto"=>["bail","required","numeric",new pagoRule]
+            "monto"=>["bail","required","numeric",new pagoRule,"gt:0"]
         ];
     }
     public function messages()
     {
         return[
             "monto.required"=> "El monto es requerido",
-            "monto.numeric"=> "El monto debe ser un numero"
+            "monto.numeric"=> "El monto debe ser un numero",
+            "monto.gt"=>"El monto debe ser mayor a 0"
         ];
     }
 }

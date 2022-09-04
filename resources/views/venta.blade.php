@@ -185,7 +185,6 @@
         <div class="col"><a id="cancelar" href="/menu">Cancelar</a></div>
         <div class="col"><button id="enviar" type='submit'>Vender</button></div>
     </div>
-    <input type="text" value="0" id="costo" name="costo" class ="oculto">
 </form>
 <script>
     //------------------Imagenes--------------------------

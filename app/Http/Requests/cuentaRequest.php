@@ -24,7 +24,7 @@ class cuentaRequest extends FormRequest
     public function rules()
     {
         return [
-            'monto'=>'bail|required|numeric',
+            'monto'=>'bail|required|numeric|gt:0',
             'detalle' => 'required'
         ];
     }
@@ -33,6 +33,7 @@ class cuentaRequest extends FormRequest
         return[
             'monto.required'=> 'El monto es obligatorio',
             'monto.numeric' => 'El monto debe ser un numero',
+            'monto.gt'=>'El monto debe ser mayor a 0',
             'detalle' => 'El detalle es obligatorio'
         ];}
 }

@@ -24,7 +24,7 @@ class saldoRequest extends FormRequest
     public function rules()
     {
         return [
-            'monto'=> 'bail|required|numeric',
+            'monto'=> 'bail|required|numeric|gt:0',
             'motivo' => 'required'
         ];
     }
@@ -33,6 +33,7 @@ class saldoRequest extends FormRequest
         return[
             'monto.required'=> 'El monto es obligatorio',
             'monto.numeric' => 'El monto debe ser numerico',
+            'monto.gt' => 'El monto debe ser mayor a 0',
             'motivo.required' => 'El motivo es obligatorio'
         ];
     }

@@ -21,12 +21,12 @@
         @endforeach
     </select>
     <Label class="form-label">Monto:</Label>
-    <input type="text" class="form-control" name="monto">
+    <input type="text" class="form-control" name="monto"  value="{{old('monto')}}">
     @if ($errors->has('monto'))
     <span class="error text-danger">{{ $errors->first('monto') }}</span>
     @endif <br>
     <label class="form-label">Motivo de deuda:</label>
-    <input type="text" class="form-control" name="motivo">
+    <input type="text" class="form-control" name="motivo"  value="{{old('motivo')}}">
     @if ($errors->has('motivo'))
     <span class="error text-danger">{{ $errors->first('motivo') }}</span>
     @endif <br>

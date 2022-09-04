@@ -88,7 +88,8 @@ Route::middleware(['auth'])->group(function() {
             Route::get("/cuentas_periodo",[CuentaController::class,"VistaPeriodo"])->name("cuentas_periodo");
             Route::get("/reporte_periodo",[CuentaController::class,"ReportePeriodo"])->name("reporte_periodo");
             Route::get("/reporte_historico",[CuentaController::class,"reporteHistorico"])->name("reporte_historico");
-           
+            Route::post("/eliminar_lote/{id}",[IngresoController::class,"Eliminar"])->name("eliminar_lote");
+            Route::post("/pagar_lote/{id}",[IngresoController::class,"Pagar"])->name("pagar_lote");
         });
 
     Route::get('logout',[LoginController::class,'logout'])->name('logout');

@@ -11,7 +11,7 @@
     @csrf
     <h3>Registro de producto</h3>
     <label class="form-label">Nombre de producto:</label>
-    <input type="text" name="nombre" class="form-control">
+    <input type="text" name="nombre" class="form-control"  value="{{old('nombre')}}">
     @if ($errors->has('nombre'))
     <span class="error text-danger">{{ $errors->first('nombre') }}</span>
     @endif <br>

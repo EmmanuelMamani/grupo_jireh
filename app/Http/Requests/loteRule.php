@@ -26,9 +26,9 @@ class loteRule extends FormRequest
         return [
             //
             'proveedor' => 'bail|required|regex:/^[a-zA-Z\s áéíóúÁÉÍÓÚñÑ ()]+$/u',
-            'moldes' => 'bail|required|integer',
-            'peso' => 'bail|required|numeric',
-            'costo'=> 'bail|required|numeric'
+            'moldes' => 'bail|required|integer|gt:0',
+            'peso' => 'bail|required|numeric|gte:0',
+            'costo'=> 'bail|required|numeric|gt:0'
         ];
     }
     public function messages()
@@ -38,10 +38,13 @@ class loteRule extends FormRequest
             'proveedor.regex' => 'Solo se aceptan caracteres alfabéticos y espacios.',
             'moldes.required'=> 'La cantidad de moldes es obligatoria',
             'moldes.integer' => 'La cantidad de moldes solo pueden ser numeros enteros',
+            'moldes.gt'=>'Los moldes deben ser mayor a 0',
             'peso.required' => 'El peso es requerido',
             'peso.numeric' => 'El peso tiene que ser numeros',
+            'peso.gte'=>'El peso debe ser mayor o igual a 0',
             'costo.required' => 'El costo es obligatorio',
-            'costo.numeric' => 'El costo debe ser un número'
+            'costo.numeric' => 'El costo debe ser un número',
+            'costo.gt' => 'El costo debe ser mayor a 0'
         ];
     }
 }

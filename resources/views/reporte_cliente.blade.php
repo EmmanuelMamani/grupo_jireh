@@ -3,7 +3,9 @@
 @section("opciones")
 <a href="/menu" class="opciones_head">Inicio</a>
 <a href="/registro_cliente" class="opciones_head">Registro</a>
+@if (Auth::user()->Rol=='Administrador')
 <a href="/reporte_cliente" class="opciones_head">Reporte</a>
+@endif
 @endsection
 @section("estilos")
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">

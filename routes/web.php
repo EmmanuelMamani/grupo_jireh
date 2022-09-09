@@ -61,7 +61,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get("/registro_lista",[ListaController::class,"vistaRegistro"])->name("registro_lista");
     Route::post("/registro_lista",[ListaController::class,"Registro"])->name("registro_lista");
     Route::get("/lista_reporte",[ListaController::class,"reporte"])->name("lista_reporte");
-
+    Route::get("/registro_cliente",[ClienteController::class,"vistaRegistro"])->name("registro_cliente");
+    Route::post("registro_cliente",[ClienteController::class,"registro"])->name("registro_cliente");
         Route::middleware(['rol'])->group(function(){
             //rutas para usuario administrador
             Route::post("/eliminar_cliente/{id}",[ClienteController::class,"eliminar"])->name("eliminar_cliente");
@@ -79,8 +80,6 @@ Route::middleware(['auth'])->group(function() {
             Route::post("registro_producto",[ProductoController::class,"registro"])->name("registro_producto");
             Route::get("/registro_lote",[IngresoController::class,"vistaRegistro"])->name("registro_lote");
             Route::post("registro_lote",[IngresoController::class,"registro"])->name("registro_lote");
-            Route::get("/registro_cliente",[ClienteController::class,"vistaRegistro"])->name("registro_cliente");
-            Route::post("registro_cliente",[ClienteController::class,"registro"])->name("registro_cliente");
             Route::get("reporte_cuenta",[CuentaController::class,"vistaReporte"])->name("reporte_cuenta");
             Route::get("/registro_empleado",[UserController::class,"vistaRegistro"])->name("registro_empleado");
             Route::post("/registro_empleado",[UserController::class,"registro"])->name("registro_empleado");

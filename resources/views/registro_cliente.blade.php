@@ -3,7 +3,9 @@
 @section("opciones")
 <a href="/menu" class="opciones_head">Inicio</a>
 <a href="/registro_cliente" class="opciones_head">Registro</a>
+@if (Auth::user()->Rol=='Administrador')
 <a href="/reporte_cliente" class="opciones_head">Reporte</a>
+@endif
 @endsection
 @section("estilos")
 <link rel="stylesheet" href="{{secure_asset("css/formulario.css")}}">

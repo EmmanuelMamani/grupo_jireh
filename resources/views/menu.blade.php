@@ -12,11 +12,11 @@
 @section("contenido")
 <div id="opciones" >
     <h3>Menú</h3>
+    <a href="{{route("registro_cliente")}}" class="opcion row">
+        <span class="funciones col-8">Clientes</span>
+        <span class="material-symbols-outlined icono col">group</span>
+    </a>
     @if (Auth::user()->Rol=='Administrador')
-        <a href="/reporte_cliente" class="opcion row">
-            <span class="funciones col-8">Clientes</span>
-            <span class="material-symbols-outlined icono col">group</span>
-        </a>
         <a href="/reporte_empleados" class="opcion row">
             <span class="funciones col-8">Empleados</span>
             <span class="material-symbols-outlined icono col"> business_center</span>

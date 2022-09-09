@@ -18,6 +18,7 @@ class CreateProductosTable extends Migration
             $table->string('Nombre');
             $table->string('Tipo');
             $table->timestamps();
+            $table->boolean('Activo')->default(true);
         });
     }
 

@@ -23,11 +23,15 @@ class ProductoController extends Controller
 
     }
     
-    public function eliminar(){
-
+    public function eliminar($id){
+        $producto=Producto::find($id);
+        $producto->Activo=0;
+        $producto->save();
+        return redirect()->route("reporte_producto")->with('eliminar','ok');
     }
 
     public function vistaReporte(){
-        
+        $productos= Producto::all()->where("Activo",1);
+        return view("reporte_producto",["productos"=>$productos]);
     }
 }

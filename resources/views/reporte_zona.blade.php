@@ -22,11 +22,11 @@
       </tr>
     </thead>
     <tbody>
-      @foreach ($productos as  $key=>$producto)
+      @foreach ($zonas as  $key=>$zona)
         <tr class="fila">
             <td>{{$key+1}}</td>
-            <td>{{$producto->Nombre}}</td>
-            <td><form class="Eliminar" action="{{route("eliminar_zona",["id"=>$producto->id])}}" method="post">@csrf <button class="btn btn-danger">Eliminar</button></form></td>
+            <td>{{$zona->Nombre}}</td>
+            <td><form class="Eliminar" action="{{route("eliminar_zona",["id"=>$zona->id])}}" method="post">@csrf <button class="btn btn-danger">Eliminar</button></form></td>
         </tr>
       @endforeach
     </tbody>

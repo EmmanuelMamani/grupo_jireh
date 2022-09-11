@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\uniqueProducto;
 use Illuminate\Foundation\Http\FormRequest;
 
 class productoRule extends FormRequest
@@ -24,7 +25,7 @@ class productoRule extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'bail|required|regex:/^[a-zA-Z\s áéíóúÁÉÍÓÚñÑ ()]+$/u'
+            'nombre' => ['bail','required','regex:/^[a-zA-Z\s áéíóúÁÉÍÓÚñÑ ()]+$/u', new uniqueProducto()]
         ];
     }
     public function messages()

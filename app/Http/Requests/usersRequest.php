@@ -41,7 +41,7 @@ class usersRequest extends FormRequest
             'nombre.min'=>'El campo nombre debe ser mayor igual a 3 caracteres',
             'nombre.max'=>'El campo nombre debe ser menor igual a 100 caracteres',
 
-            'ci.required'=>'El campo CI es obligatorio', 
+            'ci.required'=>'El campo CI es obligatorio',
             'ci.numeric'=>'El campo CI solo admite números',
             'ci.digits_between'=>'El CI debe tener entre 6 y 10 dígitos',
             'ci.unique'=> 'Ya existe un usuario registrado con ese CI.',

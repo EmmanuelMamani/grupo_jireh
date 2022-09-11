@@ -15,12 +15,22 @@ class ClienteController extends Controller
     }
     
     public function registro(clienteRequest $request){
-        $cliente= new Cliente();
-        $cliente->Nombre= $request->nombre;
-        $cliente->Direccion= $request->direccion;
-        $cliente->zona_id=$request->zona;
-        $cliente->Telefono= $request->telefono;
-        $cliente->save();
+        $existe=Cliente::where('Telefono',$request->telefono)->get();
+        if($existe->isEmpty()){
+            $cliente= new Cliente();
+            $cliente->Nombre= $request->nombre;
+            $cliente->Direccion= $request->direccion;
+            $cliente->zona_id=$request->zona;
+            $cliente->Telefono= $request->telefono;
+            $cliente->save();
+        }else{
+            $cliente=Cliente::firstwhere('Telefono',$request->telefono);
+            $cliente->Activo=true;
+            $cliente->Direccion=$request->direccion;
+            $cliente->zona_id=$request->zona;
+            $cliente->save();
+        }
+       
         return redirect()->route('registro_cliente')->with('registrar', 'ok');
 
     }

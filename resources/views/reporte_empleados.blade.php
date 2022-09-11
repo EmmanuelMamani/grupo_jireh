@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
-<link rel="stylesheet" href="{{secure_asset("css/reporte.css")}}">
+<link rel="stylesheet" href="{{asset("css/reporte.css")}}">
 @endsection
 @section("contenido")
 <h3>Reporte de empleados</h3>

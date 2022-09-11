@@ -20,14 +20,18 @@ class ZonaController extends Controller
     }
 
     public function vistaEliminar(){
-
+       
     }
     
-    public function eliminar(){
-
+    public function eliminar($id){
+        $zona=Zona::find($id);
+        $zona->Activo=0;
+        $zona->save();
+        return redirect()->route("reporte_zona")->with('eliminar','ok');
     }
 
     public function vistaReporte(){
-        
+        $zonas=Zona::all()->where('Activo',1);
+        return view('reporte_zona',['zonas'=>$zonas]);
     } 
 }

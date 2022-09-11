@@ -1,8 +1,9 @@
 @extends("header")
+@section("titulo", "Grupo JIREH")
 @section("opciones")
-<a href="{{route("menu")}}" class="opciones_head">Inicio</a>
-<a href="{{route("lista_reporte")}}" class="opciones_head">Lista</a>
-<a href="{{route("registro_lista")}}" class="opciones_head">Registro</a>
+<a href="/menu" class="opciones_head">Inicio</a>
+<a href="{{route("registro_producto")}}" class="opciones_head">Registro</a>
+<a href="{{route("reporte_producto")}}" class="opciones_head">Reporte</a>
 @endsection
 @section("estilos")
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
@@ -10,32 +11,22 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
 <link rel="stylesheet" href="{{asset("css/reporte.css")}}">
 @endsection
-@section("titulo","Grupo JIREH")
 @section("contenido")
-<h3>Lista</h3>
+<h3>Reporte de zonas</h3>
 <table id="tabla" class="table ">
     <thead>
       <tr>
-        <th>Nombre</th>
-        <th>Producto</th>
-        <th>Unidades</th>
-        <th>Cancelar</th>
-        <th>Completar</th>
+        <th>#</th>
+        <th>Nombre</th>        
+        <th>Eliminar</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($listas as $lista )
+      @foreach ($productos as  $key=>$producto)
         <tr class="fila">
-          <td>{{$lista->cliente->Nombre}}</td>
-          <td>{{$lista->producto->Nombre}}</td>
-          <td>{{$lista->Unidades}}</td>
-          <td>
-            <form class="Eliminar" action="{{route("cancelar_lista",['id'=>$lista->id])}}" method="POST">
-              @csrf
-              <button class="btn btn-danger">Cancelar</button>
-            </form>
-          </td>
-          <td><a href="{{route("completar_lista",['id'=>$lista->id])}}" class="btn btn-success">Completar</a></td>
+            <td>{{$key+1}}</td>
+            <td>{{$producto->Nombre}}</td>
+            <td><form class="Eliminar" action="{{route("eliminar_zona",["id"=>$producto->id])}}" method="post">@csrf <button class="btn btn-danger">Eliminar</button></form></td>
         </tr>
       @endforeach
     </tbody>
@@ -62,13 +53,10 @@
             }
         }
       });
-
-</script>
-<script>
-  $('.Eliminar').submit(function(e){
+      $('.Eliminar').submit(function(e){
             e.preventDefault();
             Swal.fire({
-            title: '¿Estás seguro que quieres este registro?',
+            title: '¿Estás seguro que quieres eliminar el cliente?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

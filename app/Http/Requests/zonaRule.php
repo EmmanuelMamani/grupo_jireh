@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\uniqueNombre;
 use Illuminate\Foundation\Http\FormRequest;
 
 class zonaRule extends FormRequest
@@ -24,7 +25,7 @@ class zonaRule extends FormRequest
     public function rules()
     {
         return [
-            'Nombre' => 'bail|required|unique:zonas|regex:/^[a-zA-Z\s áéíóúÁÉÍÓÚñÑ ()]+$/u'
+            'Nombre' => ['bail','required','unique:zonas','regex:/^[a-zA-Z\s áéíóúÁÉÍÓÚñÑ ()]+$/u',new uniqueNombre()]
         ];
     }
     public function messages()

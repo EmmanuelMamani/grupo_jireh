@@ -95,6 +95,8 @@ Route::middleware(['auth'])->group(function() {
            Route::get("/decarga_lotes",[IngresoController::class,"descarga"])->name("descarga_lotes");
            Route::get("/reporte_producto",[ProductoController::class,"vistaReporte"])->name("reporte_producto");
            Route::post("/eliminar_producto/{id}",[ProductoController::class,"eliminar"])->name("eliminar_producto");
+           Route::get("/reporte_zona",[ZonaController::class,"vistaReporte"])->name("reporte_zona");
+           Route::post("/eliminar_zona/{id}",[ZonaController::class,"eliminar"])->name("eliminar_zona");
         });
 
     Route::get('logout',[LoginController::class,'logout'])->name('logout');

@@ -16,6 +16,7 @@ class CreateZonasTable extends Migration
         Schema::create('zonas', function (Blueprint $table) {
             $table->id();
             $table->string('Nombre');
+            $table->boolean('Activo')->default(true);
             $table->timestamps();
         });
     }

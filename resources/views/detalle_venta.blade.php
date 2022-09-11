@@ -1,6 +1,6 @@
 @extends("header")
 @section("estilos")
-<link rel="stylesheet" href="{{secure_asset("css/formulario.css")}}">
+<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @section("opciones")
 <a href="{{route('reporte_ventas')}}" class="opciones_head material-symbols-outlined" id="flecha">arrow_back</a>

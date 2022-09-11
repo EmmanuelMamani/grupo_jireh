@@ -1,7 +1,7 @@
 @extends("header")
 @section("titulo","Grupo JIREH")
-@section("estilos")
-<link rel="stylesheet" href="{{secure_asset("css/formulario.css")}}">
+@section("estilos") 
+<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @section("opciones")
 <a href="{{route("menu")}}" class="opciones_head">Inicio</a>

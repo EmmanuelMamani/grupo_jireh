@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\uniqueTelefonoCli;
 use Illuminate\Foundation\Http\FormRequest;
 
 class clienteRequest extends FormRequest
@@ -25,7 +26,7 @@ class clienteRequest extends FormRequest
     {
         return [
             'nombre' => 'bail|required|regex:/^[a-zA-Z\s áéíóúÁÉÍÓÚñÑ ()]+$/u',
-            'telefono' => 'bail|required|integer|digits_between:6,10',
+            'telefono' => ['bail','required','integer','digits_between:6,10',new uniqueTelefonoCli()],
             'direccion' => 'bail|required'
         ];
     }

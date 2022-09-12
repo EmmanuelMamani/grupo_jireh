@@ -158,7 +158,7 @@ class VentaController extends Controller
             $tipo_ext=$fil->getClientOriginalExtension();
             if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
                 $archivo=$fil->getClientOriginalName();
-                $file=Image::fromFile($fil)->resize(100, null);
+                $file=Image::fromFile($fil)->resize(300, null);
     
                 $prueba=new Comprobante();
                 $prueba->venta_id= $venta->id;

@@ -5,6 +5,8 @@
 @endsection
 @section("opciones")
 <a href="{{route("menu")}}" class="opciones_head">Inicio</a>
+<a href="{{route("registro_zona")}}" class="opciones_head">Registro</a>
+<a href="{{route("reporte_zona")}}" class="opciones_head">Reporte</a>
 @endsection
 @section("contenido")
 <form id="formulario" action="{{route('registro_zona')}}" method="post">

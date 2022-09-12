@@ -1,8 +1,5 @@
 @extends("header")
 @section("titulo","Grupo JIREH")
-@section("estilos")
-<link rel="stylesheet" href="{{asset("css/reporte.css")}}">
-@endsection
 @section("opciones")
 <a href="{{route("menu")}}" class="opciones_head">Inicio</a>
 <a href="{{route("registro_gasto")}}" class="opciones_head">Registro</a>

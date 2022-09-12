@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Zona;
 use App\Http\Requests\zonaRule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ZonaController extends Controller
 {
@@ -13,9 +14,17 @@ class ZonaController extends Controller
     
     public function registro(zonaRule $request){
 
-        $zona=new Zona();
-        $zona->Nombre=$request->Nombre;
-        $zona->save();
+        $nombre=str_replace(" ","",$request->Nombre);
+        $resultado=DB::table('zonas')->whereRaw("REPLACE(Nombre,' ','') LIKE '".$nombre."'")->where('Activo',0)->get();
+        if($resultado->isEmpty()){
+            $zona=new Zona();
+            $zona->Nombre=$request->Nombre;
+            $zona->save();
+        }else{
+            $zona=DB::table('zonas')->whereRaw("REPLACE(Nombre,' ','') LIKE '".$nombre."'")->update(['Nombre'=>$request->Nombre,'Activo'=>1]);
+           
+        }
+        
         return redirect()->route('registro_zona')->with('registrar', 'ok');
     }
 

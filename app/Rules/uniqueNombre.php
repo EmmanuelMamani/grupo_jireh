@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Models\Zona;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class uniqueNombre implements Rule
 {
@@ -25,19 +26,11 @@ class uniqueNombre implements Rule
      * @return bool
      */
     public function passes($attribute, $value)
-    {
-        $bool=true;
-        $zonas=Zona::all()->where('Activo',1);
+    {   
         $nombre=str_replace(" ","",$value);
-        $nombre=strtoupper($nombre);
-        foreach($zonas as $zona){
-            $znombre=str_replace(" ","",$zona->Nombre);
-            $znombre=strtoupper($znombre);
-            if($znombre===$nombre){
-                $bool=false;
-            }
-        }
-        return $bool;
+        $resultado=DB::table('zonas')->whereRaw("REPLACE(Nombre,' ','') LIKE '".$nombre."'")->where('Activo',1)->get();
+      
+        return $resultado->isEmpty();
     }
 
     /**
@@ -47,6 +40,6 @@ class uniqueNombre implements Rule
      */
     public function message()
     {
-        return 'ya existe una zona con ese nombre';
+        return 'Ya existe una zona registrada con ese nombre.';
     }
 }

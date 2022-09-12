@@ -5,6 +5,7 @@ namespace App\Rules;
 use App\Models\Producto;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class uniqueProducto implements Rule,DataAwareRule
 {
@@ -31,16 +32,10 @@ class uniqueProducto implements Rule,DataAwareRule
      */
     public function passes($attribute, $value)
     {
-        $alerta=true;
-        $productos=Producto::all()->where("Activo",1);
-        $nombre=$this->data['nombre'];
-        $tipo=$this->data['tipo'];
-        foreach ($productos as $producto){
-            if($producto->Nombre == $nombre && $producto->Tipo==$tipo){
-                $alerta=false;
-            }
-        }
-        return $alerta;
+        $nombre=str_replace(" ","",$value);
+        $resultado=DB::table('productos')->whereRaw("REPLACE(Nombre,' ','') LIKE '".$nombre."'")->where('Tipo',$this->data['tipo'])->where('Activo',1)->get();
+      
+        return $resultado->isEmpty();
     }
 
     /**

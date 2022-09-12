@@ -25,7 +25,7 @@ class zonaRule extends FormRequest
     public function rules()
     {
         return [
-            'Nombre' => ['bail','required','unique:zonas','regex:/^[a-zA-Z\s áéíóúÁÉÍÓÚñÑ ()]+$/u',new uniqueNombre()]
+            'Nombre' => ['bail','required','regex:/^[a-zA-Z\s áéíóúÁÉÍÓÚñÑ ()]+$/u',new uniqueNombre()]
         ];
     }
     public function messages()
@@ -33,7 +33,6 @@ class zonaRule extends FormRequest
         return[
             'Nombre.required'=>'El campo es obligatorio',
             'Nombre.regex' => 'Solo se aceptan caracteres alfabéticos y espacios.',
-            'Nombre.unique'=> 'Ya existe una zona registrada con ese nombre.',
         ];
     }
 }

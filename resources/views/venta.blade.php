@@ -45,11 +45,15 @@
             var zona=document.getElementById("zona");
             zona.addEventListener('change',(event)=>{
                 var zona_id=zona.options[zona.selectedIndex].value;
+                var zona_text=zona.options[zona.selectedIndex].text;
                 var cliente=document.getElementById("cliente");
                 cliente.innerHTML="<option>Elije un cliente</option>";
                 @foreach ($clientes as $cliente)
                     if(zona_id=={{$cliente->zona_id}}){
                         cliente.innerHTML+="<option value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>";
+                    }
+                    if(zona_text=="Elige la zona"){
+                        cliente.innerHTML+="<option value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>"; 
                     }
                 @endforeach
             });

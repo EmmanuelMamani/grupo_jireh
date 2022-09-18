@@ -52,7 +52,7 @@
                     if(zona_id=={{$cliente->zona_id}}){
                         cliente.innerHTML+="<option value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>";
                     }
-                    if(zona_text=="Elige la zona"){
+                    if(zona_text=="Elije la zona"){
                         cliente.innerHTML+="<option value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>"; 
                     }
                 @endforeach

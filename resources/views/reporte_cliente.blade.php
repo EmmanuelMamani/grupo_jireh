@@ -36,7 +36,7 @@
           @else
             <td>0</td>
           @endif
-          <td><form class="Eliminar" action="{{route("eliminar_cliente",["id"=>$cliente->id])}}" method="post" > @csrf <button class="btn btn-danger">Eliminar</button></form></td>
+          <td><form class="Eliminar1" action="{{route("eliminar_cliente",["id"=>$cliente->id])}}" method="post" > @csrf <button class="btn btn-danger">Eliminar</button></form></td>
         </tr>
       @endforeach
     </tbody>
@@ -63,7 +63,7 @@
             }
         }
       });
-      $('.Eliminar').submit(function(e){
+      $('.Eliminar1').submit(function(e){
             e.preventDefault();
             Swal.fire({
             title: '¿Estás seguro que quieres eliminar el cliente?',

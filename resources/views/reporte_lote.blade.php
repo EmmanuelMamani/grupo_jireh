@@ -58,7 +58,7 @@
            <td>Pagado</td> 
           @endif
           <td>
-            <form method="POST" class="Eliminar" action="{{route("eliminar_lote",['id'=>$lote->id])}}">@csrf <button class="btn btn-danger"> Eliminar</button></form>
+            <form class="Eliminar" method="POST"  action="{{route("eliminar_lote",['id'=>$lote->id])}}">@csrf <button class="btn btn-danger"> Eliminar</button></form>
           </td>
         </tr>
       @endforeach

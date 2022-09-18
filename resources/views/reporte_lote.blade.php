@@ -58,7 +58,7 @@
            <td>Pagado</td> 
           @endif
           <td>
-            <form method="POST" action="{{route("eliminar_lote",['id'=>$lote->id])}}">@csrf <button class="btn btn-danger"> Eliminar</button></form>
+            <form method="POST" class="Eliminar" action="{{route("eliminar_lote",['id'=>$lote->id])}}">@csrf <button class="btn btn-danger"> Eliminar</button></form>
           </td>
         </tr>
       @endforeach
@@ -86,6 +86,22 @@
                   "previous":"Anterior"
             }
         }
+      });
+      $('.Eliminar').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+            title: '¿Estás seguro que quieres eliminar el lote?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No'
+            }).then((result) => {
+                  if (result.isConfirmed) {
+                  this.submit();
+            }
+            })
       });
 </script>
 @endsection

@@ -19,10 +19,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
          $schedule->call(function () {
             
-            $comprobantes=DB::table('comprobantes')->take(20);
-            foreach($comprobantes as $comprobante){
-                $comprobante->delete();
-            }
+            DB::table('comprobantes')->limit(20)->delete();
+            
         })->daily();
     }
 

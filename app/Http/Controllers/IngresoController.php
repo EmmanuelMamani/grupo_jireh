@@ -61,4 +61,8 @@ class IngresoController extends Controller
         return  $pdf->download('reporteLotes.pdf');
 
     }
+    public function vistaEditar(Request $request, $id){
+        $lote=Ingreso::find($id);
+        return view("editar_lote",["lote"=>$lote]);
+    }
 }

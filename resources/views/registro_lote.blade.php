@@ -20,7 +20,7 @@
     <label class="form-label">Producto:</label>
     <select name="producto" id="producto" class="form-select">
         @foreach ($productos as $producto )
-            <option value="{{$producto->id}}">{{$producto->Nombre}} {{$producto->Tipo}}</option>
+            <option value="{{$producto->id}}" @if (old('producto')== $producto->id)  selected @endif>{{$producto->Nombre}} {{$producto->Tipo}}</option>
         @endforeach
     </select>
     <label class="form-label">Cantidad de moldes</label>
@@ -29,7 +29,11 @@
     <span class="error text-danger">{{ $errors->first('moldes') }}</span>
     @endif <br>
     <label class="form-label">Peso total:</label>
-    <input type="text" name="peso" class="form-control"  value="{{old('peso')}}">
+    <input type="text" name="peso" class="form-control"  @if (old('peso')!=null)
+    value="{{old('peso')}}"  
+    @else
+    value="0.00"
+    @endif >
     @if ($errors->has('peso'))
     <span class="error text-danger">{{ $errors->first('peso') }}</span>
     @endif <br>

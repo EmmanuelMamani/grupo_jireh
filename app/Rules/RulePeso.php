@@ -53,6 +53,6 @@ class RulePeso implements Rule,DataAwareRule
      */
     public function message()
     {
-        return 'El campo es obligatorio';
+        return 'El valor no puede ser menor a 0';
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\RulePeso;
 use Illuminate\Foundation\Http\FormRequest;
 
 class loteRule extends FormRequest
@@ -27,7 +28,7 @@ class loteRule extends FormRequest
             //
             'proveedor' => 'bail|required|regex:/^[a-zA-Z\s áéíóúÁÉÍÓÚñÑ ()]+$/u',
             'moldes' => 'bail|required|integer|gt:0',
-            'peso' => 'bail|required|numeric|gte:0',
+            'peso' => ['bail','required','numeric',new RulePeso],
             'costo'=> 'bail|required|numeric|gt:0'
         ];
     }

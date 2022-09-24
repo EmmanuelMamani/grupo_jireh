@@ -45,11 +45,15 @@
             var zona=document.getElementById("zona");
             zona.addEventListener('change',(event)=>{
                 var zona_id=zona.options[zona.selectedIndex].value;
+                var zona_text=zona.options[zona.selectedIndex].text;
                 var cliente=document.getElementById("cliente");
                 cliente.innerHTML="<option>Elije un cliente</option>";
                 @foreach ($clientes as $cliente)
                     if(zona_id=={{$cliente->zona_id}}){
                         cliente.innerHTML+="<option value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>";
+                    }
+                    if(zona_text=="Elije la zona"){
+                        cliente.innerHTML+="<option value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>"; 
                     }
                 @endforeach
             });
@@ -84,7 +88,7 @@
                 if(producto_id=={{$lote->ingreso->producto_id}} &&  {{$lote->ingreso->Activo}} == 1){
                     lote.innerHTML=lote.innerHTML+"<option value='{{$lote->ingreso->id}}' @if(old('lote') == $lote->ingreso->id) selected @endif>{{$lote->ingreso->Proveedor}} - {{$lote->ingreso->CantMoldes}} - {{$lote->ingreso->created_at->format('Y-m-d')}}</option>";
                     console.log(lote.innerHTML);
-                    if("{{old('lote')}}"=={{$lote->ingreso->id}}){
+                    if({{old('lote')}} == {{$lote->ingreso->id}}){
                         label.innerHTML="Cantidad restante en el lote: {{$lote->CantMoldes}}";
                     }
                 }

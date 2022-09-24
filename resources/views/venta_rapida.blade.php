@@ -23,30 +23,30 @@
 <label class="form-label">Lote:</label>
     <select name="lote" id="lote" class="form-select">
         <option >Elije un lote</option>
-        @if(old('lote')!=null)
-        <script>
-            var producto_id=producto.options[producto.selectedIndex].value;
-            var label=document.getElementById("cantidad_lotes");
-            var lote=document.getElementById("lote");
-                    lote.innerHTML="<option>Elije un lote</option>";
-            @foreach ($lotes as $lote)
-                    
-                    if(producto_id=={{$lote->ingreso->producto_id}} &&  {{$lote->ingreso->Activo}} == 1){
-                        lote.innerHTML+="<option value='{{$lote->ingreso->id}}' @if(old('lote') == $lote->ingreso->id) selected @endif>{{$lote->ingreso->Proveedor}} - {{$lote->ingreso->CantMoldes}} - {{$lote->ingreso->created_at->format('Y-m-d')}}</option>";
-                        if({{old('lote')}} == {{$lote->ingreso->id}}){
-                            label.innerHTML="Cantidad restante en el lote: {{$lote->CantMoldes}}";
-                        }
-                    }
-            @endforeach
-            
-        </script>
-           
-        @endif
     </select>
     @if ($errors->has('lote'))
         <span class="error text-danger" for="lote">{{ $errors->first('lote') }}</span><br>
     @endif 
     <label for="lote" id="cantidad_lotes"></label><br>
+    @if(old('lote')!=null)
+    <script>
+        var producto_id=producto.options[producto.selectedIndex].value;
+        var label=document.getElementById("cantidad_lotes");
+        var lote=document.getElementById("lote");
+                lote.innerHTML="<option>Elije un lote</option>";
+        @foreach ($lotes as $lote)
+                
+                if(producto_id=={{$lote->ingreso->producto_id}} &&  {{$lote->ingreso->Activo}} == 1){
+                    lote.innerHTML+="<option value='{{$lote->ingreso->id}}' @if(old('lote') == $lote->ingreso->id) selected @endif>{{$lote->ingreso->Proveedor}} - {{$lote->ingreso->CantMoldes}} - {{$lote->ingreso->created_at->format('Y-m-d')}}</option>";
+                    if({{old('lote')}} == {{$lote->ingreso->id}}){
+                        label.innerHTML="Cantidad restante en el lote: {{$lote->CantMoldes}}";
+                    }
+                }
+        @endforeach
+        
+    </script>
+       
+    @endif
     <script>
         //------------------------------------------------------
         var producto=document.getElementById("producto");

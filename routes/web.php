@@ -48,6 +48,7 @@ Route::middleware(['auth'])->group(function() {
     Route::post("/registro_gasto",[CuentaController::class,"registro"])->name("registro_gasto");
     Route::get("/venta",[VentaController::class,"vistaRegistro"])->name("venta");
     Route::post("/venta",[VentaController::class,"registro"])->name("venta");
+    Route::post("/venta_completada/{id}",[VentaController::class,"venta_completa"])->name("venta_completa");
     Route::get("/venta_rapida",[VentaController::class,"vistaRegistroRapido"])->name("venta_rapida");
     Route::post("/venta_rapida",[VentaController::class,"registroRapido"])->name("venta_rapida");
     Route::get("/transferir_lote",[AsignacionController::class,"vistaRegistro"])->name("transferir_lote");

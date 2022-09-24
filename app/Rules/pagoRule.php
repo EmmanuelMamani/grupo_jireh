@@ -32,7 +32,7 @@ class pagoRule implements Rule,DataAwareRule
     public function passes($attribute, $value)
     {
         $alerta=false;
-        $cliente=Cliente::all()->where("id",$this->data["cliente"])[0]->saldos->last()->Saldo;
+        $cliente=Cliente::all()->where("id",$this->data["cliente"])->last()->saldos->last()->Saldo;
         if($cliente >= $value){
             $alerta=true;
         }

@@ -25,6 +25,7 @@ class ClienteController extends Controller
             $cliente->save();
         }else{
             $cliente=Cliente::firstwhere('Telefono',$request->telefono);
+            $cliente->Nombre=$request->nombre;
             $cliente->Activo=true;
             $cliente->Direccion=$request->direccion;
             $cliente->zona_id=$request->zona;

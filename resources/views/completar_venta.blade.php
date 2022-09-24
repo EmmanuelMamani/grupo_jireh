@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @section("contenido")
-<form action="{{route('venta')}}" id="formulario" method="POST" enctype="multipart/form-data">
+<form action="{{route('venta_completa',["id"=>$lista->id])}}" id="formulario" method="POST" enctype="multipart/form-data">
     <h3>Pre-Venta</h3>
     @csrf
     

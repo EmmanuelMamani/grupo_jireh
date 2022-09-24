@@ -44,6 +44,6 @@ class ListaController extends Controller
     public function completar($id){
         $lista=Lista::find($id);
         $lotes=Asignacion::where('asignado_id',Auth::user()->id)->where('CantMoldes','>',0)->get();
-         return view("completar_venta",["lista"=>$lista,"lotes"=>$lotes]);
+        return view("completar_venta",["lista"=>$lista,"lotes"=>$lotes]);
     }
 }

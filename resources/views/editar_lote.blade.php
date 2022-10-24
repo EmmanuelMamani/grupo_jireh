@@ -20,12 +20,12 @@
             <option value="{{$lote->producto_id}}">{{$lote->producto->Nombre}} {{$lote->producto->Tipo}}</option>
     </select>
     <label class="form-label">Cantidad de moldes</label>
-    <input type="text" name="moldes" class="form-control"  value={{$lote->CantMoldes}} readonly>
+    <input type="text" name="moldes" class="form-control"  value={{$lote->CantMoldes}}>
     @if ($errors->has('moldes'))
     <span class="error text-danger">{{ $errors->first('moldes') }}</span>
     @endif <br>
     <label class="form-label">Peso total:</label>
-    <input type="text" name="peso" class="form-control"  value={{$lote->Peso}} readonly>
+    <input type="text" name="peso" class="form-control"  value={{$lote->Peso}}>
     @if ($errors->has('peso'))
     <span class="error text-danger">{{ $errors->first('peso') }}</span>
     @endif <br>

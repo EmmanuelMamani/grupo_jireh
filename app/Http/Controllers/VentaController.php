@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\devolucionRequest;
+use App\Http\Requests\requestEditVenta;
 use App\Http\Requests\ventaRapidaRequest;
 use App\Http\Requests\ventaRequest;
 use App\Models\Asignacion;
@@ -321,5 +322,39 @@ class VentaController extends Controller
         }
         
       return redirect()->route('menu')->with('registrar','ok');
+    }
+    public function vistaEditar($id){
+        $venta=Venta::find($id);
+        $comprobantes=Comprobante::where("venta_id",$id)->get();
+        return view("editar_venta",["venta"=>$venta,"comprobantes"=>$comprobantes]);
+    }
+    public function Editar(requestEditVenta $request, $id){
+        $salida=Salida::find($id);
+        $salida->Precio=$request->precio;
+        $total=0;
+        $tipo=Producto::all()->where('id',$request->producto)->last()->Tipo;
+        if($tipo=="Por Kilo"){
+            $total=$request->peso*$request->precio;
+        }else{
+            $total=$request->peso*$request->cantidad_moldes;
+        }
+        if($request->tipo==0){
+            $total=round($total,2);
+        }else{
+            $total=round($total,0);
+        }
+
+        //$salida->save();
+        $venta=Venta::find($id);
+        $saldo_ant=Saldo::all()->where("cliente_id",$venta->cliente_id)->last();
+        $nuevo_saldo= new Saldo();
+        $nuevo_saldo->Saldo= $saldo_ant->Saldo + $total - $salida->Total;
+        $nuevo_saldo->Monto=  $total - $salida->Total;
+        $nuevo_saldo->Detalle = "Ajuste de venta";
+        $nuevo_saldo->cliente_id= $venta->cliente_id;
+        $nuevo_saldo->save();
+        $salida->Total =$total;
+        $salida->save();
+        return redirect()->route('reporte_ventas')->with('registrar','ok');
     }
 }

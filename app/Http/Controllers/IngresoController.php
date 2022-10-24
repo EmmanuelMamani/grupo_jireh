@@ -68,6 +68,8 @@ class IngresoController extends Controller
     public function Editar(loteRule $request , $id){
         $lote=Ingreso::find($id);
         $lote->Precio=$request->costo;
+        $lote->CantMoldes=$request->moldes;
+        $lote->Peso=$request->peso;
         $lote->save();
         return redirect()->route('reporte_lotes')->with('registrar', 'ok');
     }

@@ -227,4 +227,13 @@
         comprobante.insertAdjacentElement("afterend", contenedor);
     }
 </script>
+<script>
+    var carga=document.getElementById("contenedor_carga");
+    var enviar=document.getElementById("enviar");
+    console.log(carga.innerHTML);
+    console.log(enviar.innerHTML);
+    enviar.onclick=function(){
+       carga.style.visibility="visible";
+    }
+</script>
 @endsection

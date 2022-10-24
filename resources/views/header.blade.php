@@ -19,6 +19,9 @@
     <title>Grupo Jireh</title>
   </head>
   <body>
+    <div id="contenedor_carga">
+      <div class="loader"></div>
+  </div>
     <header> <div id="sup"></div>
       <nav class="navbar">
         <div class="container-fluid" id="navbar">

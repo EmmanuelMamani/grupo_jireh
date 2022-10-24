@@ -24,6 +24,7 @@
         <th>Fecha</th>
         <th>Detalle</th>
         <th>Devolver</th>
+        <th>Editar</th>
       </tr>
     </thead>
     <tbody>
@@ -40,6 +41,7 @@
           <td>{{$venta->created_at->format('Y-m-d')}}</td>
           <td><a href="{{route('venta_detalle',['id'=>$venta->id])}}" class="btn btn-secondary">Ver detalle</a></td>
           <td><a href="{{route("venta_devolucion",['id'=>$venta->id])}}" class="btn btn-secondary">Devolver</a></td>
+          <td><a href="{{route("editar_venta",["id"=>$venta->id])}}" class="btn btn-warning">Editar</a></td>
         </tr>
       @endforeach
     </tbody>

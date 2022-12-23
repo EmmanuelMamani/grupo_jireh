@@ -43,7 +43,7 @@
         <span class="material-symbols-outlined icono col">shopping_cart_checkout</span>
     </a>
     <a href="/saldos" class="opcion row">
-        <span class="funciones col-8">Saldos</span>
+        <span class="funciones col-8">Cobranza</span>
         <span class="material-symbols-outlined icono col">payments</span>
     </a>
     <a href="/transferir_lote" class="opcion row">

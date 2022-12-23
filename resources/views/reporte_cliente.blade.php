@@ -80,4 +80,5 @@
             })
       });
 </script>
+<h3>El total que le deben es {{$total}} Bs.</h3>
 @endsection

@@ -2,9 +2,9 @@
 @section("titulo","Grupo JIREH")
 @section("opciones")
 <a href="{{route("menu")}}"  class="opciones_head">Inicio</a>
-<a href="/saldos" class="opciones_head">Saldos</a>
+<a href="/saldos" class="opciones_head">Cobranza</a>
 @if (Auth::user()->Rol=='Administrador')
-<a href="/saldo_pasado" class="opciones_head">S. Pasados</a>
+<a href="/saldo_pasado" class="opciones_head">C. Pasados</a>
 @endif
 @endsection
 @section("estilos")
@@ -13,7 +13,7 @@
 @section("contenido")
 <form id="formulario" action="{{route("saldos")}}" method="POST">
     @csrf
-    <h3>Pago de saldos</h3>
+    <h3>Cobranza</h3>
     <label class="form-label">Cliente:</label>
     <select name="cliente" id="cliente" class="form-select">
         @foreach ($clientes as $cliente )

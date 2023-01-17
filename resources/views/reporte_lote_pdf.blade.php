@@ -55,47 +55,46 @@
           
         </tr>
       @endforeach
-  
+    <style>
+
+body{
+  margin:  2px;
+  border: black solid 1px;
+}
+table {
+  width: 98%;
+  border: 1px solid black;
+  text-align: center;
+  border-collapse: collapse;
+  margin-left: 1%;
+  align: center ;
+}
+  td, th {
+    padding: 15px;
+    font-size: 11px;
+  }
+  thead{
+    background: rgb(233, 233, 233);
+    font-size: 11px;
+
+  }
+th, td {
+   border-bottom: 1px solid black;
+
+}
+h3{
+  color:#757575;
+  margin-left: 10px;
+}
+h2{
+  color:#000000 ;
+  text-align: center;
+}
+
+    </style>
     
   </tbody>
 </table>
-<style>
-
-  body{
-    margin:  2px;
-    border: black solid 1px;
-  }
-  table {
-    width: 98%;
-    border: 1px solid black;
-    text-align: center;
-    border-collapse: collapse;
-    margin-left: 1%;
-    align: center ;
-  }
-    td, th {
-      padding: 15px;
-      font-size: 11px;
-    }
-    thead{
-      background: rgb(233, 233, 233);
-      font-size: 11px;
-  
-    }
-  th, td {
-     border-bottom: 1px solid black;
-  
-  }
-  h3{
-    color:#757575;
-    margin-left: 10px;
-  }
-  h2{
-    color:#000000 ;
-    text-align: center;
-  }
-  
-      </style>
 </body>
 </html>
 

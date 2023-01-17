@@ -110,7 +110,9 @@ Route::middleware(['auth'])->group(function() {
 Route::get("/NoPermitido", function(){return view("alerta");});
 
 
-
+Route::get('phpmyinfo', function () {
+    phpinfo(); 
+})->name('phpmyinfo');
 
 
 

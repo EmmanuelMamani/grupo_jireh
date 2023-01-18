@@ -32,6 +32,18 @@
     @if ($errors->has('telefono'))
     <span class="error text-danger" for="telefono">{{ $errors->first('telefono') }}</span><br>
     @endif 
+
+    <label class="form-label">Usuario:</label>
+    <input type="text" name="usuario" class="form-control" value="{{old('usuario')}}">
+    @if ($errors->has('usuario'))
+    <span class="error text-danger" for="usuario">{{ $errors->first('usuario') }}</span><br>
+    @endif 
+    <label class="form-label">Contraseña:</label>
+    <input type="text" name="contrasenia" class="form-control" value="{{old('contrasenia')}}">
+    @if ($errors->has('contrasenia'))
+    <span class="error text-danger" for="contrasenia">{{ $errors->first('contrasenia') }}</span><br>
+    @endif 
+
     <div class="row" id="cont_btn">
         <div class="col"><a href="menu" id="cancelar">Cancelar</a></div>
         <div class="col"><button id="enviar">Registrar</button></div>

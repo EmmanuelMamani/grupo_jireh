@@ -22,7 +22,7 @@ class PendienteController extends Controller
 
         }
         if($tipo==2){
-           $consulta=Asignacion::all()->where("id",$venta->ingreso_id)->where("asignado_id",$venta->user_id)->last();
+           $consulta=Asignacion::all()->where("ingreso_id",$venta->ingreso_id)->where("asignado_id",$venta->user_id)->last();
            echo $consulta;
            /*
            $consulta->CantMoldes=$consulta->CantMoldes+$venta->salida->CantMoldes;

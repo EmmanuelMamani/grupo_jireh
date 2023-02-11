@@ -24,7 +24,6 @@ class PendienteController extends Controller
         if($tipo==2){
            $consulta=Asignacion::all()->where("ingreso_id",$venta->ingreso_id)->where("asignado_id",$venta->user_id)->last();
            echo $consulta;
-           /*
            $consulta->CantMoldes=$consulta->CantMoldes+$venta->salida->CantMoldes;
            $consulta->save();
            $saldo=new Saldo();
@@ -38,8 +37,8 @@ class PendienteController extends Controller
            $saldo->Saldo=$antiguo - $saldo->Monto;
            $saldo->save();
            $venta->salida->delete();
-           $venta->delete();*/
+           $venta->delete();
         }
-       // return redirect()->route('ventas_pendientes')->with('registrar', 'ok');
+       return redirect()->route('ventas_pendientes')->with('registrar', 'ok');
     }
 }

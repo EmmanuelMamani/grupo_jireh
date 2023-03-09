@@ -19,6 +19,7 @@
         <th>#</th>
         <th>Proveedor</th>
         <th>Producto</th>
+        <th>Fecha</th>
         <th>Unidades</th>
         <th>Peso total</th>
         <th>Precio unitario</th>
@@ -37,6 +38,7 @@
           <td>{{$key+1}}</td>
           <td>{{$lote->Proveedor}}</td>
           <td>{{$lote->producto->Nombre}} {{$lote->producto->Tipo}}</td>
+          <td>{{$lote->created_at->format('Y-m-d')}}</td>
           <td>{{$lote->CantMoldes}}</td>
           <td>{{$lote->Peso}} Kg</td>
           <td>{{$lote->Precio}} Bs</td>

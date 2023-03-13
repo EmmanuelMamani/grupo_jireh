@@ -32,6 +32,12 @@
           Cliente empresa
         </label>
     </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="contado" name="contado" value="0">
+        <label class="form-check-label">
+          Al contado
+        </label>
+    </div>
     <select name="cliente" id="cliente" class="form-select">
         <option >Elije un cliente</option>
         @foreach ($clientes as $cliente)
@@ -234,6 +240,13 @@
     console.log(enviar.innerHTML);
     enviar.onclick=function(){
        carga.style.visibility="visible";
+    }
+</script>
+<script>
+    var contado=document.getElementById("contado")
+    contado.onclick=function(){
+        if(contado.value=="0"){contado.value="1"}else{contado.value="0"}
+        console.log(contado.value);
     }
 </script>
 @endsection

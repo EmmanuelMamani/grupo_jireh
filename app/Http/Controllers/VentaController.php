@@ -87,20 +87,29 @@ class VentaController extends Controller
         $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
         $asignacion[0]->save();
         
-        $saldo=new Saldo();
-        $saldo->Monto=$total;
-        $saldoActual=Saldo::all()->where('cliente_id',$request->cliente)->last();
-       
-        if($saldoActual==""){
-            $saldo->Saldo=$total;
-        }else{
-            $saldo->Saldo=$saldoActual->Saldo + $total;
-        }
-        
-        $saldo->Detalle="Pre-Venta";
-        $saldo->cliente_id= $request->cliente;
-
-        $saldo->save();
+        if($request->contado==0){
+            $saldo=new Saldo();
+            $saldo->Monto=$total;
+            $saldoActual=Saldo::all()->where('cliente_id',$request->cliente)->last();
+           
+            if($saldoActual==""){
+                $saldo->Saldo=$total;
+            }else{
+                $saldo->Saldo=$saldoActual->Saldo + $total;
+            }
+            
+            $saldo->Detalle="Pre-Venta";
+            $saldo->cliente_id= $request->cliente;
+    
+            $saldo->save();
+          }else{
+            $cuenta=new Cuenta();
+            $cuenta->user_id= Auth::user()->id;
+            $cuenta->Monto=$salida->Total;
+            $cuenta->Detalle="Venta al contado";
+            $cuenta->Fecha=date("Y-m-d");
+            $cuenta->save();
+          }
         
         $lote=Ingreso::firstWhere('id',$request->lote);
        
@@ -241,6 +250,7 @@ class VentaController extends Controller
         return  $pdf->download('reporteVentas.pdf');
     }
     public function venta_completa(ventaRequest $request, $id){
+      
         $lista=Lista::find($id);
         $lista->delete();
         $salida=new Salida();
@@ -291,21 +301,30 @@ class VentaController extends Controller
         $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
         $asignacion[0]->save();
         
-        $saldo=new Saldo();
-        $saldo->Monto=$total;
-        $saldoActual=Saldo::all()->where('cliente_id',$request->cliente)->last();
-       
-        if($saldoActual==""){
-            $saldo->Saldo=$total;
-        }else{
-            $saldo->Saldo=$saldoActual->Saldo + $total;
-        }
-        
-        $saldo->Detalle="Pre-Venta";
-        $saldo->cliente_id= $request->cliente;
+        if($request->contado==0){
+            $saldo=new Saldo();
+            $saldo->Monto=$total;
+            $saldoActual=Saldo::all()->where('cliente_id',$request->cliente)->last();
+           
+            if($saldoActual==""){
+                $saldo->Saldo=$total;
+            }else{
+                $saldo->Saldo=$saldoActual->Saldo + $total;
+            }
+            
+            $saldo->Detalle="Pre-Venta";
+            $saldo->cliente_id= $request->cliente;
+    
+            $saldo->save();
+          }else{
+            $cuenta=new Cuenta();
+            $cuenta->user_id= Auth::user()->id;
+            $cuenta->Monto=$salida->Total;
+            $cuenta->Detalle="Venta al contado";
+            $cuenta->Fecha=date("Y-m-d");
+            $cuenta->save();
+          }
 
-        $saldo->save();
-        
         $lote=Ingreso::firstWhere('id',$request->lote);
        
         if($tipo=="Por Kilo"){

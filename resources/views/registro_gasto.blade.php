@@ -30,7 +30,7 @@
     <span class="error text-danger">{{ $errors->first('detalle') }}</span>
     @endif <br>
     <div class="row" id="cont_btn">
-        <div class="col"><button id="cancelar">Cancelar</button></div>
+        <div class="col"><a href="{{route("menu")}}" id="cancelar">Cancelar</a></div>
         <div class="col"><button id="enviar">Registrar</button></div>
     </div>
 </form>

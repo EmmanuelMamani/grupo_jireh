@@ -26,16 +26,19 @@ class UserController extends Controller
             $empleado->Email=$request->email;
             $empleado->Telefono=$request->telefono;
             $empleado->Rol="Empleado";
+            /*
             $empleado->Usuario=explode(" ",$request->nombre)[0] . $request->ci;
             $caracteres=explode(" ",$request->nombre)[0] . $request->ci; 
-            $empleado->Contrasenia=substr(str_shuffle($caracteres), 0, 10);;
+            $empleado->Contrasenia=substr(str_shuffle($caracteres), 0, 10);;*/
+            $empleado->Usuario=$request->usuario;
+            $empleado->Contrasenia=$request->contrasenia;
             $empleado->save();
-            Notification::route('mail', $request->email)->notify(new NuevoUsuario($empleado));
+            //Notification::route('mail', $request->email)->notify(new NuevoUsuario($empleado));
         }else{
             $empleado=User::all()->where('CI',$request->ci)->last();
             $empleado->Activo=1;
             $empleado->save();
-            Notification::route('mail', $request->email)->notify(new NuevoUsuario($empleado));
+           // Notification::route('mail', $request->email)->notify(new NuevoUsuario($empleado));
         }
         
         return redirect()->route('registro_empleado')->with('registrar','ok');

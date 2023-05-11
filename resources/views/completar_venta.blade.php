@@ -15,6 +15,12 @@
           Cliente empresa
         </label>
     </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="contado" name="contado" value="0">
+        <label class="form-check-label">
+          Al contado
+        </label>
+    </div>
     <select name="cliente" id="cliente" class="form-select">
         <option value="{{$lista->cliente_id}}">{{$lista->cliente->Nombre}}</option>
         
@@ -90,7 +96,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <input type="text" name="cantidad_moldes" class="form-control" value="{{$lista->Unidades}}" readonly>
+            <input type="text" name="cantidad_moldes" class="form-control" value="{{$lista->Unidades}}">
         </div>
         <div class="col">
             <input type="text" name="peso" class="form-control" id="peso" @if (old('peso')!= null)
@@ -158,6 +164,13 @@
             }
         }
         comprobante.insertAdjacentElement("afterend", contenedor);
+    }
+</script>
+<script>
+    var contado=document.getElementById("contado")
+    contado.onclick=function(){
+        if(contado.value=="0"){contado.value="1"}else{contado.value="0"}
+        console.log(contado.value);
     }
 </script>
 @endsection

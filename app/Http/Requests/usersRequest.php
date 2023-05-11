@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\uniqueCI;
 use App\Rules\uniqueEmail;
 use App\Rules\uniqueTelefono;
+use App\Rules\uniqueUser;
 use Illuminate\Foundation\Http\FormRequest;
 
 class usersRequest extends FormRequest
@@ -31,6 +32,8 @@ class usersRequest extends FormRequest
             'ci'=>['bail','required','numeric','digits_between:6,10',new uniqueCI()],
             'email'=>['bail','required','email','regex:/^[a-zA-Z\s 0-9 @ . _]+$/',new uniqueEmail()],
             'telefono'=>['bail','required','numeric','digits_between:6,10',new uniqueTelefono()],
+            'usuario' => ['bail','required',new uniqueUser()],
+            'contrasenia' => ['bail','required']
         ];
     }
     public function messages()
@@ -55,7 +58,9 @@ class usersRequest extends FormRequest
             'telefono.numeric'=>'El campo telefono solo admite números',
             'telefono.digits_between'=>'El telefono debe tener entre 6 y 10 dígitos',
 
-         
+            'usuario.required' => 'El campo usuario es obligatorio',
+            
+            'contraseña.required' => 'El campo contraseña es obligatorio'
         ];
     }
 }

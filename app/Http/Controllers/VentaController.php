@@ -208,11 +208,17 @@ class VentaController extends Controller
     }
     
     public function vistaReporte(){
-        $ventas=Venta::orderByDesc("id")->get();
-        
-        return view("reporte_ventas",["ventas"=>$ventas]);
+       // $ventas=Venta::orderByDesc("id")->get();
+        $lotes=Ingreso::orderBy('id','desc')->where("Activo",1)->get();
+        return view("reporte_ventas",["lotes"=>$lotes]);
      //return  $pdf->download('archivo.pdf');
     }
+
+    public function vistaReporteVentas($id){
+        $ventas=Venta::where('ingreso_id',$id)->orderByDesc('id')->get();
+        return view('reporte_lote_ventas',["ventas"=>$ventas]);
+    }
+
     public function detalle($id){
         $venta=Venta::find($id);
         $comprobantes=Comprobante::where("venta_id",$id)->get();

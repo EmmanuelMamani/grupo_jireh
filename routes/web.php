@@ -74,6 +74,7 @@ Route::middleware(['auth'])->group(function() {
             Route::post("/eliminar_empleado/{id}",[UserController::class,"eliminar"])->name("eliminar_empleado");
             Route::get("/reporte_empleados",[UserController::class,"vistaReporte"])->name("reporte_empleados");
             Route::get("/reporte_venta",[VentaController::class,"vistaReporte"])->name("reporte_ventas");
+            Route::get("/reporte_lote_venta/{id}",[VentaController::class,"vistaReporteVentas"])->name("reporte_lote_ventas");
             Route::get("/reporte_lote",[IngresoController::class,"vistaReporte"])->name("reporte_lotes");
             Route::get("/detalle_venta/{id}",[VentaController::class,"detalle"])->name("venta_detalle");
             Route::get("/registro_zona",[ZonaController::class,"vistaRegistro"])->name("registro_zona");

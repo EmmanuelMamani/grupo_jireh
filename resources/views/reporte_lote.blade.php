@@ -24,8 +24,8 @@
         <th>Peso total</th>
         <th>Precio unitario</th>
         <th>Precio total</th>
-        <th>Unidades vendidas</th>
         <th>Ganancia de ventas</th>
+        <th>Unidades vendidas</th>
         <th>Merma</th>
         <th>Pagar</th>
         <th>Eliminar</th>
@@ -44,12 +44,12 @@
           <td>{{$lote->Precio}} Bs</td>
           @if($lote->producto->Tipo=="Por Kilo")
             <td>{{$lote->Peso * $lote->Precio}} Bs</td>
+            <td>{{$lote->salidas->sum('Total')-$lote->Peso * $lote->Precio}} Bs</td>
           @else
             <td>{{$lote->CantMoldes * $lote->Precio}} Bs</td>
+            <td>{{$lote->salidas->sum('Total')-$lote->CantMoldes * $lote->Precio}} Bs</td>
           @endif
-          
           <td>{{$lote->salidas->sum('CantMoldes')}}</td>
-          <td>{{$lote->salidas->sum('Total')}} Bs</td>
           @if ($lote->merma==null)
           <td>Sin merma</td>
           @else

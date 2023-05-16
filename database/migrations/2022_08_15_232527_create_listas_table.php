@@ -20,6 +20,7 @@ class CreateListasTable extends Migration
             $table->integer('producto_id');
             $table->integer('user_id');
             $table->integer('Unidades');
+            $table->string('descripcion');
         });
     }
 

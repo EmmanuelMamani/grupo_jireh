@@ -19,6 +19,7 @@
     <span>Producto : {{$venta->ingreso->producto->Nombre}} {{$venta->ingreso->producto->Tipo}}</span><br>
     <span>Cantidad : {{$venta->salida->CantMoldes}}</span><br>
     <span>Precio/kilo o unidad : {{$venta->salida->Precio}}</span><br>
+    <span>Peso: {{$venta->salida->Peso}} Kg.</span><br>
     <span>Total : {{$venta->salida->Total}}</span><br>
     <span>Comprobantes :</span><br>
     @foreach ($comprobantes as $comprobante)

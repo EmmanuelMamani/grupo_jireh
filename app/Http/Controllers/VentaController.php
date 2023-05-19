@@ -216,7 +216,7 @@ class VentaController extends Controller
 
     public function vistaReporteVentas($id){
         $ventas=Venta::where('ingreso_id',$id)->orderByDesc('id')->get();
-        return view('reporte_lote_ventas',["ventas"=>$ventas]);
+        return view('reporte_lote_ventas',["ventas"=>$ventas,'id'=>$id]);
     }
 
     public function detalle($id){
@@ -250,8 +250,10 @@ class VentaController extends Controller
         $lote->save();
         return redirect()->route('reporte_ventas')->with('registrar','ok');
     }
-    public function descarga(){
-        $ventas=Venta::orderByDesc("id")->get();
+    public function descarga($id)
+    {
+        $ventas=Venta::where('ingreso_id',$id)->orderByDesc('id')->get();
+       // $ventas=Venta::orderByDesc("id")->get();
         $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_ventas_pdf",compact('ventas'));
         return  $pdf->download('reporteVentas.pdf');
     }

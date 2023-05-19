@@ -95,7 +95,7 @@ Route::middleware(['auth'])->group(function() {
             Route::get("/reporte_historico",[CuentaController::class,"reporteHistorico"])->name("reporte_historico");
             Route::post("/eliminar_lote/{id}",[IngresoController::class,"Eliminar"])->name("eliminar_lote");
             Route::post("/pagar_lote/{id}",[IngresoController::class,"Pagar"])->name("pagar_lote");
-           Route::get("/decarga_ventas",[VentaController::class,"descarga"])->name("descarga_ventas");
+           Route::get("/decarga_ventas/{id}",[VentaController::class,"descarga"])->name("descarga_ventas");
            Route::get("/decarga_cuentas",[CuentaController::class,"descarga"])->name("descarga_cuentas");
            Route::get("/decarga_periodo/{inicio}/{fin}",[CuentaController::class,"descarga_periodo"])->name("descarga_periodo");
            Route::get("/decarga_lotes",[IngresoController::class,"descarga"])->name("descarga_lotes");

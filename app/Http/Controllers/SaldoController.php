@@ -8,6 +8,7 @@ use App\Models\Cliente;
 use App\Models\Cuenta;
 use App\Models\Saldo;
 use Illuminate\Http\Request;
+use App\Models\Zona;
 use Illuminate\Support\Facades\Auth;
 
 class SaldoController extends Controller
@@ -35,7 +36,8 @@ class SaldoController extends Controller
     }
     public function vistaPago(){
         $clientes=Cliente::all();
-        return view("saldos",["clientes"=>$clientes]);
+        $zonas=Zona::all();
+        return view("saldos",["clientes"=>$clientes,'zonas'=>$zonas]);
     }
     public function Pago(pagoRequest $request){
         $pasado=Saldo::all()->where("cliente_id",$request->cliente)->last()->Saldo;

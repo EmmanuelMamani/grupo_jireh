@@ -45,11 +45,14 @@ class VentaController extends Controller
         $salida->Precio=$request->precio;
         $total=0;
         $tipo=Producto::all()->where('id',$request->producto)->last()->Tipo;
+        
+        
         if($tipo=="Por Kilo"){
             $total=$request->peso*$request->precio;
         }else{
-            $total=$request->peso*$request->cantidad_moldes;
+            $total=$request->precio*$request->cantidad_moldes;
         }
+        
         if($request->tipo==0){
             $salida->Total=round($total,2);
         }else{
@@ -145,7 +148,7 @@ class VentaController extends Controller
         if($tipo=="Por Kilo"){
             $total=$request->peso*$request->precio;
         }else{
-            $total=$request->peso*$request->cantidad_moldes;
+            $total=$request->precio*$request->cantidad_moldes;
         }
         if($request->centavos==0){
             $salida->Total=round($total,2);
@@ -270,7 +273,7 @@ class VentaController extends Controller
         if($tipo=="Por Kilo"){
             $total=$request->peso*$request->precio;
         }else{
-            $total=$request->peso*$request->cantidad_moldes;
+            $total=$request->precio*$request->cantidad_moldes;
         }
         if($request->tipo==0){
             $salida->Total=round($total,2);
@@ -363,7 +366,7 @@ class VentaController extends Controller
         if($tipo=="Por Kilo"){
             $total=$request->peso*$request->precio;
         }else{
-            $total=$request->peso*$request->cantidad_moldes;
+            $total=$request->precio*$request->cantidad_moldes;
         }
         if($request->tipo==0){
             $total=round($total,2);

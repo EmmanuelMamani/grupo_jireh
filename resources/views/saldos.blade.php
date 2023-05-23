@@ -14,14 +14,22 @@
 <form id="formulario" action="{{route("saldos")}}" method="POST">
     @csrf
     <h3>Cobranza</h3>
+    <label class="form-label">Zonas:</label>
+    <select name="" id="zona" class="form-select" onchange="cambio()">
+        @foreach ($zonas as $zona)
+            <option value="{{$zona->id}}">{{$zona->Nombre}}</option>
+        @endforeach
+    </select>
     <label class="form-label">Cliente:</label>
     <select name="cliente" id="cliente" class="form-select">
         @foreach ($clientes as $cliente )
-        @if ($cliente->saldos->isNotEmpty())
-            @if ($cliente->saldos->last()->Saldo > 0)
-            <option value="{{$cliente->id}}">{{$cliente->Nombre}} Debe:{{$cliente->saldos->last()->Saldo}} Bs</option>
+            @if ($cliente->zona_id == $zonas->first()->id)
+                @if ($cliente->saldos->isNotEmpty())
+                    @if ($cliente->saldos->last()->Saldo > 0)
+                    <option value="{{$cliente->id}}">{{$cliente->Nombre}} Debe:{{$cliente->saldos->last()->Saldo}} Bs</option>
+                    @endif
+                @endif
             @endif
-        @endif
         @endforeach
     </select>
     <label class="form-label">Monto a pagar:</label>
@@ -34,4 +42,24 @@
         <div class="col"><button id="enviar">Pagar</button></div>
     </div>
 </form>
+<script>
+    function cambio(){
+        var zona = document.getElementById('zona').value
+        var cliente= document.getElementById('cliente')
+        cliente.innerHTML=""
+        @foreach ($clientes as $cliente )
+            var encontrado=false
+            if({{$cliente->zona_id}} == zona){
+                encontrado=true;
+            }
+                @if ($cliente->saldos->isNotEmpty())
+                    @if ($cliente->saldos->last()->Saldo > 0)
+                    if(encontrado==true){
+                        cliente.innerHTML+='<option value="{{$cliente->id}}">{{$cliente->Nombre}} Debe:{{$cliente->saldos->last()->Saldo}} Bs</option>'
+                    }
+                    @endif
+                @endif
+        @endforeach
+    }
+</script>
 @endsection

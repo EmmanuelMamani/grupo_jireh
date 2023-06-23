@@ -20,12 +20,14 @@
           Cliente empresa
         </label>
     </div>
-    <select name="cliente" id="cliente" class="form-select">
+    @if ($venta->cliente_id != null)
+        <select name="cliente" id="cliente" class="form-select">
             <option value={{"$venta->cliente->id"}}>{{$venta->cliente->Nombre}}</option>
-    </select>
-    @if ($errors->has('cliente'))
-    <span class="error text-danger" for="cliente">{{ $errors->first('cliente') }}</span><br>
-    @endif  
+        </select>
+        @if ($errors->has('cliente'))
+            <span class="error text-danger" for="cliente">{{ $errors->first('cliente') }}</span><br>
+        @endif  
+    @endif
     <label class="form-label">Producto:</label>
     <select name="producto" id="producto" class="form-select">
             <option value="{{$venta->ingreso->producto_id}}">{{$venta->ingreso->producto->Nombre}} {{$venta->ingreso->producto->Tipo}}</option>

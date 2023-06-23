@@ -238,15 +238,24 @@ class VentaController extends Controller
             "unidades"=>"required|integer|lte:". $salida->CantMoldes,
             "monto"=>"required|numeric"
         ]);
-        $cuenta=$venta->cliente->saldos->last();
         $salida->Total=$salida->Total - $request->monto;
         $salida->CantMoldes= $salida->CantMoldes - $request->unidades;
-        $saldo= new Saldo();
-        $saldo->Monto= $request->monto;
-        $saldo->Saldo= $cuenta->Saldo - $request->monto;
-        $saldo->Detalle="Devolucion";
-        $saldo->cliente_id=$venta->cliente_id;
-        $saldo->save();
+        if($venta->cliente_id != NULL){
+            $cuenta=$venta->cliente->saldos->last();
+            $saldo= new Saldo();
+            $saldo->Monto= $request->monto;
+            $saldo->Saldo= $cuenta->Saldo - $request->monto;
+            $saldo->Detalle="Devolucion";
+            $saldo->cliente_id=$venta->cliente_id;
+            $saldo->save();
+        }else{
+            $cuenta1 =new Cuenta();
+            $cuenta1->user_id= Auth::user()->id;
+            $cuenta1->Monto=$request->monto*(-1);
+            $cuenta1->Detalle="Ajuste de venta rapida";
+            $cuenta1->Fecha=date("Y-m-d");
+            $cuenta1->save();
+        }
         $salida->save();
         $lote=Asignacion::all()->where("ingreso_id",$venta->ingreso_id)->where("asignado_id",$venta->user_id)->last();
         $lote->CantMoldes=$lote->CantMoldes + $request->unidades;
@@ -360,13 +369,17 @@ class VentaController extends Controller
     }
     public function Editar(requestEditVenta $request, $id){
         $salida=Salida::find($id);
+        $precio_ant=$salida->Precio;
+        $total_ant=0;
         $salida->Precio=$request->precio;
         $total=0;
         $tipo=Producto::all()->where('id',$request->producto)->last()->Tipo;
         if($tipo=="Por Kilo"){
             $total=$request->peso*$request->precio;
+            $total_ant=$request->peso* $precio_ant;
         }else{
             $total=$request->precio*$request->cantidad_moldes;
+            $total_ant= $request->cantidad_moldes* $precio_ant;
         }
         if($request->tipo==0){
             $total=round($total,2);
@@ -376,13 +389,22 @@ class VentaController extends Controller
 
         //$salida->save();
         $venta=Venta::find($id);
-        $saldo_ant=Saldo::all()->where("cliente_id",$venta->cliente_id)->last();
-        $nuevo_saldo= new Saldo();
-        $nuevo_saldo->Saldo= $saldo_ant->Saldo + $total - $salida->Total;
-        $nuevo_saldo->Monto=  $total - $salida->Total;
-        $nuevo_saldo->Detalle = "Ajuste de venta";
-        $nuevo_saldo->cliente_id= $venta->cliente_id;
-        $nuevo_saldo->save();
+        if($venta->cliente_id != NULL){
+            $saldo_ant=Saldo::all()->where("cliente_id",$venta->cliente_id)->last();
+            $nuevo_saldo= new Saldo();
+            $nuevo_saldo->Saldo= $saldo_ant->Saldo + $total - $salida->Total;
+            $nuevo_saldo->Monto=  $total - $salida->Total;
+            $nuevo_saldo->Detalle = "Ajuste de venta";
+            $nuevo_saldo->cliente_id= $venta->cliente_id;
+            $nuevo_saldo->save();
+        }else{
+            $cuenta =new Cuenta();
+            $cuenta->user_id= Auth::user()->id;
+            $cuenta->Monto=$total- $total_ant;
+            $cuenta->Detalle="Ajuste de venta rapida";
+            $cuenta->Fecha=date("Y-m-d");
+            $cuenta->save();
+        }
         $salida->Total =$total;
         $salida->save();
         return redirect()->route('reporte_ventas')->with('registrar','ok');

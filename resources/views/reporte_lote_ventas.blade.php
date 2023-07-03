@@ -42,6 +42,7 @@
           <td><a href="{{route('venta_detalle',['id'=>$venta->id])}}" class="btn btn-secondary">Ver detalle</a></td>
           <td><a href="{{route("venta_devolucion",['id'=>$venta->id])}}" class="btn btn-secondary">Devolver</a></td>
           <td><a href="{{route("editar_venta",["id"=>$venta->id])}}" class="btn btn-warning">Editar</a></td>
+          <td><form action="{{route("modificar",['id'=>$venta->id,'tipo'=>2])}}" method="post">@csrf<button class="btn btn-danger">Eliminado</button></form></td>
         </tr>
       @endforeach
     </tbody>

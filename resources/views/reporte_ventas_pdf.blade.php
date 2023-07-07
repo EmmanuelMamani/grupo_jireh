@@ -21,11 +21,15 @@
       <th>#</th>
       <th>Cliente</th>
       <th>Empleado</th>
+      <th>Unidades</th>
       <th>Monto</th>
       <th>Fecha</th>
     </tr>
   </thead>
   <tbody>
+    @php
+      $sumatoria=0;
+    @endphp
     @foreach ($ventas as $key=>$venta)
       <tr class="fila">
         <td>{{$key+1}}</td>
@@ -36,9 +40,13 @@
         @endif
         
         <td>{{$venta->user->Nombre}}</td>
+        <td>{{$venta->salida->CantMoldes}}</td>
         <td>{{$venta->salida->Total}}</td>
         <td>{{$venta->created_at->format('Y-m-d')}}</td>
       </tr>
+      @php
+        $sumatoria+=$venta->salida->Total;
+      @endphp
     @endforeach
     <style>
 
@@ -77,6 +85,12 @@ h2{
     
   </tbody>
 </table>
+<h4>El total es de {{$sumatoria}} Bs.</h4>
+<style>
+  h4{
+    margin-left: 2%
+  }
+</style>
 </body>
 </html>
 

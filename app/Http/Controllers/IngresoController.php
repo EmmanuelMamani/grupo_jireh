@@ -9,6 +9,8 @@ use App\Http\Requests\loteRule;
 use App\Models\Asignacion;
 use App\Models\Venta;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Salida;
+use App\Models\Merma;
 use PDF;
 
 class IngresoController extends Controller
@@ -71,6 +73,16 @@ class IngresoController extends Controller
         $lote->CantMoldes=$request->moldes;
         $lote->Peso=$request->peso;
         $lote->save();
+        $unidades_vendidas=0;
+        foreach($lote->ventas as $venta){
+            $unidades_vendidas+= $venta->salida->CantMoldes;
+        }
+
+        if($unidades_vendidas == $lote->CantMoldes){
+            $merma= Merma::find($lote->merma->id);
+            $merma->CantMerma=$lote->Peso-$lote->salidas->sum("Peso");
+            $merma->save();
+        }
         return redirect()->route('reporte_lotes')->with('registrar', 'ok');
     }
 }

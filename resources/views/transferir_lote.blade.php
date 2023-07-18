@@ -25,7 +25,7 @@
             @endforeach
     </select>
     <label class="form-label">Cantidad de moldes:</label>
-    <input type="text" name="cantidad_moldes" class="form-control" id="moldes">
+    <input type="number" name="cantidad_moldes" class="form-control" id="moldes">
     <p id="alerta"></p>
     <div class="row" id="cont_btn">
         <div class="col"><a href="/menu" id="cancelar">Cancelar</a></div>

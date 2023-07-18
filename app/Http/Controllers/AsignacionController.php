@@ -20,7 +20,7 @@ class AsignacionController extends Controller
     public function registro(Request $request){
             $antiguo=Asignacion::find($request->lote);
             $antiguo->CantMoldes=$antiguo->CantMoldes - $request->cantidad_moldes;
-           $antiguo->save();
+            $antiguo->save();
             $asignacion=Asignacion::all()->where("asignado_id","=",$request->receptor)->where("ingreso_id","=",$antiguo->ingreso_id)->last();
             if($asignacion==""){
                 $asignacion=new Asignacion();

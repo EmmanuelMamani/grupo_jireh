@@ -44,6 +44,9 @@ class SaldoController extends Controller
         $saldo=new Saldo();
         $saldo->cliente_id=$request->cliente;
         $saldo->Monto=$request->monto;
+        if ($monto > $saldoActual) {
+            return redirect()->back()->withErrors(['monto' => 'El monto ingresado excede el saldo actual del cliente.'])->withInput();
+        }
         $saldo->Saldo=$pasado - $request->monto;
         $saldo->Detalle="Pago de deuda";
         $saldo->save();

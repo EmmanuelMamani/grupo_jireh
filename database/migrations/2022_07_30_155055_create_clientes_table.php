@@ -19,8 +19,8 @@ class CreateClientesTable extends Migration
             $table->string('Direccion');
             $table->string('zona_id');
             $table->integer('Telefono')->unique();
-            $table->string('direccion_map')->nullable();
-            $table->binary('tienda')->nullable();
+           // $table->string('direccion_map')->nullable();
+            //$table->binary('tienda')->nullable();
             $table->boolean('Activo')->default(true);
             $table->timestamps();
         });

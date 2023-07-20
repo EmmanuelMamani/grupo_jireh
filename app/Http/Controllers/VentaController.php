@@ -59,14 +59,13 @@ class VentaController extends Controller
             $salida->Total=round($total,0);
         }
         
-        
-       
+        $salida->save();
         $venta=new Venta();
         $venta->cliente_id = $request->cliente; 
         $venta->user_id=Auth::user()->id;
         $venta->ingreso_id=$request->lote;
         $venta->salida_id=$salida->id;
-        
+        $venta->save();
 
         $fi=$request->file('comprobante');
         
@@ -127,8 +126,6 @@ class VentaController extends Controller
                 $merma->save();
             }
         }
-        $salida->save();
-        $venta->save();
       return redirect()->route('menu')->with('registrar','ok');
     }
     public function vistaRegistroRapido(){
@@ -155,15 +152,14 @@ class VentaController extends Controller
         }else{
             $salida->Total=round($total,0);
         }
-
-       
+        $salida->save();       
         $venta=new Venta();
         $venta->cliente_id = $request->cliente; 
         $venta->user_id=Auth::user()->id;
         $venta->ingreso_id=$request->lote;
         $venta->salida_id=$salida->id;
         $venta->Estado=1;
-
+        $venta->save();
 
         $fi=$request->file('comprobante');
         
@@ -206,8 +202,6 @@ class VentaController extends Controller
                 $merma->save();
             }
         }
-        $salida->save();
-        $venta->save();
         return redirect()->route('menu')->with('registrar','ok');
     }
     
@@ -290,15 +284,14 @@ class VentaController extends Controller
         }else{
             $salida->Total=round($total,0);
         }
-        
-        
+        $salida->save();
        
         $venta=new Venta();
         $venta->cliente_id = $request->cliente; 
         $venta->user_id=Auth::user()->id;
         $venta->ingreso_id=$request->lote;
         $venta->salida_id=$salida->id;
-       
+        $venta->save();
 
         $fi=$request->file('comprobante');
         
@@ -359,8 +352,6 @@ class VentaController extends Controller
                 $merma->save();
             }
         }
-        $salida->save();
-        $venta->save();
       return redirect()->route('menu')->with('registrar','ok');
     }
     public function vistaEditar($id){

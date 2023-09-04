@@ -71,6 +71,8 @@ Route::middleware(['auth'])->group(function() {
             Route::get("/editar_lote/{id}",[IngresoController::class,"vistaEditar"])->name("editar_lote");
             Route::post("/editar_lote/{id}",[IngresoController::class,"Editar"])->name("editar_lote");
             Route::post("/eliminar_cliente/{id}",[ClienteController::class,"eliminar"])->name("eliminar_cliente");
+            Route::get("/editar_cliente/{id}",[ClienteController::class,"vistaEditar"])->name('editar_cliente');
+            Route::post("/editar_cliente/{id}",[ClienteController::class,'editar'])->name('editar_cliente');
             Route::post("/eliminar_empleado/{id}",[UserController::class,"eliminar"])->name("eliminar_empleado");
             Route::get("/reporte_empleados",[UserController::class,"vistaReporte"])->name("reporte_empleados");
             Route::get("/reporte_venta",[VentaController::class,"vistaReporte"])->name("reporte_ventas");

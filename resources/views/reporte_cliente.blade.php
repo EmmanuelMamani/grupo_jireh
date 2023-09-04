@@ -22,6 +22,9 @@
         <th>Nombre</th>
         <th>Teléfono</th>
         <th>Deuda</th>
+        <th>Ubicacion</th>
+        <th>Tienda</th>
+        <th>Editar</th>
         <th>Eliminar</th>
       </tr>
     </thead>
@@ -36,6 +39,17 @@
           @else
             <td>0</td>
           @endif
+          @if ($cliente->direccion_map==NULL)
+            <td>Sin ubicacion</td>
+          @else
+            <td><a href="{{$cliente->direccion_map}}">Direccion</a></td>
+          @endif
+          @if ($cliente->tienda==NULL)
+            <td>Sin tienda</td>
+          @else
+            <td><img src="data:image/jpeg;base64,{{ base64_encode($cliente->tienda) }}" alt="" width="300"></td>
+          @endif
+          <td><a href="{{route("editar_cliente",["id"=>$cliente->id])}}" class="btn btn-warning">Editar</a></td>
           <td><form class="Eliminar1" action="{{route("eliminar_cliente",["id"=>$cliente->id])}}" method="post" > @csrf <button class="btn btn-danger">Eliminar</button></form></td>
         </tr>
       @endforeach

@@ -77,13 +77,16 @@ class ClienteController extends Controller
     
         if ($request->hasFile('tienda')) {
             $imagen = $request->file('tienda');
-    
+        
             // Verifica si la extensión es válida (opcional)
             $tipo_ext = $imagen->getClientOriginalExtension();
             if (in_array($tipo_ext, ['jpeg', 'jpg', 'png', 'gif', 'svg'])) {
+                // Limpia el nombre del archivo para eliminar caracteres nulos
+                $nombreArchivo = str_replace("\0", '', $imagen->getClientOriginalName());
+        
                 // Lee el contenido binario de la imagen
                 $imagenBinaria = file_get_contents($imagen->getRealPath());
-                $file=Image::fromFile($imagenBinaria)->resize(300, null);
+                $file = Image::fromFile($imagenBinaria)->resize(300, null);
                 // Asigna la imagen binaria al campo Blob en la base de datos
                 $cliente->tienda = $file;
             } else {

@@ -20,7 +20,7 @@ class CreateClientesTable extends Migration
             $table->string('zona_id');
             $table->integer('Telefono')->unique();
             $table->string('direccion_map')->nullable();
-            $table->binary('tienda')->nullable();
+            $table->binary('tienda', 16777215)->nullable();
             $table->boolean('Activo')->default(true);
             $table->timestamps();
         });

@@ -64,30 +64,38 @@ class ClienteController extends Controller
         $zonas=Zona::all();
         return view('editar_cliente',['cliente'=>$cliente,'zonas'=>$zonas]);
     }
-    public function editar(editar_clienteRequest $request, $id){
-    $cliente = Cliente::find($id);
-    $cliente->Nombre = $request->nombre;
-    $cliente->Direccion = $request->direccion;
-    $cliente->zona_id = $request->zona;
-
-    if ($request->mapa != null) {
-        $cliente->direccion_map = $request->mapa;
-    }
-
-    if ($request->hasFile('tienda')) {
-        $fi = $request->file('tienda');
-        
-        foreach ($fi as $fil) {
-            // Lee el contenido binario de la imagen
-            $imagenBinaria = file_get_contents($fil->getRealPath());
-            
-            // Asigna la imagen binaria al campo Blob en la base de datos
-            $cliente->tienda = $imagenBinaria;
+    public function editar(editar_clienteRequest $request, $id)
+    {
+        $cliente = Cliente::find($id);
+        $cliente->Nombre = $request->nombre;
+        $cliente->Direccion = $request->direccion;
+        $cliente->zona_id = $request->zona;
+    
+        if ($request->mapa != null) {
+            $cliente->direccion_map = $request->mapa;
         }
+    
+        if ($request->hasFile('tienda')) {
+            $imagen = $request->file('tienda');
+    
+            // Verifica si la extensión es válida (opcional)
+            $tipo_ext = $imagen->getClientOriginalExtension();
+            if (in_array($tipo_ext, ['jpeg', 'jpg', 'png', 'gif', 'svg'])) {
+                // Lee el contenido binario de la imagen
+                $imagenBinaria = file_get_contents($imagen->getRealPath());
+                
+                // Asigna la imagen binaria al campo Blob en la base de datos
+                $cliente->tienda = $imagenBinaria;
+            } else {
+                // Si la extensión no es válida, puedes manejarlo aquí
+                // Por ejemplo, mostrar un mensaje de error o realizar otra acción
+                return redirect()->back()->with('error', 'Formato de imagen no válido');
+            }
+        }
+    
+        $cliente->save();
+        return redirect()->route('reporte_cliente')->with('editar', 'ok');
     }
-
-    $cliente->save();
-    return redirect()->route('reporte_cliente')->with('editar', 'ok');
-    }
+    
 
 }

@@ -64,8 +64,7 @@ class ClienteController extends Controller
         $zonas=Zona::all();
         return view('editar_cliente',['cliente'=>$cliente,'zonas'=>$zonas]);
     }
-    public function editar(editar_clienteRequest $request, $id)
-{
+    public function editar(editar_clienteRequest $request, $id){
     $cliente = Cliente::find($id);
     $cliente->Nombre = $request->nombre;
     $cliente->Direccion = $request->direccion;
@@ -75,15 +74,19 @@ class ClienteController extends Controller
         $cliente->direccion_map = $request->mapa;
     }
 
-    if ($request->hasFile('tienda')) {
-        $imagen = $request->file('tienda');
-        $imagenBinaria = file_get_contents($imagen->getRealPath());
-        $cliente->tienda = $imagenBinaria;
+    if ($request->file('tienda')) {
+        $fi=$request->file('tienda');
+        
+        foreach ($fi as $fil) {
+            $tipo_ext=$fil->getClientOriginalExtension();
+            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
+                $archivo=$fil->getClientOriginalName();
+                $file=Image::fromFile($fil)->resize(300, null);
+                $cliente->tienda=$file;
+            }
+        }
     }
-
     $cliente->save();
-    
     return redirect()->route('reporte_cliente')->with('editar', 'ok');
-}
-
+    }
 }

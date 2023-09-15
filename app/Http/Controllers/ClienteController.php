@@ -94,7 +94,7 @@ class ClienteController extends Controller
         }
     
         $cliente->save();
-        return redirect()->route('reporte_cliente')->with('editar', 'ok');
+        //return redirect()->route('reporte_cliente')->with('editar', 'ok');
     }
     
 }

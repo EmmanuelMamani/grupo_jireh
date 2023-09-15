@@ -64,20 +64,26 @@ class ClienteController extends Controller
         $zonas=Zona::all();
         return view('editar_cliente',['cliente'=>$cliente,'zonas'=>$zonas]);
     }
-    public function editar(editar_clienteRequest $request, $id){
-        $cliente = Cliente::find($id);
-        $cliente->Nombre=$request->nombre;
-        $cliente->Direccion=$request->direccion;
-        $cliente->zona_id=$request->zona;
-        if($request->mapa != null){
-            $cliente->direccion_map=$request->mapa;
-        }
-        if($request->hasFile('tienda')){
-            $imagen = $request->file('tienda');
-            $imagenBinaria = file_get_contents($imagen);
-            $cliente->tienda = $imagenBinaria;
-        }
-        $cliente->save();
-        return redirect()->route('reporte_cliente')->with('editar', 'ok');
+    public function editar(editar_clienteRequest $request, $id)
+{
+    $cliente = Cliente::find($id);
+    $cliente->Nombre = $request->nombre;
+    $cliente->Direccion = $request->direccion;
+    $cliente->zona_id = $request->zona;
+
+    if ($request->mapa != null) {
+        $cliente->direccion_map = $request->mapa;
     }
+
+    if ($request->hasFile('tienda')) {
+        $imagen = $request->file('tienda');
+        $imagenBinaria = file_get_contents($imagen->getRealPath());
+        $cliente->tienda = $imagenBinaria;
+    }
+
+    $cliente->save();
+    
+    return redirect()->route('reporte_cliente')->with('editar', 'ok');
+}
+
 }

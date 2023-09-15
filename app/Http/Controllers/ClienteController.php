@@ -7,7 +7,7 @@ use App\Models\Cliente;
 use App\Models\Zona;
 use Illuminate\Http\Request;
 use App\Http\Requests\editar_clienteRequest;
-
+use Nette\Utils\Image;
 class ClienteController extends Controller
 {
     public function vistaRegistro(){
@@ -83,9 +83,9 @@ class ClienteController extends Controller
             if (in_array($tipo_ext, ['jpeg', 'jpg', 'png', 'gif', 'svg'])) {
                 // Lee el contenido binario de la imagen
                 $imagenBinaria = file_get_contents($imagen->getRealPath());
-                
+                $file=Image::fromFile($imagenBinaria)->resize(300, null);
                 // Asigna la imagen binaria al campo Blob en la base de datos
-                $cliente->tienda = $imagenBinaria;
+                $cliente->tienda = $file;
             } else {
                 // Si la extensión no es válida, puedes manejarlo aquí
                 // Por ejemplo, mostrar un mensaje de error o realizar otra acción

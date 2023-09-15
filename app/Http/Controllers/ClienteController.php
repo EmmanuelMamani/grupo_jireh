@@ -85,7 +85,7 @@ class ClienteController extends Controller
                     $imagenBinaria = file_get_contents($fil->getRealPath());
     
                     // Usar dd() para inspeccionar la imagen antes de guardarla
-                    dd($imagenBinaria);
+                    echo dd($imagenBinaria);
     
                     // Asigna la imagen binaria al campo Blob en la base de datos
                     $cliente->tienda = $imagenBinaria;

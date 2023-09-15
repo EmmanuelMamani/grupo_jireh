@@ -74,19 +74,22 @@ class ClienteController extends Controller
         $cliente->direccion_map = $request->mapa;
     }
 
-    if ($request->file('tienda')) {
-        $fi=$request->file('tienda');
+    if ($request->hasFile('tienda')) {
+        $fi = $request->file('tienda');
         
         foreach ($fi as $fil) {
-            $tipo_ext=$fil->getClientOriginalExtension();
-            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
-                $archivo=$fil->getClientOriginalName();
-                $file=Image::fromFile($fil)->resize(300, null);
-                $cliente->tienda=$file;
+            $tipo_ext = $fil->getClientOriginalExtension();
+            if (in_array($tipo_ext, ['jpeg', 'jpg', 'png', 'gif', 'svg'])) {
+                // Lee el contenido binario de la imagen
+                $imagenBinaria = file_get_contents($fil->getRealPath());
+                
+                // Asigna la imagen binaria al campo Blob en la base de datos
+                $cliente->tienda = $imagenBinaria;
             }
         }
     }
+
     $cliente->save();
     return redirect()->route('reporte_cliente')->with('editar', 'ok');
-    }
+}
 }

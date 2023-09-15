@@ -86,9 +86,7 @@ class ClienteController extends Controller
         
                 // Lee el contenido binario de la imagen
                 $imagenBinaria = file_get_contents($imagen->getRealPath());
-                $file = Image::fromFile($imagenBinaria)->resize(300, null);
-                // Asigna la imagen binaria al campo Blob en la base de datos
-                $cliente->tienda = $file;
+                $cliente->tienda = $imagenBinaria;
             } else {
                 // Si la extensión no es válida, puedes manejarlo aquí
                 // Por ejemplo, mostrar un mensaje de error o realizar otra acción

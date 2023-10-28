@@ -70,7 +70,7 @@ class ClienteController extends Controller
         $cliente->Nombre = $request->nombre;
         $cliente->Direccion = $request->direccion;
         $cliente->zona_id = $request->zona;
-    
+        $cliente->Telefono = $request->telefono;
         if ($request->mapa != null) {
             $cliente->direccion_map = $request->mapa;
         }

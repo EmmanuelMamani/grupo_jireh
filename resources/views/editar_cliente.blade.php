@@ -20,7 +20,7 @@
     <span class="error text-danger">{{ $errors->first('nombre') }}</span>
     @endif <br>
     <label class="form-label">Telefono:</label>
-    <input type="text" name="telefono"  class="form-control"  value="{{$cliente->Telefono}}" readonly>
+    <input type="text" name="telefono"  class="form-control"  value="{{$cliente->Telefono}}" >
     @if ($errors->has('telefono'))
     <span class="error text-danger">{{ $errors->first('telefono') }}</span>
     @endif <br>

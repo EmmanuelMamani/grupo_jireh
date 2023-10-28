@@ -14,7 +14,7 @@
     <select name="lote" id="lote" class="form-select">
         @foreach ($asignaciones as $asignacion )
             @if ($asignacion->ingreso->Activo == 1)
-            <option value="{{$asignacion->id}}">{{$asignacion->ingreso->Proveedor}} {{$asignacion->ingreso->created_at->format('Y-m-d')}} Unidades:{{$asignacion->CantMoldes}} </option>
+            <option value="{{$asignacion->id}}">{{$asignacion->ingreso->Proveedor}} {{$asignacion->ingreso->created_at->format('Y-m-d')}} Producto:{{$asignacion->ingreso->producto->Nombre}} Unidades:{{$asignacion->CantMoldes}} </option>
             @endif
         @endforeach
     </select>

@@ -98,7 +98,15 @@ class VentaController extends Controller
             }else{
                 $saldo->Saldo=$saldoActual->Saldo + $total;
             }
-            
+            if($request->acuenta>0){
+                $saldo->Saldo-=$request->acuenta;
+                $cuenta=new Cuenta();
+                $cuenta->user_id= Auth::user()->id;
+                $cuenta->Monto=$request->acuenta;
+                $cuenta->Detalle="Dinero a cuenta por venta";
+                $cuenta->Fecha=date("Y-m-d");
+                $cuenta->save();
+            }
             $saldo->Detalle="Pre-Venta";
             $saldo->cliente_id= $request->cliente;
     
@@ -247,7 +255,7 @@ class VentaController extends Controller
             $cuenta1 =new Cuenta();
             $cuenta1->user_id= Auth::user()->id;
             $cuenta1->Monto=$request->monto*(-1);
-            $cuenta1->Detalle="Ajuste de venta rapida";
+            $cuenta1->Detalle="Devolucion de venta";
             $cuenta1->Fecha=date("Y-m-d");
             $cuenta1->save();
         }

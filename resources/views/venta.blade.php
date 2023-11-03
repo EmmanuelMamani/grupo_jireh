@@ -186,6 +186,8 @@
             @endif  
         </div>
     </div>
+    <label class="form-label">Dinero a cuenta:</label>
+    <input type="text" name="acuenta" class="form-control"  value="0.00">
     <label class="form-label">Comprobante:</label>
     <input type="file" name="comprobante[]" id="comprobante" class="form-control" multiple="">
     @if ($errors->has('comprobante'))

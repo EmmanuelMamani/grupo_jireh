@@ -47,6 +47,10 @@ class IngresoController extends Controller
         $lote=Ingreso::find($id);
         $lote->Activo=0;
         $lote->save();
+        $asignaciones = $lote->asignaciones;
+        foreach($asignaciones as $asignacion){
+            $asignacion->delete();
+        }
         return redirect()->route('reporte_lotes')->with('eliminar', 'ok');
     }
     
@@ -58,7 +62,7 @@ class IngresoController extends Controller
 
     }
     public function descarga(){
-        $lotes=Ingreso::orderBy('id','desc')->get();
+        $lotes=Ingreso::orderBy('id','desc')->where("Activo",1)->get();
         $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_lote_pdf",compact('lotes'));
         return  $pdf->download('reporteLotes.pdf');
 

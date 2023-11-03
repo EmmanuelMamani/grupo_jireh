@@ -38,6 +38,6 @@ class PendienteController extends Controller
            $venta->salida->delete();
            $venta->delete();
         }
-       return redirect()->route('ventas_pendientes')->with('registrar', 'ok');
+       return redirect()->route('reporte_venta')->with('registrar', 'ok');
     }
 }

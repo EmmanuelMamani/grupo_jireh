@@ -42,7 +42,7 @@
             alerta.innerHTML="No hay lotes para transferir"
             e.preventDefault();
         }else{
-            var almacen=parseInt(lote.options[lote.selectedIndex].text.split(":")[1])
+            var almacen=parseInt(lote.options[lote.selectedIndex].text.split(":")[2])
         if(moldes.value.match('^[0-9]+$')!=null){
             if(almacen-parseInt(moldes.value)<0){
                 alerta.innerHTML="No cuentas con esa cantidad de moldes"
@@ -51,6 +51,10 @@
             if(parseInt(moldes.value)<1){
                 alerta.innerHTML="Los moldes deben ser mayor a 0"
                 e.preventDefault();
+            }
+            if(alerta.innerHTML==""){
+                var carga=document.getElementById("contenedor_carga");
+                carga.style.visibility="visible";
             }
         }else{
             alerta.innerHTML="Debe ser un número"

@@ -38,10 +38,12 @@
           Al contado
         </label>
     </div>
+    <label for="" class="form-label">Buscar Cliente:</label>
+    <input type="text" id="buscar" class="form-control"><br>
     <select name="cliente" id="cliente" class="form-select">
         <option >Elije un cliente</option>
         @foreach ($clientes as $cliente)
-            <option value="{{$cliente->id}}" @if(old('cliente') == $cliente->id ) selected @endif>{{$cliente->Nombre}}</option>
+            <option class="cliente" value="{{$cliente->id}}" @if(old('cliente') == $cliente->id ) selected @endif>{{$cliente->Nombre}}</option>
         @endforeach
     </select>
     @if ($errors->has('cliente'))
@@ -56,10 +58,10 @@
                 cliente.innerHTML="<option>Elije un cliente</option>";
                 @foreach ($clientes as $cliente)
                     if(zona_id=={{$cliente->zona_id}}){
-                        cliente.innerHTML+="<option value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>";
+                        cliente.innerHTML+="<option class='cliente' value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>";
                     }
                     if(zona_text=="Elije la zona"){
-                        cliente.innerHTML+="<option value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>"; 
+                        cliente.innerHTML+="<option class='cliente' value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>"; 
                     }
                 @endforeach
             });
@@ -93,7 +95,6 @@
                 
                 if(producto_id=={{$lote->ingreso->producto_id}} &&  {{$lote->ingreso->Activo}} == 1){
                     lote.innerHTML=lote.innerHTML+"<option value='{{$lote->ingreso->id}}' @if(old('lote') == $lote->ingreso->id) selected @endif>{{$lote->ingreso->Proveedor}} - {{$lote->ingreso->CantMoldes}} - {{$lote->ingreso->created_at->format('Y-m-d')}}</option>";
-                    console.log(lote.innerHTML);
                     if({{old('lote')}} == {{$lote->ingreso->id}}){
                         label.innerHTML="Cantidad restante en el lote: {{$lote->CantMoldes}}";
                     }
@@ -208,7 +209,6 @@
     function mostrar(e){
         var reader = new FileReader();
         var file = e.target.files;
-        console.log(file);
         var contenedor=document.getElementById("imagenes");
         if(contenedor==null){
             contenedor=document.createElement("div");
@@ -238,8 +238,6 @@
 <script>
     var carga=document.getElementById("contenedor_carga");
     var enviar=document.getElementById("enviar");
-    console.log(carga.innerHTML);
-    console.log(enviar.innerHTML);
     enviar.onclick=function(){
        carga.style.visibility="visible";
     }
@@ -248,7 +246,23 @@
     var contado=document.getElementById("contado")
     contado.onclick=function(){
         if(contado.value=="0"){contado.value="1"}else{contado.value="0"}
-        console.log(contado.value);
     }
 </script>
+<script>
+    $(document).ready(function() {
+      $('#buscar').on('input', function() {
+        var textoBuscado = $(this).val().toLowerCase(); // Obtener el texto ingresado y convertirlo a minúsculas
+        
+        $('.cliente').each(function() {
+          var textoOpcion = $(this).text().toLowerCase(); // Obtener el texto de la opción y convertirlo a minúsculas
+          
+          if (textoOpcion.includes(textoBuscado)) {
+            $(this).show(); // Mostrar la opción si coincide con el texto buscado
+          } else {
+            $(this).hide(); // Ocultar la opción si no coincide con el texto buscado
+          }
+        });
+      });
+    });
+  </script>
 @endsection

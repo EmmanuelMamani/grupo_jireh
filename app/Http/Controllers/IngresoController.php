@@ -73,10 +73,14 @@ class IngresoController extends Controller
     }
     public function Editar(loteRule $request , $id){
         $lote=Ingreso::find($id);
+        $diferencia= $request->moldes - $lote->CantMoldes;
         $lote->Precio=$request->costo;
         $lote->CantMoldes=$request->moldes;
         $lote->Peso=$request->peso;
         $lote->save();
+        $asignacion = Asignacion::all()->where('ingreso_id',$id)->where('asignado_id',Auth::user()->id)->last();
+        $asignacion->CantMoldes += $diferencia;
+        $asignacion->save();
         $unidades_vendidas=0;
         foreach($lote->ventas as $venta){
             $unidades_vendidas+= $venta->salida->CantMoldes;

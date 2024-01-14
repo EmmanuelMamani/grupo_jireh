@@ -99,7 +99,9 @@ Route::middleware(['auth'])->group(function() {
             Route::post("/pagar_lote/{id}",[IngresoController::class,"Pagar"])->name("pagar_lote");
            Route::get("/decarga_ventas/{id}",[VentaController::class,"descarga"])->name("descarga_ventas");
            Route::get("/decarga_cuentas",[CuentaController::class,"descarga"])->name("descarga_cuentas");
+           Route::get("/decarga_cuentas_diarias",[CuentaController::class,"descarga_cuentas_diarias"])->name("descarga_cuentas_diarias");
            Route::get("/decarga_periodo/{inicio}/{fin}",[CuentaController::class,"descarga_periodo"])->name("descarga_periodo");
+           Route::get("/decarga_diario/{user_id}",[CuentaController::class,"descarga_diario"])->name("descarga_diario");
            Route::get("/decarga_lotes",[IngresoController::class,"descarga"])->name("descarga_lotes");
            Route::get("/reporte_producto",[ProductoController::class,"vistaReporte"])->name("reporte_producto");
            Route::post("/eliminar_producto/{id}",[ProductoController::class,"eliminar"])->name("eliminar_producto");

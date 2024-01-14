@@ -42,7 +42,11 @@
       @endforeach
     </tbody>
   </table>
-  <a href="{{route('descarga_cuentas')}}" id="descarga"  class="material-symbols-outlined icono">download</a>
+  @if ($titulo=="Historico")
+    <a href="{{route('descarga_cuentas')}}" id="descarga"  class="material-symbols-outlined icono">download</a>   
+  @else
+    <a href="{{route('descarga_cuentas_diarias')}}" id="descarga"  class="material-symbols-outlined icono">download</a>    
+  @endif
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>

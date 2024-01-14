@@ -52,12 +52,14 @@ class CuentaController extends Controller
         $fecha=date('Y-m-d');
         $titulo="Diario";
         $cuentas=Cuenta::where('user_id',Auth::user()->id)->where("Fecha",$fecha)->get();
-        return view("detalle_cuenta",["cuentas"=>$cuentas,"titulo"=>$titulo]);
+        $user=User::find(Auth::user()->id);
+        return view("detalle_cuenta",["cuentas"=>$cuentas,"titulo"=>$titulo,"user"=>$user]);
     }
 
     public function DetalleCuenta($id,$fecha){
         $cuentas=Cuenta::all()->where("user_id",$id)->where("Fecha",$fecha);
-     return view("detalle_cuenta",["cuentas"=>$cuentas]);
+        $user=User::find($id);
+     return view("detalle_cuenta",["cuentas"=>$cuentas,"user"=>$user]);
     }
     public function VistaPeriodo(){
         return view("cuentas_periodo");
@@ -88,8 +90,22 @@ class CuentaController extends Controller
         $usuarios=User::all();
         return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo]);
     }
+    public function descarga_diario($user_id){
+        $fecha=date('Y-m-d');
+        $cuentas=Cuenta::where('user_id',$user_id)->where("Fecha",$fecha)->get();
+        $usuarios=User::where('id',$user_id)->get();
+        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_cuentas_diario_pdf",['cuentas'=>$cuentas,'usuarios'=>$usuarios]);
+        return  $pdf->download('reporte_diario.pdf');
+    }
+    public function descarga_cuentas_diarias(){
+        $fecha=date('Y-m-d');
+        $cuentas=Cuenta::where("Fecha",$fecha)->get();
+        $usuarios=User::all();
+        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_cuentas_diario_pdf",['cuentas'=>$cuentas,'usuarios'=>$usuarios]);
+        return  $pdf->download('reporte_diario.pdf');
+    }
     public function descarga(){
-        $consultas=DB::select("SELECT user_id ,Fecha,Detalle , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
+        $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
         $cuentas=[];
         foreach($consultas as $c){
                 array_push($cuentas,$c);
@@ -99,7 +115,7 @@ class CuentaController extends Controller
         return  $pdf->download('reporteCuentas.pdf'); 
     }
     public function descarga_periodo($inicio,$fin){
-        $consultas=DB::select("SELECT user_id ,Fecha,Detalle , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
+        $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
         $cuentas=[];
         $monto=0;
         foreach($consultas as $c){

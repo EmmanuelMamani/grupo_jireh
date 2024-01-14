@@ -14,13 +14,14 @@
   
 <h2>Grupo JIREH</h2>
 
-<h3>Reporte de cuentas historico</h3>
+<h3>Reporte diario</h3>
 <table id="tabla" class="table ">
     <thead>
       <tr>
         <th>Nombre</th>
         <th>Fecha</th>
         <th>Monto</th>
+        <th>Detalle</th>
       </tr>
     </thead>
     <tbody>
@@ -30,7 +31,8 @@
             <tr class="fila">
               <td>{{$usuario->Nombre}}</td>
               <td>{{$cuenta->Fecha}}</td>
-              <td>{{$cuenta->monto}}</td>
+              <td>{{$cuenta->Monto}}</td>
+              <td>{{$cuenta->Detalle}}</td>
             </tr>
           @endif
         @endforeach

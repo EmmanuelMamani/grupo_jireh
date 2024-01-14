@@ -21,7 +21,7 @@
         <th>Nombre</th>
         <th>Fecha</th>
         <th>Monto</th>
-        
+        <th>Detalle</th>
       </tr>
     </thead>
     <tbody>
@@ -32,6 +32,7 @@
               <td>{{$usuario->Nombre}}</td>
               <td>{{$cuenta->Fecha}}</td>
               <td>{{$cuenta->monto}}</td>
+              <td>{{$cuenta->Detalle}}</td>
             </tr>
           @endif
         @endforeach

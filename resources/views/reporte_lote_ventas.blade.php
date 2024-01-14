@@ -24,8 +24,11 @@
         <th>Monto</th>
         <th>Fecha</th>
         <th>Detalle</th>
+        @if (Auth::user()->Rol=="Administrador")
         <th>Devolver</th>
-        <th>Editar</th>
+        <th>Editar</th>  
+        <th>Eliminar</th>  
+        @endif
       </tr>
     </thead>
     <tbody>
@@ -42,9 +45,11 @@
           <td>{{$venta->salida->Total}}</td>
           <td>{{$venta->created_at->format('Y-m-d')}}</td>
           <td><a href="{{route('venta_detalle',['id'=>$venta->id])}}" class="btn btn-secondary">Ver detalle</a></td>
-          <td><a href="{{route("venta_devolucion",['id'=>$venta->id])}}" class="btn btn-secondary">Devolver</a></td>
-          <td><a href="{{route("editar_venta",["id"=>$venta->id])}}" class="btn btn-warning">Editar</a></td>
-          <td><form action="{{route("modificar",['id'=>$venta->id,'tipo'=>2])}}" method="post">@csrf<button class="btn btn-danger">Eliminado</button></form></td>
+          @if (Auth::user()->Rol=="Administrador")
+            <td><a href="{{route("venta_devolucion",['id'=>$venta->id])}}" class="btn btn-secondary">Devolver</a></td>
+            <td><a href="{{route("editar_venta",["id"=>$venta->id])}}" class="btn btn-warning">Editar</a></td>
+            <td><form action="{{route("modificar",['id'=>$venta->id,'tipo'=>2])}}" method="post">@csrf<button class="btn btn-danger">Eliminado</button></form></td>  
+          @endif
         </tr>
       @endforeach
     </tbody>

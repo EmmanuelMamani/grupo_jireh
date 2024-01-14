@@ -86,6 +86,7 @@ h2{
   </tbody>
 </table>
 <h4>El total es de {{$sumatoria}} Bs.</h4>
+<h4>Producto: {{$producto->Nombre}}</h4>
 <style>
   h4{
     margin-left: 2%

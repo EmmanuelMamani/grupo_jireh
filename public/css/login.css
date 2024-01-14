@@ -45,6 +45,8 @@ h3{
 }
 .form-control{
     background-color: #DEBC83;
+    font-size: 18px;
+    padding: 2%;
     border-radius: 0px;
 }
 #sup{

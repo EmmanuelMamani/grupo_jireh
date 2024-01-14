@@ -20,6 +20,7 @@
         <th>#</th>
         <th>Cliente</th>
         <th>Empleado</th>
+        <th>Producto</th>
         <th>Monto</th>
         <th>Fecha</th>
         <th>Detalle</th>
@@ -37,6 +38,7 @@
           <td>{{$venta->cliente->Nombre}}</td>
           @endif
           <td>{{$venta->user->Nombre}}</td>
+          <td>{{$venta->ingreso->producto->Nombre}}</td>
           <td>{{$venta->salida->Total}}</td>
           <td>{{$venta->created_at->format('Y-m-d')}}</td>
           <td><a href="{{route('venta_detalle',['id'=>$venta->id])}}" class="btn btn-secondary">Ver detalle</a></td>

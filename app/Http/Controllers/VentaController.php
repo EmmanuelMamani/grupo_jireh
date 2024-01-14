@@ -268,8 +268,8 @@ class VentaController extends Controller
     public function descarga($id)
     {
         $ventas=Venta::where('ingreso_id',$id)->orderByDesc('id')->get();
-       // $ventas=Venta::orderByDesc("id")->get();
-        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_ventas_pdf",compact('ventas'));
+        $producto= Producto::find($ventas->last()->ingreso->producto_id);
+        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_ventas_pdf",['ventas'=>$ventas,'producto'=>$producto]);
         return  $pdf->download('reporteVentas.pdf');
     }
     public function venta_completa(ventaRequest $request, $id){

@@ -94,5 +94,9 @@
             })
       });
 </script>
-<h3>El total que le deben es {{$total}} Bs.</h3>
+<h3>El total que le deben es {{$total}} Bs.</h3><br>
+<h3>Saldos por Zonas</h3>
+  @foreach ($zonas as $zona)
+      <h4>{{$zona->Nombre}}: {{$zona_saldo[$zona->id]}} Bs</h4>
+  @endforeach
 @endsection

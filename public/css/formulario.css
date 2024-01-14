@@ -75,10 +75,10 @@ background-color: white;
     #calcular{
         padding: 6%;
     }
-    #comprobante,.form-control,.form-select {font-size: 15px;}
+    #comprobante,.form-control,.form-select {font-size: 18px;}
 }
 @media (max-width: 290px){
-    #comprobante,#formulario,.form-control , .form-select{font-size: 10px;}
+    #comprobante,#formulario,.form-control , .form-select{font-size: 12px;}
     #calcular{
         padding: 9%;
     }

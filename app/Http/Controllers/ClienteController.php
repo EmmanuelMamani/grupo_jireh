@@ -50,13 +50,19 @@ class ClienteController extends Controller
 
     public function vistaReporte(){
         $clientes= Cliente::all()->where("Activo",1);
+        $zonas=Zona::all();
+        $zona_saldo = [];
+        foreach($zonas as $zona){
+            $zona_saldo[$zona->id]=0;
+        }
         $total=0;
         foreach ($clientes as $cliente){
             if($cliente->saldos->isNotEmpty()){
                 $total+= $cliente->saldos->last()->Saldo;
+                $zona_saldo[$cliente->zona_id]+= $cliente->saldos->last()->Saldo;
             }
         }
-        return view("reporte_cliente",['clientes'=>$clientes, 'total' =>$total]);
+        return view("reporte_cliente",['clientes'=>$clientes, 'total' =>$total,'zonas'=>$zonas,'zona_saldo'=>$zona_saldo]);
     }
 
     public function vistaEditar($id){

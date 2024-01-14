@@ -30,6 +30,10 @@
     margin-top: 2%;
     cursor: pointer;
 }
+h4{
+    margin-left: 10%;
+    font-weight: 400;
+}
 @media (max-width: 290px){
     #tabla_wrapper, .page-link{
         font-size: 12px;

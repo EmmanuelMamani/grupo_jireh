@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Requests\periodoRequest;
 use App\Http\Requests\devolucionRequest;
 use App\Http\Requests\requestEditVenta;
 use App\Http\Requests\ventaRapidaRequest;
@@ -409,4 +409,41 @@ class VentaController extends Controller
         $salida->save();
         return redirect()->route('reporte_ventas')->with('registrar','ok');
     }
+    public function VistaPeriodo($id){
+        $cliente=Cliente::find($id);
+        return view("ventas_periodo",['cliente'=>$cliente]);
+    }
+    public function ReportePeriodo($id, periodoRequest $request){
+        // Obtén las fechas de inicio y fin del request
+        $fecha_inicio = $request->inicio;
+        $fecha_fin = $request->fin;
+        $cliente = Cliente::find($id);
+        // Convierte las fechas al formato adecuado para comparar con el created_at de la base de datos
+        $fecha_inicio = date('Y-m-d 00:00:00', strtotime($fecha_inicio));
+        $fecha_fin = date('Y-m-d 23:59:59', strtotime($fecha_fin));
+    
+        // Filtra las ventas según las fechas
+        $ventas = Venta::where('cliente_id', $id)
+                        ->where('created_at', '>=', $fecha_inicio)
+                        ->where('created_at', '<=', $fecha_fin)
+                        ->get();
+        return view('reporte_periodo_ventas',['ventas'=>$ventas,'cliente'=>$cliente,'inicio'=>$request->inicio,"fin"=>$request->fin]);
+    } 
+    public function ReportePeriodoPDF($id,$inicio,$fin)
+    {
+        $fecha_inicio = $inicio;
+        $fecha_fin = $fin;
+        $cliente = Cliente::find($id);
+        // Convierte las fechas al formato adecuado para comparar con el created_at de la base de datos
+        $fecha_inicio = date('Y-m-d 00:00:00', strtotime($fecha_inicio));
+        $fecha_fin = date('Y-m-d 23:59:59', strtotime($fecha_fin));
+    
+        // Filtra las ventas según las fechas
+        $ventas = Venta::where('cliente_id', $id)
+                        ->where('created_at', '>=', $fecha_inicio)
+                        ->where('created_at', '<=', $fecha_fin)
+                        ->get();
+        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_ventas_cliente_pdf",['ventas'=>$ventas,'cliente'=>$cliente]);
+        return  $pdf->download('reporteVentas_cliente.pdf');
+    }  
 }

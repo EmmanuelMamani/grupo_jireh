@@ -14,49 +14,30 @@
 <link rel="stylesheet" href="{{asset("css/reporte.css")}}">
 @endsection
 @section("contenido")
-<h3>Reporte de clientes</h3>
+<h3>Reporte de ventas a cliente: {{$cliente->Nombre}}</h3>
 <table id="tabla" class="table ">
     <thead>
       <tr>
         <th>#</th>
-        <th>Nombre</th>
-        <th>Teléfono</th>
-        <th>Deuda</th>
-        <th>Ubicacion</th>
-        <th>Tienda</th>
-        <th>Editar</th>
-        <th>Eliminar</th>
-        <th>Ventas</th>
+        <th>Fecha</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Monto</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($clientes as  $key=>$cliente)
+      @foreach ($ventas as  $key=>$venta)
         <tr class="fila">
-          <td>{{$key+1}}</td>
-          <td>{{$cliente->Nombre}}</td>
-          <td>{{$cliente->Telefono}}</td>
-          @if ($cliente->saldos->isNotEmpty())
-          <td>{{$cliente->saldos->last()->Saldo}}</td>
-          @else
-            <td>0</td>
-          @endif
-          @if ($cliente->direccion_map==NULL)
-            <td>Sin ubicacion</td>
-          @else
-            <td><a href="{{$cliente->direccion_map}}">Direccion</a></td>
-          @endif
-          @if ($cliente->tienda==NULL)
-            <td>Sin tienda</td>
-          @else
-            <td><img src="data:image/jpeg;base64,{{ base64_encode($cliente->tienda) }}" alt="" width="300"></td>
-          @endif
-          <td><a href="{{route("editar_cliente",["id"=>$cliente->id])}}" class="btn btn-warning">Editar</a></td>
-          <td><form class="Eliminar1" action="{{route("eliminar_cliente",["id"=>$cliente->id])}}" method="post" > @csrf <button class="btn btn-danger">Eliminar</button></form></td>
-          <td><a href="{{route("ventas_periodo",["id"=>$cliente->id])}}" class="btn btn-warning">Ventas</a></td>
+            <td>{{$key+1}}</td>
+            <td>{{$venta->created_at}}</td>
+            <td>{{$venta->ingreso->producto->Nombre}}</td>
+            <td>{{$venta->salida->CantMoldes}}</td>
+            <td>{{$venta->salida->Total}} Bs</td>
         </tr>
       @endforeach
     </tbody>
   </table>
+  <a href="{{route('reporte_periodo_ventas_pdf',['id'=>$cliente->id,'inicio'=>$inicio,'fin'=>$fin])}}" id="descarga"  class="material-symbols-outlined icono">download</a>    
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
@@ -96,9 +77,4 @@
             })
       });
 </script>
-<h3>El total que le deben es {{$total}} Bs.</h3><br>
-<h3>Saldos por Zonas</h3>
-  @foreach ($zonas as $zona)
-      <h4>{{$zona->Nombre}}: {{$zona_saldo[$zona->id]}} Bs</h4>
-  @endforeach
 @endsection

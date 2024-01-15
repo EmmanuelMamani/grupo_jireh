@@ -94,6 +94,12 @@ Route::middleware(['auth'])->group(function() {
             Route::post("/registro_empleado",[UserController::class,"registro"])->name("registro_empleado");
             Route::get("/detalle_cuenta/{id}/{fecha}",[CuentaController::class,"DetalleCuenta"])->name("detalle_cuenta");
             Route::get("/cuentas_periodo",[CuentaController::class,"VistaPeriodo"])->name("cuentas_periodo");
+            
+            Route::get("/ventas_periodo/{id}",[VentaController::class,"VistaPeriodo"])->name("ventas_periodo");
+            Route::get("/reporte_periodo_ventas/{id}",[VentaController::class,"ReportePeriodo"])->name("reporte_periodo_ventas");
+            Route::get("/reporte_periodo_ventas_pdf/{id}/{inicio}/{fin}",[VentaController::class,"ReportePeriodoPDF"])->name("reporte_periodo_ventas_pdf");
+
+
             Route::get("/reporte_periodo",[CuentaController::class,"ReportePeriodo"])->name("reporte_periodo");
             Route::get("/reporte_historico",[CuentaController::class,"reporteHistorico"])->name("reporte_historico");
             Route::post("/eliminar_lote/{id}",[IngresoController::class,"Eliminar"])->name("eliminar_lote");

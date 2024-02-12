@@ -37,6 +37,8 @@
     </select>
     <label class="form-label">Monto a pagar:</label>
     <input type="text" name="monto" id="monto" class="form-control"  value="{{old('monto')}}">
+    <label class="form-label">Ver compras:</label><br>
+    <a href="#" class="btn btn-warning" id="compras">Compras</a>
     @if ($errors->has('monto'))
     <span class="error text-danger">{{ $errors->first('monto') }}</span>
     @endif <br>
@@ -87,4 +89,19 @@
        carga.style.visibility="visible";
     }
 </script>
+<script>
+    $('#cliente').change(function(){
+        var nuevoHref = "{{ route('ventas_periodo', ['id' => ':idCliente']) }}"; // Ruta base con marcador de posición
+        var idCliente = $(this).val();
+
+        if(idCliente != ''){
+            nuevoHref = nuevoHref.replace(':idCliente', idCliente); // Reemplazar el marcador de posición con el ID del cliente seleccionado
+        } else {
+            nuevoHref = "#"; // Si no se selecciona ningún cliente, se establece el href a #
+        }
+        
+        $('#compras').attr('href', nuevoHref); // Cambiar el href del enlace
+    });
+</script>
+
 @endsection

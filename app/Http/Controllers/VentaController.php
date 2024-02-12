@@ -427,7 +427,10 @@ class VentaController extends Controller
                         ->where('created_at', '>=', $fecha_inicio)
                         ->where('created_at', '<=', $fecha_fin)
                         ->get();
-        return view('reporte_periodo_ventas',['ventas'=>$ventas,'cliente'=>$cliente,'inicio'=>$request->inicio,"fin"=>$request->fin]);
+        $saldos = Saldo::where('cliente_id', $id)
+                        ->where('created_at', '>=', $fecha_inicio)
+                        ->get();
+        return view('reporte_periodo_ventas',['ventas'=>$ventas,'cliente'=>$cliente,'inicio'=>$request->inicio,"fin"=>$request->fin,"saldos"=>$saldos]);
     } 
     public function ReportePeriodoPDF($id,$inicio,$fin)
     {
@@ -443,7 +446,10 @@ class VentaController extends Controller
                         ->where('created_at', '>=', $fecha_inicio)
                         ->where('created_at', '<=', $fecha_fin)
                         ->get();
-        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_ventas_cliente_pdf",['ventas'=>$ventas,'cliente'=>$cliente]);
+        $saldos = Saldo::where('cliente_id', $id)
+                        ->where('created_at', '>=', $fecha_inicio)
+                        ->get();
+        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_ventas_cliente_pdf",['ventas'=>$ventas,'cliente'=>$cliente,'saldos'=>$saldos]);
         return  $pdf->download('reporteVentas_cliente.pdf');
     }  
 }

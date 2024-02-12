@@ -23,6 +23,7 @@
         <th>Producto</th>
         <th>Cantidad</th>
         <th>Monto</th>
+        <th>Editar</th>
       </tr>
     </thead>
     <tbody>
@@ -33,10 +34,33 @@
             <td>{{$venta->ingreso->producto->Nombre}}</td>
             <td>{{$venta->salida->CantMoldes}}</td>
             <td>{{$venta->salida->Total}} Bs</td>
+            <td><a href="{{route("editar_venta",["id"=>$venta->id])}}" class="btn btn-warning">Editar</a></td>
         </tr>
       @endforeach
     </tbody>
   </table>
+    <table class="tabla">
+        <thead>
+          <tr>
+            <td>#</td>
+            <td>Monto</td>
+            <td>Saldo</td>
+            <td>Detalle</td>
+            <td>Fecha</td>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach ($saldos as $key=>$saldo )
+              <tr>
+                <td>{{$key+1}}</td>
+                <td>{{$saldo->Monto}}</td>
+                <td>{{$saldo->Saldo}}</td>
+                <td>{{$saldo->Detalle}}</td>
+                <td>{{$saldo->created_at}}</td>
+              </tr>
+          @endforeach
+        </tbody>
+    </table>
   <a href="{{route('reporte_periodo_ventas_pdf',['id'=>$cliente->id,'inicio'=>$inicio,'fin'=>$fin])}}" id="descarga"  class="material-symbols-outlined icono">download</a>    
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>

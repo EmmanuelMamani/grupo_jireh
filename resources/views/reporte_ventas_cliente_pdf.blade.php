@@ -79,6 +79,29 @@ h2{
   </tbody>
 </table>
 <h4>El total es de {{$sumatoria}} Bs.</h4>
+<br><br>
+<table class="tabla">
+  <thead>
+    <tr>
+      <td>#</td>
+      <td>Monto</td>
+      <td>Saldo</td>
+      <td>Detalle</td>
+      <td>Fecha</td>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach ($saldos as $key=>$saldo )
+        <tr>
+          <td>{{$key+1}}</td>
+          <td>{{$saldo->Monto}}</td>
+          <td>{{$saldo->Saldo}}</td>
+          <td>{{$saldo->Detalle}}</td>
+          <td>{{$saldo->created_at}}</td>
+        </tr>
+    @endforeach
+  </tbody>
+</table>
 <style>
   h4{
     margin-left: 2%

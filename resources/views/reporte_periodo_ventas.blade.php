@@ -22,6 +22,8 @@
         <th>Fecha</th>
         <th>Producto</th>
         <th>Cantidad</th>
+        <th>Costo Unitario</th>
+        <th>Peso</th>
         <th>Monto</th>
         <th>Editar</th>
       </tr>
@@ -33,6 +35,8 @@
             <td>{{$venta->created_at}}</td>
             <td>{{$venta->ingreso->producto->Nombre}}</td>
             <td>{{$venta->salida->CantMoldes}}</td>
+            <td>{{$venta->salida->Precio}} Bs</td>
+            <td>{{$venta->salida->Peso==''?'0':$venta->salida->Peso}} Kg</td>
             <td>{{$venta->salida->Total}} Bs</td>
             <td><a href="{{route("editar_venta",["id"=>$venta->id])}}" class="btn btn-warning">Editar</a></td>
         </tr>

@@ -15,7 +15,8 @@ class SaldoController extends Controller
 {
     public function vistaRegistro(){
         $clientes=Cliente::all();
-        return view("saldo_pasado",["clientes"=> $clientes]);
+        $zonas=Zona::all();
+        return view("saldo_pasado",["clientes"=> $clientes,"zonas"=>$zonas]);
     }
     
     public function registro(saldoRequest $request){

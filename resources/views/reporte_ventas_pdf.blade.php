@@ -22,6 +22,7 @@
       <th>Cliente</th>
       <th>Empleado</th>
       <th>Unidades</th>
+      <th>Peso</th>
       <th>Monto</th>
       <th>Fecha</th>
     </tr>
@@ -41,6 +42,7 @@
         
         <td>{{$venta->user->Nombre}}</td>
         <td>{{$venta->salida->CantMoldes}}</td>
+        <td>{{$venta->salida->Peso==''?'0':$venta->salida->Peso}} Kg</td>
         <td>{{$venta->salida->Total}}</td>
         <td>{{$venta->created_at->format('Y-m-d')}}</td>
       </tr>

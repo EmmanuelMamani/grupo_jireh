@@ -27,6 +27,7 @@
         <th>Ganancia de ventas</th>
         <th>Unidades vendidas</th>
         <th>Merma</th>
+        <th>Ventas</th>
         <th>Pagar</th>
         <th>Eliminar</th>
         <th>Editar</th>
@@ -55,6 +56,7 @@
           @else
           <td>{{$lote->merma->CantMerma}} Kg</td>
           @endif
+          <td><form action="{{route("reporte_lote_ventas",["id"=>$lote->id])}}" method="get">@csrf <button class="btn btn-warning">Ver Ventas</button></form></td>
           @if ($lote->Pagado == 0)
           <td> <form action="{{route("pagar_lote",["id"=>$lote->id])}}" method="post"> @csrf <button class="btn btn-success">Pagar</button></form></td>
           @else

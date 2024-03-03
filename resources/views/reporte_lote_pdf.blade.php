@@ -71,7 +71,7 @@ table {
 }
   td, th {
     padding: 15px;
-    font-size: 11px;
+    font-size: 9px;
   }
   thead{
     background: rgb(233, 233, 233);

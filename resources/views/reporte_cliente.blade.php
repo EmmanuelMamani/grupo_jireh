@@ -52,7 +52,7 @@
           @endif
           <td><a href="{{route("editar_cliente",["id"=>$cliente->id])}}" class="btn btn-warning">Editar</a></td>
           <td><form class="Eliminar1" action="{{route("eliminar_cliente",["id"=>$cliente->id])}}" method="post" > @csrf <button class="btn btn-danger">Eliminar</button></form></td>
-          <td><a href="{{route("ventas_periodo",["id"=>$cliente->id])}}" class="btn btn-warning">Ventas</a></td>
+          <td><a href="{{route("ventas_periodo",["id"=>$cliente->id])}}" class="btn btn-warning">Kardex</a></td>
         </tr>
       @endforeach
     </tbody>

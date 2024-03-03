@@ -38,7 +38,7 @@
     <label class="form-label">Monto a pagar:</label>
     <input type="text" name="monto" id="monto" class="form-control"  value="{{old('monto')}}">
     <label class="form-label">Ver compras:</label><br>
-    <a href="#" class="btn btn-warning" id="compras">Compras</a>
+    <a href="#" class="btn btn-warning" id="compras">Kardex</a>
     @if ($errors->has('monto'))
     <span class="error text-danger">{{ $errors->first('monto') }}</span>
     @endif <br>

@@ -35,7 +35,11 @@ class PendienteController extends Controller
             if(Saldo::all()->where("cliente_id",$venta->cliente_id)->isNotEmpty()){
              $antiguo=Saldo::all()->where("cliente_id",$venta->cliente_id)->last()->Saldo;
             }
-            $saldo->Saldo=$antiguo - $saldo->Monto;
+            if($venta->salida->al_contado==true){
+                $saldo->Saldo=$antiguo;
+            }else{
+                $saldo->Saldo=$antiguo - $saldo->Monto;
+            }
             $saldo->save();
            }
            else{

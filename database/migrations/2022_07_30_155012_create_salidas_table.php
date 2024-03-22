@@ -19,6 +19,7 @@ class CreateSalidasTable extends Migration
             $table->double('Peso',8,3)->nullable();
             $table->double('Precio',8,2);
             $table->double('Total',8,2);
+            $table->boolean('al_contado')->default(false);
             $table->timestamps();
         });
     }

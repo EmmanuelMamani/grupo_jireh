@@ -58,7 +58,9 @@ class VentaController extends Controller
         }else{
             $salida->Total=round($total,0);
         }
-        
+        if($request->contado){
+            $salida->al_contado=true;
+        }
         $salida->save();
         $venta=new Venta();
         $venta->cliente_id = $request->cliente; 
@@ -112,6 +114,17 @@ class VentaController extends Controller
     
             $saldo->save();
           }else{
+            $saldo=new Saldo();
+            $saldo->Monto=$total;
+            $saldoActual=Saldo::all()->where('cliente_id',$request->cliente)->last();
+            if($saldoActual==""){
+                $saldo->Saldo=0;
+            }else{
+                $saldo->Saldo=$saldoActual->Saldo;
+            }
+            $saldo->Detalle="Pre-Venta al contado";
+            $saldo->cliente_id= $request->cliente;
+            $saldo->save();
             $cuenta=new Cuenta();
             $cuenta->user_id= Auth::user()->id;
             $cuenta->Monto=$salida->Total;

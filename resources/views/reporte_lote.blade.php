@@ -51,10 +51,10 @@
             <td>{{$lote->salidas->sum('Total')-$lote->CantMoldes * $lote->Precio}} Bs</td>
           @endif
           <td>{{$lote->salidas->sum('CantMoldes')}}</td>
-          @if ($lote->merma==null)
+          @if ($lote->producto->Tipo!="Por Kilo" || $lote->CantMoldes - $lote->salidas->sum('CantMoldes')>0)
           <td>Sin merma</td>
           @else
-          <td>{{$lote->merma->CantMerma}} Kg</td>
+          <td>{{$lote->salidas->sum('Peso')}} Kg</td>
           @endif
           <td><form action="{{route("reporte_lote_ventas",["id"=>$lote->id])}}" method="get">@csrf <button class="btn btn-warning">Ver Ventas</button></form></td>
           @if ($lote->Pagado == 0)

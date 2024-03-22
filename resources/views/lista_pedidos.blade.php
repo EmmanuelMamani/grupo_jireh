@@ -19,11 +19,13 @@
         <option value="{{$zona->id}}">{{$zona->Nombre}}</option>
       @endforeach
     </select>
+    <label for="" class="form-label">Buscar Cliente:</label>
+    <input type="text" id="buscar" class="form-control"><br>
     <label>Cliente:</label>
     <select name="cliente" class="form-select" id="cliente">
       <option>Elije un cliente</option>
       @foreach ($clientes as $cliente )
-        <option value="{{$cliente->id}}" @if(old('cliente') == $cliente->id ) selected @endif>{{$cliente->Nombre}}</option>
+        <option class="cliente" value="{{$cliente->id}}" @if(old('cliente') == $cliente->id ) selected @endif>{{$cliente->Nombre}}</option>
       @endforeach
     </select>
     @if ($errors->has('cliente'))
@@ -57,9 +59,24 @@
       cliente.innerHTML="<option>Elije un cliente</option>";
       @foreach ($clientes as $cliente)
           if(zona_id=={{$cliente->zona_id}}){
-              cliente.innerHTML+="<option value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>";
+              cliente.innerHTML+="<option class='cliente' value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>";
           }
       @endforeach
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    $('#buscar').on('input', function() {
+      var textoBuscado = $(this).val().toLowerCase(); // Obtener el texto ingresado y convertirlo a minúsculas
+      $('.cliente').each(function() {
+        var textoOpcion = $(this).text().toLowerCase(); // Obtener el texto de la opción y convertirlo a minúsculas
+        if (textoOpcion.includes(textoBuscado)) {
+          $(this).show(); // Mostrar la opción si coincide con el texto buscado
+        } else {
+          $(this).hide(); // Ocultar la opción si no coincide con el texto buscado
+        }
+      });
+    });
   });
 </script>
 @endsection

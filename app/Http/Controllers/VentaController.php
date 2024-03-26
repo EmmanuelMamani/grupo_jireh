@@ -69,22 +69,6 @@ class VentaController extends Controller
         $venta->salida_id=$salida->id;
         $venta->save();
 
-        $fi=$request->file('comprobante');
-        
-        foreach ($fi as $fil) {
-            $tipo_ext=$fil->getClientOriginalExtension();
-            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
-                $archivo=$fil->getClientOriginalName();
-                $file=Image::fromFile($fil)->resize(300, null);
-    
-                $prueba=new Comprobante();
-                $prueba->venta_id= $venta->id;
-                $prueba->Comprobante=$file;
-                $prueba->save();
-            }
-            
-        }
-
         $asignacion=Asignacion::where('asignado_id',Auth::user()->id)->where('ingreso_id',$request->lote)->get();
         
         $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
@@ -146,6 +130,20 @@ class VentaController extends Controller
                 $merma->CantMerma=$lote->Peso-$lote->salidas->sum("Peso");
                 $merma->save();
             }
+        }
+        $fi=$request->file('comprobante');
+        foreach ($fi as $fil) {
+            $tipo_ext=$fil->getClientOriginalExtension();
+            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
+                $archivo=$fil->getClientOriginalName();
+                $file=Image::fromFile($fil)->resize(300, null);
+    
+                $prueba=new Comprobante();
+                $prueba->venta_id= $venta->id;
+                $prueba->Comprobante=$file;
+                $prueba->save();
+            }
+            
         }
       return redirect()->route('menu')->with('registrar','ok');
     }
@@ -314,22 +312,6 @@ class VentaController extends Controller
         $venta->salida_id=$salida->id;
         $venta->save();
 
-        $fi=$request->file('comprobante');
-        
-        foreach ($fi as $fil) {
-            $tipo_ext=$fil->getClientOriginalExtension();
-            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
-                $archivo=$fil->getClientOriginalName();
-                $file=Image::fromFile($fil)->resize(300, null);
-    
-                $prueba=new Comprobante();
-                $prueba->venta_id= $venta->id;
-                $prueba->Comprobante=$file;
-                $prueba->save();
-            }
-            
-        }
-
         $asignacion=Asignacion::where('asignado_id',Auth::user()->id)->where('ingreso_id',$request->lote)->get();
         
         $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
@@ -372,6 +354,22 @@ class VentaController extends Controller
                 $merma->CantMerma=$lote->Peso-$lote->salidas->sum("Peso");
                 $merma->save();
             }
+        }
+
+        $fi=$request->file('comprobante');
+        
+        foreach ($fi as $fil) {
+            $tipo_ext=$fil->getClientOriginalExtension();
+            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
+                $archivo=$fil->getClientOriginalName();
+                $file=Image::fromFile($fil)->resize(300, null);
+    
+                $prueba=new Comprobante();
+                $prueba->venta_id= $venta->id;
+                $prueba->Comprobante=$file;
+                $prueba->save();
+            }
+            
         }
       return redirect()->route('menu')->with('registrar','ok');
     }

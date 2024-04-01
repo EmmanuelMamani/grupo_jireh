@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function() {
     Route::post("/cambiar_contraseña",[UserController::class,"cambiar_contraseña"])->name("cambiar_contraseña");
     Route::get("/registro_lista",[ListaController::class,"vistaRegistro"])->name("registro_lista");
     Route::post("/registro_lista",[ListaController::class,"Registro"])->name("registro_lista");
+    Route::post("/transferir_lista",[ListaController::class,"transferir"])->name("transferir_lista");
     Route::get("/lista_reporte",[ListaController::class,"reporte"])->name("lista_reporte");
     Route::get("/registro_cliente",[ClienteController::class,"vistaRegistro"])->name("registro_cliente");
     Route::post("registro_cliente",[ClienteController::class,"registro"])->name("registro_cliente");

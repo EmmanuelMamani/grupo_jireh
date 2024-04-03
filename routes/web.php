@@ -68,7 +68,13 @@ Route::middleware(['auth'])->group(function() {
     Route::get("/reporte_venta",[VentaController::class,"vistaReporte"])->name("reporte_ventas");
     Route::get("/reporte_lote_venta/{id}",[VentaController::class,"vistaReporteVentas"])->name("reporte_lote_ventas");
     Route::get("/detalle_venta/{id}",[VentaController::class,"detalle"])->name("venta_detalle");
-    
+    //Acceso temporal
+    Route::get("reporte_cliente",[ClienteController::class,"vistaReporte"])->name("reporte_cliente");
+    Route::get("/editar_cliente/{id}",[ClienteController::class,"vistaEditar"])->name('editar_cliente');
+    Route::post("/editar_cliente/{id}",[ClienteController::class,'editar'])->name('editar_cliente');
+    Route::get("/ventas_periodo/{id}",[VentaController::class,"VistaPeriodo"])->name("ventas_periodo");
+    Route::get("/reporte_periodo_ventas/{id}",[VentaController::class,"ReportePeriodo"])->name("reporte_periodo_ventas");
+    Route::get("/reporte_periodo_ventas_pdf/{id}/{inicio}/{fin}",[VentaController::class,"ReportePeriodoPDF"])->name("reporte_periodo_ventas_pdf");
     Route::middleware(['rol'])->group(function(){
             //rutas para usuario administrador
             Route::get("/editar_venta/{id}",[VentaController::class,"vistaEditar"])->name("editar_venta");
@@ -76,14 +82,12 @@ Route::middleware(['auth'])->group(function() {
             Route::get("/editar_lote/{id}",[IngresoController::class,"vistaEditar"])->name("editar_lote");
             Route::post("/editar_lote/{id}",[IngresoController::class,"Editar"])->name("editar_lote");
             Route::post("/eliminar_cliente/{id}",[ClienteController::class,"eliminar"])->name("eliminar_cliente");
-            Route::get("/editar_cliente/{id}",[ClienteController::class,"vistaEditar"])->name('editar_cliente');
-            Route::post("/editar_cliente/{id}",[ClienteController::class,'editar'])->name('editar_cliente');
+            
             Route::post("/eliminar_empleado/{id}",[UserController::class,"eliminar"])->name("eliminar_empleado");
             Route::get("/reporte_empleados",[UserController::class,"vistaReporte"])->name("reporte_empleados");
             Route::get("/reporte_lote",[IngresoController::class,"vistaReporte"])->name("reporte_lotes");
             Route::get("/registro_zona",[ZonaController::class,"vistaRegistro"])->name("registro_zona");
             Route::post("registro_zona",[ZonaController::class,"registro"])->name("registro_zona");
-            Route::get("reporte_cliente",[ClienteController::class,"vistaReporte"])->name("reporte_cliente");
             Route::get("saldo_pasado",[SaldoController::class,"vistaRegistro"])->name("saldo_pasado");
             Route::post("saldo_pasado",[SaldoController::class,"registro"])->name("saldo_pasado");
             Route::get("/registro_producto",[ProductoController::class,"vistaRegistro"])->name("registro_producto");
@@ -96,10 +100,7 @@ Route::middleware(['auth'])->group(function() {
             Route::get("/detalle_cuenta/{id}/{fecha}",[CuentaController::class,"DetalleCuenta"])->name("detalle_cuenta");
             Route::get("/cuentas_periodo",[CuentaController::class,"VistaPeriodo"])->name("cuentas_periodo");
             
-            Route::get("/ventas_periodo/{id}",[VentaController::class,"VistaPeriodo"])->name("ventas_periodo");
-            Route::get("/reporte_periodo_ventas/{id}",[VentaController::class,"ReportePeriodo"])->name("reporte_periodo_ventas");
-            Route::get("/reporte_periodo_ventas_pdf/{id}/{inicio}/{fin}",[VentaController::class,"ReportePeriodoPDF"])->name("reporte_periodo_ventas_pdf");
-
+            
 
             Route::get("/reporte_periodo",[CuentaController::class,"ReportePeriodo"])->name("reporte_periodo");
             Route::get("/reporte_historico",[CuentaController::class,"reporteHistorico"])->name("reporte_historico");

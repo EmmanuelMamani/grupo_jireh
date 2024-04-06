@@ -18,7 +18,7 @@ class ListaController extends Controller
     //
     public function VistaRegistro(){
         $zonas=Zona::all();
-        $clientes=Cliente::all();
+        $clientes=Cliente::all()->where('Activo',1);
         $productos=Producto::all();
         return view("lista_pedidos",["zonas"=>$zonas,"clientes"=>$clientes,"productos"=>$productos]);
     }

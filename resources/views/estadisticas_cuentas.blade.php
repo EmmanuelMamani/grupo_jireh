@@ -64,7 +64,7 @@
           curve: 'straight'
         },
         title: {
-          text: 'Product Trends by Month',
+          text: 'Sumatoria de gastos mensuales',
           align: 'left'
         },
         grid: {

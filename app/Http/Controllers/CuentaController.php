@@ -16,7 +16,74 @@ class CuentaController extends Controller
     public function vistaRegistro(){
         return view("registro_gasto");
     }
-    
+    public function estadisticas(){
+        $results = DB::select("SELECT 
+            meses.año,
+            meses.mes,
+            COALESCE(almuerzo.gasto_mensual, 0) AS almuerzo,
+            COALESCE(desayuno.gasto_mensual, 0) AS desayuno,
+            COALESCE(gasolina.gasto_mensual, 0) AS gasolina,
+            COALESCE(diesel.gasto_mensual, 0) AS diesel,
+            COALESCE(transporte.gasto_mensual, 0) AS transporte,
+            COALESCE(cambio_aceite.gasto_mensual, 0) AS aceite
+        FROM 
+            (SELECT DISTINCT YEAR(Fecha) AS año, MONTH(Fecha) AS mes FROM cuentas) AS meses
+        LEFT JOIN
+            (SELECT 
+                YEAR(Fecha) AS año,
+                MONTH(Fecha) AS mes,
+                SUM(ABS(Monto)) AS gasto_mensual
+            FROM cuentas
+            WHERE LOWER(detalle) LIKE '%almuerzo%'
+            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS almuerzo
+        ON meses.año = almuerzo.año AND meses.mes = almuerzo.mes
+        LEFT JOIN
+            (SELECT 
+                YEAR(Fecha) AS año,
+                MONTH(Fecha) AS mes,
+                SUM(ABS(Monto)) AS gasto_mensual
+            FROM cuentas
+            WHERE LOWER(detalle) LIKE '%desayuno%'
+            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS desayuno
+        ON meses.año = desayuno.año AND meses.mes = desayuno.mes
+        LEFT JOIN
+            (SELECT 
+                YEAR(Fecha) AS año,
+                MONTH(Fecha) AS mes,
+                SUM(ABS(Monto)) AS gasto_mensual
+            FROM cuentas
+            WHERE LOWER(detalle) LIKE '%gasolina%'
+            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS gasolina
+        ON meses.año = gasolina.año AND meses.mes = gasolina.mes
+        LEFT JOIN
+            (SELECT 
+                YEAR(Fecha) AS año,
+                MONTH(Fecha) AS mes,
+                SUM(ABS(Monto)) AS gasto_mensual
+            FROM cuentas
+            WHERE LOWER(detalle) LIKE '%diesel%'
+            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS diesel
+        ON meses.año = diesel.año AND meses.mes = diesel.mes
+        LEFT JOIN
+            (SELECT 
+                YEAR(Fecha) AS año,
+                MONTH(Fecha) AS mes,
+                SUM(ABS(Monto)) AS gasto_mensual
+            FROM cuentas
+            WHERE LOWER(detalle) LIKE '%transporte%'
+            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS transporte
+        ON meses.año = transporte.año AND meses.mes = transporte.mes
+        LEFT JOIN
+            (SELECT 
+                YEAR(Fecha) AS año,
+                MONTH(Fecha) AS mes,
+                SUM(ABS(Monto)) AS gasto_mensual
+            FROM cuentas
+            WHERE LOWER(detalle) LIKE '%cambio aceite%'
+            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS cambio_aceite
+        ON meses.año = cambio_aceite.año AND meses.mes = cambio_aceite.mes");
+        return view("estadisticas_cuentas",['results'=>$results]);
+    }
     public function registro(cuentaRequest $request){
         $cuenta=new Cuenta();
         $usuario= Auth::user();

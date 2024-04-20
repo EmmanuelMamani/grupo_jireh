@@ -33,6 +33,10 @@
             <span class="funciones col-8">Zonas</span>
             <span class="material-symbols-outlined icono col">map</span>
         </a>
+        <a href="/estadisticas_cuentas" class="opcion row">
+            <span class="funciones col-8">estadisticas</span>
+            <span class="material-symbols-outlined icono col">analytics</span>
+        </a>
     @endif
     <a class="opcion row" href="/venta">
         <span class="funciones col-8">Pre-Venta</span>

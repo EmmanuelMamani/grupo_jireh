@@ -95,6 +95,7 @@ Route::middleware(['auth'])->group(function() {
             Route::get("/registro_lote",[IngresoController::class,"vistaRegistro"])->name("registro_lote");
             Route::post("registro_lote",[IngresoController::class,"registro"])->name("registro_lote");
             Route::get("reporte_cuenta",[CuentaController::class,"vistaReporte"])->name("reporte_cuenta");
+            Route::get("estadisticas_cuentas",[CuentaController::class,"estadisticas"])->name("estadisticas_cuentas");
             Route::get("/registro_empleado",[UserController::class,"vistaRegistro"])->name("registro_empleado");
             Route::post("/registro_empleado",[UserController::class,"registro"])->name("registro_empleado");
             Route::get("/detalle_cuenta/{id}/{fecha}",[CuentaController::class,"DetalleCuenta"])->name("detalle_cuenta");

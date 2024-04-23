@@ -19,6 +19,7 @@
     <thead>
       <tr>
         <th>#</th>
+        <th>Vendedor</th>
         <th>Fecha</th>
         <th>Producto</th>
         <th>Cantidad</th>
@@ -32,6 +33,7 @@
       @foreach ($ventas as  $key=>$venta)
         <tr class="fila">
             <td>{{$key+1}}</td>
+            <td>{{$venta->user->Nombre}}</td>
             <td>{{$venta->created_at}}</td>
             <td>{{$venta->ingreso->producto->Nombre}}</td>
             <td>{{$venta->salida->CantMoldes}}</td>

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class SaldoController extends Controller
 {
     public function vistaRegistro(){
-        $clientes=Cliente::all();
+        $clientes=Cliente::all()->where('Activo',1);
         $zonas=Zona::all();
         return view("saldo_pasado",["clientes"=> $clientes,"zonas"=>$zonas]);
     }

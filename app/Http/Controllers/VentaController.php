@@ -22,7 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Nette\Utils\Image;
 use PDF;
-
+use Illuminate\Support\Facades\DB;
 
 class VentaController extends Controller
 {
@@ -38,113 +38,122 @@ class VentaController extends Controller
     }
     
     public function registro(ventaRequest $request){
-
-        $salida=new Salida();
-        $salida->CantMoldes=$request->cantidad_moldes;
-        $salida->Peso=$request->peso;
-        $salida->Precio=$request->precio;
-        $total=0;
-        $tipo=Producto::all()->where('id',$request->producto)->last()->Tipo;
-        
-        
-        if($tipo=="Por Kilo"){
-            $total=$request->peso*$request->precio;
-        }else{
-            $total=$request->precio*$request->cantidad_moldes;
-        }
-        
-        if($request->tipo==0){
-            $salida->Total=round($total,2);
-        }else{
-            $salida->Total=round($total,0);
-        }
-        if($request->contado){
-            $salida->al_contado=true;
-        }
-        $salida->save();
-        $venta=new Venta();
-        $venta->cliente_id = $request->cliente; 
-        $venta->user_id=Auth::user()->id;
-        $venta->ingreso_id=$request->lote;
-        $venta->salida_id=$salida->id;
-        $venta->save();
-
-        $asignacion=Asignacion::where('asignado_id',Auth::user()->id)->where('ingreso_id',$request->lote)->get();
-        
-        $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
-        $asignacion[0]->save();
-        
-        if($request->contado==0){
-            $saldo=new Saldo();
-            $saldo->Monto=$total;
-            $saldoActual=Saldo::all()->where('cliente_id',$request->cliente)->last();
-           
-            if($saldoActual==""){
-                $saldo->Saldo=$total;
+        DB::beginTransaction();
+        try {
+            $salida=new Salida();
+            $salida->CantMoldes=$request->cantidad_moldes;
+            $salida->Peso=$request->peso;
+            $salida->Precio=$request->precio;
+            $total=0;
+            $tipo=Producto::all()->where('id',$request->producto)->last()->Tipo;
+            
+            
+            if($tipo=="Por Kilo"){
+                $total=$request->peso*$request->precio;
             }else{
-                $saldo->Saldo=$saldoActual->Saldo + $total;
-            }
-            if($request->acuenta>0){
-                $saldo->Saldo-=$request->acuenta;
-                $cuenta=new Cuenta();
-                $cuenta->user_id= Auth::user()->id;
-                $cuenta->Monto=$request->acuenta;
-                $cuenta->Detalle="Dinero a cuenta por venta";
-                $cuenta->Fecha=date("Y-m-d");
-                $cuenta->save();
-            }
-            $saldo->Detalle="Pre-Venta";
-            $saldo->cliente_id= $request->cliente;
-    
-            $saldo->save();
-          }else{
-            $saldo=new Saldo();
-            $saldo->Monto=$total;
-            $saldoActual=Saldo::all()->where('cliente_id',$request->cliente)->last();
-            if($saldoActual==""){
-                $saldo->Saldo=0;
-            }else{
-                $saldo->Saldo=$saldoActual->Saldo;
-            }
-            $saldo->Detalle="Pre-Venta al contado";
-            $saldo->cliente_id= $request->cliente;
-            $saldo->save();
-            $cuenta=new Cuenta();
-            $cuenta->user_id= Auth::user()->id;
-            $cuenta->Monto=$salida->Total;
-            $cuenta->Detalle="Venta al contado";
-            $cuenta->Fecha=date("Y-m-d");
-            $cuenta->save();
-          }
-        
-        $lote=Ingreso::firstWhere('id',$request->lote);
-       
-        if($tipo=="Por Kilo"){
-            $cantidad_saliente=$lote->salidas->sum('CantMoldes');
-        
-           
-            if(($cantidad_saliente-$lote->CantMoldes)==0){
-                
-                $merma=new Merma();
-                $merma->ingreso_id=$request->lote;
-                $merma->CantMerma=$lote->Peso-$lote->salidas->sum("Peso");
-                $merma->save();
-            }
-        }
-        $fi=$request->file('comprobante');
-        foreach ($fi as $fil) {
-            $tipo_ext=$fil->getClientOriginalExtension();
-            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
-                $archivo=$fil->getClientOriginalName();
-                $file=Image::fromFile($fil)->resize(300, null);
-    
-                $prueba=new Comprobante();
-                $prueba->venta_id= $venta->id;
-                $prueba->Comprobante=$file;
-                $prueba->save();
+                $total=$request->precio*$request->cantidad_moldes;
             }
             
+            if($request->tipo==0){
+                //sin redondear total
+                $salida->Total=round($total,2);
+            }else{
+                //redondeando total
+                $salida->Total=round($total,0);
+            }
+            if($request->contado){
+                $salida->al_contado=true;
+            }
+            $salida->save();
+            $venta=new Venta();
+            $venta->cliente_id = $request->cliente; 
+            $venta->user_id=Auth::user()->id;
+            $venta->ingreso_id=$request->lote;
+            $venta->salida_id=$salida->id;
+            $venta->save();
+    
+            $asignacion=Asignacion::where('asignado_id',Auth::user()->id)->where('ingreso_id',$request->lote)->get();
+            
+            $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
+            $asignacion[0]->save();
+            
+            if($request->contado==0){
+                $saldo=new Saldo();
+                $saldo->Monto=$total;
+                $saldoActual=Saldo::all()->where('cliente_id',$request->cliente)->last();
+               
+                if($saldoActual==""){
+                    $saldo->Saldo=$total;
+                }else{
+                    $saldo->Saldo=$saldoActual->Saldo + $total;
+                }
+                if($request->acuenta>0){
+                    $saldo->Saldo-=$request->acuenta;
+                    $cuenta=new Cuenta();
+                    $cuenta->user_id= Auth::user()->id;
+                    $cuenta->Monto=$request->acuenta;
+                    $cuenta->Detalle="Dinero a cuenta por venta";
+                    $cuenta->Fecha=date("Y-m-d");
+                    $cuenta->save();
+                }
+                $saldo->Detalle="Pre-Venta";
+                $saldo->cliente_id= $request->cliente;
+        
+                $saldo->save();
+            }else{
+                $saldo=new Saldo();
+                $saldo->Monto=$total;
+                $saldoActual=Saldo::all()->where('cliente_id',$request->cliente)->last();
+                if($saldoActual==""){
+                    $saldo->Saldo=0;
+                }else{
+                    $saldo->Saldo=$saldoActual->Saldo;
+                }
+                $saldo->Detalle="Pre-Venta al contado";
+                $saldo->cliente_id= $request->cliente;
+                $saldo->save();
+                $cuenta=new Cuenta();
+                $cuenta->user_id= Auth::user()->id;
+                $cuenta->Monto=$salida->Total;
+                $cuenta->Detalle="Venta al contado";
+                $cuenta->Fecha=date("Y-m-d");
+                $cuenta->save();
+              }
+            
+            $lote=Ingreso::firstWhere('id',$request->lote);
+           
+            if($tipo=="Por Kilo"){
+                $cantidad_saliente=$lote->salidas->sum('CantMoldes');
+            
+               
+                if(($cantidad_saliente-$lote->CantMoldes)==0){
+                    
+                    $merma=new Merma();
+                    $merma->ingreso_id=$request->lote;
+                    $merma->CantMerma=$lote->Peso-$lote->salidas->sum("Peso");
+                    $merma->save();
+                }
+            }
+            $fi=$request->file('comprobante');
+            foreach ($fi as $fil) {
+                $tipo_ext=$fil->getClientOriginalExtension();
+                if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
+                    $archivo=$fil->getClientOriginalName();
+                    $file=Image::fromFile($fil)->resize(300, null);
+        
+                    $prueba=new Comprobante();
+                    $prueba->venta_id= $venta->id;
+                    $prueba->Comprobante=$file;
+                    $prueba->save();
+                }
+                
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack(); 
+            throw $e; 
         }
+        
       return redirect()->route('menu')->with('registrar','ok');
     }
     public function vistaRegistroRapido(){

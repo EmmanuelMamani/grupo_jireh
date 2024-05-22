@@ -49,7 +49,7 @@
           @if ($cliente->tienda==NULL)
             <td>Sin tienda</td>
           @else
-            <td><img src="data:image/jpeg;base64,{{ base64_encode($cliente->tienda) }}" alt="" width="300"></td>
+            <!--<td><img src="data:image/jpeg;base64,{{ /* base64_encode($cliente->tienda)*/ }}" alt="" width="300"></td>-->
           @endif
           <td><a href="{{route("editar_cliente",["id"=>$cliente->id])}}" class="btn btn-warning">Editar</a></td>
           <td><form class="Eliminar1" action="{{route("eliminar_cliente",["id"=>$cliente->id])}}" method="post" > @csrf <button class="btn btn-danger">Eliminar</button></form></td>

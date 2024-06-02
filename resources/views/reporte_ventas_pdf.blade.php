@@ -25,7 +25,6 @@
       <th>Peso</th>
       <th>Costo U.</th>
       <th>Monto</th>
-      <th>Fecha</th>
     </tr>
   </thead>
   <tbody>
@@ -47,7 +46,6 @@
         <td>{{$venta->salida->Peso==''?'0':$venta->salida->Peso}} Kg</td>
         <td>{{$venta->salida->Precio}} Bs</td>
         <td>{{$venta->salida->Total}}</td>
-        <td>{{$venta->created_at->format('Y-m-d')}}</td>
       </tr>
       @php
         $sumatoria+=$venta->salida->Total;
@@ -96,13 +94,13 @@ h2{
       <td></td>
       <td></td>
       <td>{{$sumatoria}} Bs.</td>
-      <td></td>
     </tr>
   </tbody>
 </table>
 <h4>Producto: {{$producto->Nombre}}</h4>
 <h4>Proveedor: {{$lote->Proveedor}}</h4>
 <h4>Moldes del Lote: {{$lote->CantMoldes}}</h4>
+<h4>Entrega del lote{{$lote->created_at->format('Y-m-d')}}</h4>
 <style>
   h4{
     margin-left: 2%

@@ -21,9 +21,9 @@
       <th>#</th>
       <th>Cliente</th>
       <th>Empleado</th>
-      <th>Unidades</th>
+      <th>Unid.</th>
       <th>Peso</th>
-      <th>Costo Unitario</th>
+      <th>Costo U.</th>
       <th>Monto</th>
       <th>Fecha</th>
     </tr>
@@ -50,6 +50,7 @@
       </tr>
       @php
         $sumatoria+=$venta->salida->Total;
+        $sum_moldes+=$venta->salida->CantMoldes;
       @endphp
     @endforeach
     <style>
@@ -91,6 +92,9 @@ h2{
 </table>
 <h4>El total es de {{$sumatoria}} Bs.</h4>
 <h4>Producto: {{$producto->Nombre}}</h4>
+<h4>Proveedor: {{$lote->Proveedor}}</h4>
+<h4>Moldes del Lote: {{$lote->CantMoldes}}</h4>
+<h4>Moldes vendidos: {{$sum_moldes}}</h4>
 <style>
   h4{
     margin-left: 2%

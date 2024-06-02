@@ -289,7 +289,8 @@ class VentaController extends Controller
     {
         $ventas=Venta::where('ingreso_id',$id)->orderByDesc('id')->get();
         $producto= Producto::find($ventas->last()->ingreso->producto_id);
-        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_ventas_pdf",['ventas'=>$ventas,'producto'=>$producto]);
+        $lote= Ingreso::find($ventas->last()->ingreso_id);
+        $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_ventas_pdf",['ventas'=>$ventas,'producto'=>$producto,'lote'=>$lote]);
         return  $pdf->download('reporteVentas.pdf');
     }
     public function venta_completa(ventaRequest $request, $id){

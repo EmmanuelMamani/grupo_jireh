@@ -100,7 +100,7 @@ h2{
 <h4>Producto: {{$producto->Nombre}}</h4>
 <h4>Proveedor: {{$lote->Proveedor}}</h4>
 <h4>Moldes del Lote: {{$lote->CantMoldes}}</h4>
-<h4>Entrega del lote{{$lote->created_at->format('Y-m-d')}}</h4>
+<h4>Entrega del lote: {{$lote->created_at->format('Y-m-d')}}</h4>
 <style>
   h4{
     margin-left: 2%

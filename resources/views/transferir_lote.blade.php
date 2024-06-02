@@ -14,7 +14,7 @@
     <select name="lote" id="lote" class="form-select">
         @foreach ($asignaciones as $asignacion )
             @if ($asignacion->ingreso->Activo == 1)
-            <option value="{{$asignacion->id}}">{{$asignacion->ingreso->Proveedor}} {{$asignacion->ingreso->created_at->format('Y-m-d')}} Producto:{{$asignacion->ingreso->producto->Nombre}} Unidades:{{$asignacion->CantMoldes}} </option>
+            <option value="{{$asignacion->id}}">{{$asignacion->ingreso->Proveedor}} {{$asignacion->ingreso->created_at->format('Y-m-d')}} Producto:{{$asignacion->ingreso->producto->Nombre}} Lote: {{$asignacion->ingreso->CantMoldes}} Unidades:{{$asignacion->CantMoldes}} </option>
             @endif
         @endforeach
     </select>
@@ -42,7 +42,7 @@
             alerta.innerHTML="No hay lotes para transferir"
             e.preventDefault();
         }else{
-            var almacen=parseInt(lote.options[lote.selectedIndex].text.split(":")[2])
+            var almacen=parseInt(lote.options[lote.selectedIndex].text.split(":")[3])
         if(moldes.value.match('^[0-9]+$')!=null){
             if(almacen-parseInt(moldes.value)<0){
                 alerta.innerHTML="No cuentas con esa cantidad de moldes"

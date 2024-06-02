@@ -88,14 +88,21 @@ h2{
 }
 
     </style>
-    
+    <tr>
+      <td></td>
+      <td>Totales:</td>
+      <td></td>
+      <td>{{$sum_moldes}}</td>
+      <td></td>
+      <td></td>
+      <td>{{$sumatoria}} Bs.</td>
+      <td></td>
+    </tr>
   </tbody>
 </table>
-<h4>El total es de {{$sumatoria}} Bs.</h4>
 <h4>Producto: {{$producto->Nombre}}</h4>
 <h4>Proveedor: {{$lote->Proveedor}}</h4>
 <h4>Moldes del Lote: {{$lote->CantMoldes}}</h4>
-<h4>Moldes vendidos: {{$sum_moldes}}</h4>
 <style>
   h4{
     margin-left: 2%

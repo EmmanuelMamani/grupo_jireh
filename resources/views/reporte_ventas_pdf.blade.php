@@ -31,6 +31,7 @@
   <tbody>
     @php
       $sumatoria=0;
+      $sum_moldes=0;
     @endphp
     @foreach ($ventas as $key=>$venta)
       <tr class="fila">

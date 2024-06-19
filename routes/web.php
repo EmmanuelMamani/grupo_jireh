@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get("/detalle_venta/{id}",[VentaController::class,"detalle"])->name("venta_detalle");
     //Acceso temporal
     Route::get("reporte_cliente",[ClienteController::class,"vistaReporte"])->name("reporte_cliente");
+    Route::get("ver_tienda/{id}",[ClienteController::class,"ver_tienda"])->name("ver_tienda");
     Route::get("/editar_cliente/{id}",[ClienteController::class,"vistaEditar"])->name('editar_cliente');
     Route::post("/editar_cliente/{id}",[ClienteController::class,'editar'])->name('editar_cliente');
     Route::get("/ventas_periodo/{id}",[VentaController::class,"VistaPeriodo"])->name("ventas_periodo");

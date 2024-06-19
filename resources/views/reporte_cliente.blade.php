@@ -49,7 +49,9 @@
           @if ($cliente->tienda==NULL)
             <td>Sin tienda</td>
           @else
-            <td>Con tienda</td>
+            <td>
+              <a href="{{route('ver_tienda',["id"=>$cliente->id])}}" class="btn btn-warning">Tienda</a>
+            </td>
           @endif
           <td><a href="{{route("editar_cliente",["id"=>$cliente->id])}}" class="btn btn-warning">Editar</a></td>
           <td><form class="Eliminar1" action="{{route("eliminar_cliente",["id"=>$cliente->id])}}" method="post" > @csrf <button class="btn btn-danger">Eliminar</button></form></td>

@@ -104,5 +104,8 @@ class ClienteController extends Controller
         return redirect()->route('reporte_cliente')->with('editar', 'ok');
     }
     
-
+    public function ver_tienda($id){
+        $cliente = Cliente::find($id);
+        return view('ver_tienda',['cliente'=>$cliente]);
+    }
 }

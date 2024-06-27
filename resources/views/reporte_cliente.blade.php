@@ -46,7 +46,7 @@
           @else
             <td><a href="{{$cliente->direccion_map}}">Direccion</a></td>
           @endif
-          @if ($cliente->tienda==NULL)
+          @if ($cliente->getTienda=='no')
             <td>Sin tienda</td>
           @else
             <td>

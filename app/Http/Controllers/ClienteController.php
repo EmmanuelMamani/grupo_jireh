@@ -93,20 +93,11 @@ class ClienteController extends Controller
     
         if ($request->hasFile('tienda')) {
             $imagen = $request->file('tienda');
-        
-            // Verifica si la extensión es válida (opcional)
-            $tipo_ext = $imagen->getClientOriginalExtension();
-            if (in_array($tipo_ext, ['jpeg', 'jpg', 'png', 'gif', 'svg'])) {
-                // Limpia el nombre del archivo para eliminar caracteres nulos
-                $nombreArchivo = str_replace("\0", '', $imagen->getClientOriginalName());
-        
-                // Lee el contenido binario de la imagen
-                $imagenBinaria = file_get_contents($imagen->getRealPath());
-                $cliente->tienda = $imagenBinaria;
-            } else {
-                // Si la extensión no es válida, puedes manejarlo aquí
-                // Por ejemplo, mostrar un mensaje de error o realizar otra acción
-                return redirect()->back()->with('error', 'Formato de imagen no válido');
+            $tipo_ext=$imagen->getClientOriginalExtension();
+            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
+                $archivo=$imagen->getClientOriginalName();
+                $file=Image::fromFile($imagen)->resize(300, null);
+                $cliente->tienda=$file;
             }
         }
     

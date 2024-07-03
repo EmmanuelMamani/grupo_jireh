@@ -189,6 +189,9 @@
     </div>
     <label class="form-label">Dinero a cuenta:</label>
     <input type="text" name="acuenta" class="form-control"  value="0.00">
+    @if ($errors->has('acuenta'))
+        <span class="error text-danger" for="acuenta">{{ $errors->first('acuenta') }}</span>
+    @endif  
     <label class="form-label">Comprobante:</label>
     <input type="file" name="comprobante[]" id="comprobante" class="form-control" multiple="">
     @if ($errors->has('comprobante'))

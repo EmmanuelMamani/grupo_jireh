@@ -50,10 +50,15 @@ class VentaController extends Controller
             
             if($tipo=="Por Kilo"){
                 $total=$request->peso*$request->precio;
+                
             }else{
                 $total=$request->precio*$request->cantidad_moldes;
             }
-            
+            if($request->acuenta>$total){
+                return redirect()->back()
+                        ->withErrors(['acuenta' => 'El dinero a cuenta no puede ser mayor que el total.'])
+                        ->withInput();
+            }
             if($request->tipo==0){
                 //sin redondear total
                 $salida->Total=round($total,2);

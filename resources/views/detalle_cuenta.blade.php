@@ -33,7 +33,7 @@
                 <td>{{$user->Nombre}}</td>
                 <td>{{$cuenta->Monto}}</td>
                 <td>{{$cuenta->Detalle}}</td>
-                <td>{{$cuenta->Fecha}}</td>
+                <td>{{$cuenta->Fecha->format('d-m-Y')}}</td>
             </tr>
         @endforeach 
     </tbody>

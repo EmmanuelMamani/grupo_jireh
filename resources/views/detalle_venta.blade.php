@@ -8,7 +8,7 @@
 @section("contenido")
 <div id="formulario">
     <h3>Detalle</h3>
-    <span>Fecha : {{$venta->created_at->format('Y-m-d')}}</span><br>
+    <span>Fecha : {{$venta->created_at->format('d-m-Y')}}</span><br>
     @if ($venta->cliente==null)
     <span>Cliente : Sin nombre</span><br>
     @else

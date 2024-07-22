@@ -43,7 +43,7 @@
           <td>{{$venta->user->Nombre}}</td>
           <td>{{$venta->ingreso->producto->Nombre}}</td>
           <td>{{$venta->salida->Total}}</td>
-          <td>{{$venta->created_at->format('Y-m-d')}}</td>
+          <td>{{$venta->created_at->->format('d-m-Y')}}</td>
           <td><a href="{{route('venta_detalle',['id'=>$venta->id])}}" class="btn btn-secondary">Ver detalle</a></td>
           @if (Auth::user()->Rol=="Administrador")
             <td><a href="{{route("venta_devolucion",['id'=>$venta->id])}}" class="btn btn-secondary">Devolver</a></td>

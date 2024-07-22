@@ -34,7 +34,7 @@
         <tr class="fila">
             <td>{{$key+1}}</td>
             <td>{{$venta->user->Nombre}}</td>
-            <td>{{$venta->created_at}}</td>
+            <td>{{$venta->created_at->format('d-m-Y')}}</td>
             <td>{{$venta->ingreso->producto->Nombre}}</td>
             <td>{{$venta->salida->CantMoldes}}</td>
             <td>{{$venta->salida->Precio}} Bs</td>

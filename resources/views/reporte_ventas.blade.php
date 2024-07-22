@@ -32,7 +32,7 @@
           <td>{{$key+1}}</td>
           <td>{{$lote->Proveedor}}</td>
           <td>{{$lote->producto->Nombre}} {{$lote->producto->Tipo}}</td>
-          <td>{{$lote->created_at->->format('d-m-Y')}}</td>
+          <td>{{$lote->created_at->format('d-m-Y')}}</td>
           <td>{{$lote->CantMoldes}}</td>
           <td>{{$lote->salidas->sum('CantMoldes')}}</td>
          

@@ -29,7 +29,7 @@
           @if ($usuario->id == $cuenta->user_id)
             <tr class="fila">
               <td>{{$usuario->Nombre}}</td>
-              <td>{{$cuenta->created_at->format('d-m-Y')}}</td>
+              <td>{{ \DateTime::createFromFormat('Y-m-d', $cuenta->Fecha)->format('d-m-Y') }}</td>
               <td>{{$cuenta->monto}}</td>
             </tr>
           @endif

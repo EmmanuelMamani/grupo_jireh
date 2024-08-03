@@ -31,6 +31,7 @@
     @php
       $sumatoria=0;
       $sum_moldes=0;
+      $sum_peso=0;
     @endphp
     @foreach ($ventas as $key=>$venta)
       <tr class="fila">
@@ -45,11 +46,12 @@
         <td>{{$venta->salida->CantMoldes}}</td>
         <td>{{$venta->salida->Peso==''?'0':$venta->salida->Peso}} Kg</td>
         <td>{{$venta->salida->Precio}} Bs</td>
-        <td>{{$venta->salida->Total}}</td>
+        <td>{{$venta->salida->Total}} Bs</td>
       </tr>
       @php
         $sumatoria+=$venta->salida->Total;
         $sum_moldes+=$venta->salida->CantMoldes;
+        $sum_peso+=$venta->salida->Peso;
       @endphp
     @endforeach
     <style>
@@ -91,7 +93,7 @@ h2{
       <td>Totales:</td>
       <td></td>
       <td>{{$sum_moldes}}</td>
-      <td></td>
+      <td>{{$sum_peso}} Kg.</td>
       <td></td>
       <td>{{$sumatoria}} Bs.</td>
     </tr>

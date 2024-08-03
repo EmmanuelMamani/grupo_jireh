@@ -77,37 +77,51 @@
   <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
   <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
   <script>
-         $('#tabla').DataTable({
-      responsive:true,
-      autoWidth:false,
-      "language": {
-            "lengthMenu": "Mostrar _MENU_  ",
-            "zeroRecords": "No hay resultados",
-            "info": "Mostrando la página _PAGE_ de _PAGES_",
-            "infoEmpty": "No records available",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search":"Buscar",
-            "paginate":{
-                  "next":"Siguiente",
-                  "previous":"Anterior"
-            }
-        }
-      });
-      $('.Eliminar').submit(function(e){
+    function setupEliminarButtons() {
+        $('.Eliminar').off('submit').on('submit', function(e){
             e.preventDefault();
             Swal.fire({
-            title: '¿Estás seguro que quieres eliminar el lote?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí',
-            cancelButtonText: 'No'
+                title: '¿Estás seguro que quieres eliminar el lote?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'No'
             }).then((result) => {
-                  if (result.isConfirmed) {
-                  this.submit();
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+    }
+
+    $(document).ready(function() {
+        var table = $('#tabla').DataTable({
+            responsive: true,
+            autoWidth: false,
+            "language": {
+                "lengthMenu": "Mostrar _MENU_  ",
+                "zeroRecords": "No hay resultados",
+                "info": "Mostrando la página _PAGE_ de _PAGES_",
+                "infoEmpty": "No records available",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search":"Buscar",
+                "paginate":{
+                    "next":"Siguiente",
+                    "previous":"Anterior"
+                }
             }
-            })
-      });
+        });
+
+        // Vincular eventos después de que DataTables termine de procesar la tabla
+        table.on('responsive-resize responsive-display', function() {
+            setupEliminarButtons();
+        });
+
+        // Ejecutar la configuración inicial
+        setupEliminarButtons();
+    });
 </script>
+
 @endsection

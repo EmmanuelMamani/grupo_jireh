@@ -33,7 +33,7 @@
           @if ($usuario->id == $cuenta->user_id)
             <tr class="fila">
               <td>{{$usuario->Nombre}}</td>
-              <td>{{$cuenta->Fecha->format('d-m-Y')}}</td>
+              <td>{{$cuenta->Fecha}}</td>
               <td>{{$cuenta->monto}}</td>
               <th><form action="{{route("detalle_cuenta",['id'=>$usuario->id,'fecha'=>$cuenta->Fecha])}}" method="GET">@csrf <button class="btn btn-secondary">Detalle</button></form></th>
             </tr>

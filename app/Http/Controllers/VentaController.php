@@ -242,7 +242,7 @@ class VentaController extends Controller
 
         $lotes = Ingreso::orderBy('id', 'desc')
                 ->where("Activo", 1)
-                ->limit(20)
+                ->limit(50)
                 ->get();
         return view("reporte_ventas",["lotes"=>$lotes]);
      //return  $pdf->download('archivo.pdf');

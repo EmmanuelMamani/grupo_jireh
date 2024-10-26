@@ -52,6 +52,7 @@
             <td>Monto</td>
             <td>Saldo</td>
             <td>Detalle</td>
+            <td>Cobrador</td>
             <td>Fecha</td>
           </tr>
         </thead>
@@ -62,6 +63,7 @@
                 <td>{{$saldo->Monto}}</td>
                 <td>{{$saldo->Saldo}}</td>
                 <td>{{$saldo->Detalle}}</td>
+                <td>{{$saldo->Nombre}}</td>
                 <td>{{$saldo->created_at}}</td>
               </tr>
           @endforeach

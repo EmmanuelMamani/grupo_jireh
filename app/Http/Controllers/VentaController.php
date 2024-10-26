@@ -456,9 +456,18 @@ class VentaController extends Controller
                         ->where('created_at', '>=', $fecha_inicio)
                         ->where('created_at', '<=', $fecha_fin)
                         ->get();
-        $saldos = Saldo::where('cliente_id', $id)
-                        ->where('created_at', '>=', $fecha_inicio)
-                        ->get();
+        $saldos = DB::select("
+        SELECT s.*, u.Nombre 
+        FROM saldos s 
+        LEFT JOIN cuentas c ON c.Detalle LIKE ? 
+            AND DATE(c.created_at) = DATE(s.created_at) 
+            AND c.Monto = s.Monto 
+        LEFT JOIN users u ON c.user_id = u.id 
+        WHERE s.cliente_id = ? 
+            AND DATE(s.created_at) >= ? 
+            AND DATE(s.created_at) <= ?
+    ", ["%{$cliente->Nombre}%", $id, $fecha_inicio, $fecha_fin]);
+                    
         return view('reporte_periodo_ventas',['ventas'=>$ventas,'cliente'=>$cliente,'inicio'=>$request->inicio,"fin"=>$request->fin,"saldos"=>$saldos]);
     } 
     public function ReportePeriodoPDF($id,$inicio,$fin)

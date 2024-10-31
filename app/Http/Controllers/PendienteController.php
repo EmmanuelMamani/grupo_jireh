@@ -41,6 +41,14 @@ class PendienteController extends Controller
                 $saldo->Saldo=$antiguo - $saldo->Monto;
             }
             $saldo->save();
+            if($venta->salida->al_contado==true){
+                $cuenta = new Cuenta();
+                $cuenta->user_id = $venta->user_id;
+                $cuenta->Monto = ($venta->salida->Total)*(-1);
+                $cuenta->Detalle = "Devolucion en venta";
+                $cuenta->Fecha= date('Y-m-d');
+                $cuenta->save();
+            }
            }
            else{
             $cuenta = new Cuenta();

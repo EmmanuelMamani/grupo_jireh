@@ -33,6 +33,7 @@
                 <td>{{$venta->salida->Peso}}</td>
                 <td>{{$venta->salida->Total}}</td>
                 <td><form action="{{route("modificar",['id'=>$venta->id,'tipo'=>1])}}" method="post">@csrf<button class="btn btn-success">Confirmar</button></form></td>
+                <td></td>
             </tr>
         @endforeach
     </tbody>

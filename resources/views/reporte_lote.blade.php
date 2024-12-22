@@ -4,6 +4,7 @@
 <a href="{{route("menu")}}" class="opciones_head">inicio</a>
 <a href="{{route("registro_lote")}}" class="opciones_head">Registro</a>
 <a href="{{route("reporte_lotes")}}" class="opciones_head">Reporte</a>
+<a href="{{route("reporte_lotes_total")}}" class="opciones_head">Reporte Total</a>
 @endsection
 @section("estilos")
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">

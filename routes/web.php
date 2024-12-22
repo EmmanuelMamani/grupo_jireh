@@ -87,6 +87,7 @@ Route::middleware(['auth'])->group(function() {
             Route::post("/eliminar_empleado/{id}",[UserController::class,"eliminar"])->name("eliminar_empleado");
             Route::get("/reporte_empleados",[UserController::class,"vistaReporte"])->name("reporte_empleados");
             Route::get("/reporte_lote",[IngresoController::class,"vistaReporte"])->name("reporte_lotes");
+            Route::get("/reporte_lote_total",[IngresoController::class,"vistaReporteTotal"])->name("reporte_lotes_total");
             Route::get("/registro_zona",[ZonaController::class,"vistaRegistro"])->name("registro_zona");
             Route::post("registro_zona",[ZonaController::class,"registro"])->name("registro_zona");
             Route::get("saldo_pasado",[SaldoController::class,"vistaRegistro"])->name("saldo_pasado");

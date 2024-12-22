@@ -45,7 +45,12 @@ class IngresoController extends Controller
                 ->get();
        return view("reporte_lote",['lotes'=>$lotes]);
     }
-
+    public function vistaReporteTotal(){
+        $lotes = Ingreso::orderBy('id', 'desc')
+                ->where("Activo", 1)
+                ->get();
+       return view("reporte_lote",['lotes'=>$lotes]);
+    }
     public function Eliminar($id){
         $lote=Ingreso::find($id);
         $lote->Activo=0;

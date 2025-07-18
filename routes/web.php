@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function() {
     Route::post("/transferir_lote",[AsignacionController::class,"registro"])->name("transferir_lote");
     Route::get("/saldos",[SaldoController::class,"vistaPago"])->name("saldos");
     Route::post("/saldos",[SaldoController::class,"Pago"])->name("saldos");
+    Route::get('/clientes-por-zona/{zonaId}', [SaldoController::class, 'clientesPorZona'])->name('clientes.por.zona');
     Route::get("/ventas_pendientes",[PendienteController::class,"reporte"])->name("ventas_pendientes");
     Route::post("/ventas_pendientes/{id}/{tipo}",[PendienteController::class,"modificar"])->name("modificar");
     Route::get("/perfil",[UserController::class,"perfil"])->name("perfil");
@@ -83,7 +84,7 @@ Route::middleware(['auth'])->group(function() {
             Route::get("/editar_lote/{id}",[IngresoController::class,"vistaEditar"])->name("editar_lote");
             Route::post("/editar_lote/{id}",[IngresoController::class,"Editar"])->name("editar_lote");
             Route::post("/eliminar_cliente/{id}",[ClienteController::class,"eliminar"])->name("eliminar_cliente");
-            
+
             Route::post("/eliminar_empleado/{id}",[UserController::class,"eliminar"])->name("eliminar_empleado");
             Route::get("/reporte_empleados",[UserController::class,"vistaReporte"])->name("reporte_empleados");
             Route::get("/reporte_lote",[IngresoController::class,"vistaReporte"])->name("reporte_lotes");
@@ -102,8 +103,8 @@ Route::middleware(['auth'])->group(function() {
             Route::post("/registro_empleado",[UserController::class,"registro"])->name("registro_empleado");
             Route::get("/detalle_cuenta/{id}/{fecha}",[CuentaController::class,"DetalleCuenta"])->name("detalle_cuenta");
             Route::get("/cuentas_periodo",[CuentaController::class,"VistaPeriodo"])->name("cuentas_periodo");
-            
-            
+
+
 
             Route::get("/reporte_periodo",[CuentaController::class,"ReportePeriodo"])->name("reporte_periodo");
             Route::get("/reporte_historico",[CuentaController::class,"reporteHistorico"])->name("reporte_historico");
@@ -128,7 +129,7 @@ Route::get("/NoPermitido", function(){return view("alerta");});
 
 
 Route::get('phpmyinfo', function () {
-    phpinfo(); 
+    phpinfo();
 })->name('phpmyinfo');
 
 

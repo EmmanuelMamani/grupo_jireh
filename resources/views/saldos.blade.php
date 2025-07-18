@@ -25,15 +25,6 @@
     <label class="form-label">Cliente:</label>
     <select name="cliente" id="cliente" class="form-select">
         <option value="">Seleccionar Cliente</option>
-        @foreach ($clientes as $cliente )
-            @if ($cliente->zona_id == $zonas->first()->id)
-                @if ($cliente->saldos->isNotEmpty())
-                    @if ($cliente->saldos->last()->Saldo > 0)
-                    <option class="cliente" value="{{$cliente->id}}">{{$cliente->Nombre}} Debe:{{$cliente->saldos->last()->Saldo}} Bs</option>
-                    @endif
-                @endif
-            @endif
-        @endforeach
     </select>
     <label class="form-label">Monto a pagar:</label>
     <input type="text" name="monto" id="monto" class="form-control"  value="{{old('monto')}}">
@@ -48,38 +39,36 @@
     </div>
 </form>
 <script>
-    function cambio(){
-        var zona = document.getElementById('zona').value
-        var cliente= document.getElementById('cliente')
-        cliente.innerHTML="<option >Seleccionar Cliente</option>"
-        @foreach ($clientes as $cliente )
-            var encontrado=false
-            if({{$cliente->zona_id}} == zona){
-                encontrado=true;
-            }
-                @if ($cliente->saldos->isNotEmpty())
-                    @if ($cliente->saldos->last()->Saldo > 0)
-                    if(encontrado==true){
-                        cliente.innerHTML+='<option class="cliente" value="{{$cliente->id}}">{{$cliente->Nombre}} Debe:{{$cliente->saldos->last()->Saldo}} Bs</option>'
-                    }
-                    @endif
-                @endif
-        @endforeach
+    function cambio() {
+        const zonaId = document.getElementById('zona').value;
+        const clienteSelect = document.getElementById('cliente');
+        clienteSelect.innerHTML = '<option value="">Cargando clientes...</option>';
+
+        fetch(`/clientes-por-zona/${zonaId}`)
+            .then(res => res.json())
+            .then(clientes => {
+                clienteSelect.innerHTML = '<option value="">Seleccionar Cliente</option>';
+                clientes.forEach(cliente => {
+                    let saldo = cliente.saldos[cliente.saldos.length - 1]?.Saldo ?? 0;
+                    clienteSelect.innerHTML += `<option class="cliente" value="${cliente.id}">${cliente.Nombre} Debe: ${saldo} Bs</option>`;
+                });
+            })
+            .catch(error => {
+                clienteSelect.innerHTML = '<option>Error al cargar</option>';
+                console.error("Error:", error);
+            });
     }
 </script>
+
 <script>
     $(document).ready(function() {
-      $('#buscar').on('input', function() {
-        var textoBuscado = $(this).val().toLowerCase(); // Obtener el texto ingresado y convertirlo a minúsculas
-        $('.cliente').each(function() {
-          var textoOpcion = $(this).text().toLowerCase(); // Obtener el texto de la opción y convertirlo a minúsculas
-          if (textoOpcion.includes(textoBuscado)) {
-            $(this).show(); // Mostrar la opción si coincide con el texto buscado
-          } else {
-            $(this).hide(); // Ocultar la opción si no coincide con el texto buscado
-          }
+        $('#buscar').on('input', function() {
+            var textoBuscado = $(this).val().toLowerCase();
+            $('.cliente').each(function() {
+                var textoOpcion = $(this).text().toLowerCase();
+                $(this).toggle(textoOpcion.includes(textoBuscado));
+            });
         });
-      });
     });
   </script>
   <script>
@@ -91,16 +80,16 @@
 </script>
 <script>
     $('#cliente').change(function(){
-        var nuevoHref = "{{ route('ventas_periodo', ['id' => ':idCliente']) }}"; // Ruta base con marcador de posición
+        var nuevoHref = "{{ route('ventas_periodo', ['id' => ':idCliente']) }}";
         var idCliente = $(this).val();
 
         if(idCliente != ''){
-            nuevoHref = nuevoHref.replace(':idCliente', idCliente); // Reemplazar el marcador de posición con el ID del cliente seleccionado
+            nuevoHref = nuevoHref.replace(':idCliente', idCliente);
         } else {
-            nuevoHref = "#"; // Si no se selecciona ningún cliente, se establece el href a #
+            nuevoHref = "#";
         }
-        
-        $('#compras').attr('href', nuevoHref); // Cambiar el href del enlace
+
+        $('#compras').attr('href', nuevoHref);
     });
 </script>
 

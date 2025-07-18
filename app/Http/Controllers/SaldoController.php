@@ -18,7 +18,7 @@ class SaldoController extends Controller
         $zonas=Zona::all();
         return view("saldo_pasado",["clientes"=> $clientes,"zonas"=>$zonas]);
     }
-    
+
     public function registro(saldoRequest $request){
         $saldo=new Saldo();
         $consulta=0;
@@ -35,11 +35,22 @@ class SaldoController extends Controller
 
     public function vistaReporte(){
     }
-    public function vistaPago(){
-        $clientes=Cliente::all();
-        $zonas=Zona::all();
-        return view("saldos",["clientes"=>$clientes,'zonas'=>$zonas]);
+    public function vistaPago() {
+        $zonas = Zona::all();
+        return view("saldos", ['zonas' => $zonas]);
     }
+    public function clientesPorZona($zonaId) {
+        $clientes = Cliente::with('saldos')
+        ->where('zona_id', $zonaId)
+            ->get()
+            ->filter(function ($cliente) {
+                return $cliente->saldos->isNotEmpty() && $cliente->saldos->last()->Saldo > 0;
+            })
+            ->values();
+
+        return response()->json($clientes);
+    }
+
     public function Pago(pagoRequest $request){
         $pasado=Saldo::all()->where("cliente_id",$request->cliente)->last()->Saldo;
         $saldo=new Saldo();

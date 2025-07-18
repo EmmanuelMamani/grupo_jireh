@@ -16,6 +16,7 @@
     <h3>Cobranza</h3>
     <label class="form-label">Zonas:</label>
     <select name="" id="zona" class="form-select" onchange="cambio()">
+        <option> Selecciona una zona </option>
         @foreach ($zonas as $zona)
             <option value="{{$zona->id}}">{{$zona->Nombre}}</option>
         @endforeach

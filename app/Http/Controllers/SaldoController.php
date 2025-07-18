@@ -41,15 +41,19 @@ class SaldoController extends Controller
     }
     public function clientesPorZona($zonaId) {
         $clientes = Cliente::with('saldos')
-        ->where('zona_id', $zonaId)
+            ->where('zona_id', $zonaId)
             ->get()
             ->filter(function ($cliente) {
-                return $cliente->saldos->isNotEmpty() && $cliente->saldos->last()->Saldo > 0;
+                if ($cliente->saldos->isEmpty()) return false;
+
+                $ultimoSaldo = $cliente->saldos->last();
+                return $ultimoSaldo && $ultimoSaldo->Saldo > 0;
             })
             ->values();
 
         return response()->json($clientes);
     }
+
 
     public function Pago(pagoRequest $request){
         $pasado=Saldo::all()->where("cliente_id",$request->cliente)->last()->Saldo;

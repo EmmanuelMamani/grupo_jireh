@@ -50,8 +50,8 @@
             .then(clientes => {
                 clienteSelect.innerHTML = '<option value="">Seleccionar Cliente</option>';
                 clientes.forEach(cliente => {
-                    let saldo = cliente.saldos[cliente.saldos.length - 1]?.Saldo ?? 0;
-                    clienteSelect.innerHTML += `<option class="cliente" value="${cliente.id}">${cliente.Nombre} Debe: ${saldo} Bs</option>`;
+
+                    clienteSelect.innerHTML += `<option class="cliente" value="${cliente.id}">${cliente.nombre} Debe: ${cliente.saldo} Bs</option>`;
                 });
             })
             .catch(error => {
@@ -60,6 +60,7 @@
             });
     }
 </script>
+
 
 <script>
     $(document).ready(function() {

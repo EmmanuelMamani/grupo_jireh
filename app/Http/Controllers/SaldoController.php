@@ -10,6 +10,7 @@ use App\Models\Saldo;
 use Illuminate\Http\Request;
 use App\Models\Zona;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SaldoController extends Controller
 {
@@ -39,17 +40,24 @@ class SaldoController extends Controller
         $zonas = Zona::all();
         return view("saldos", ['zonas' => $zonas]);
     }
-    public function clientesPorZona($zonaId) {
-        $clientes = Cliente::with('saldos')
-            ->where('zona_id', $zonaId)
-            ->get()
-            ->filter(function ($cliente) {
-                if ($cliente->saldos->isEmpty()) return false;
-
-                $ultimoSaldo = $cliente->saldos->last();
-                return $ultimoSaldo && $ultimoSaldo->Saldo > 0;
-            })
-            ->values();
+    public function clientesPorZona($zonaId)
+    {
+        $clientes = DB::table('clientes as c')
+            ->join(DB::raw('
+            (SELECT cliente_id, saldo
+             FROM saldos
+             WHERE (cliente_id, created_at) IN (
+                 SELECT cliente_id, MAX(created_at)
+                 FROM saldos
+                 GROUP BY cliente_id
+             )
+            ) as s
+        '), 's.cliente_id', '=', 'c.id')
+            ->where('c.zona_id', $zonaId)
+            ->where('s.saldo', '>', 0)
+            ->orderBy('c.nombre')
+            ->select('c.id', 'c.nombre', 's.saldo')
+            ->get();
 
         return response()->json($clientes);
     }

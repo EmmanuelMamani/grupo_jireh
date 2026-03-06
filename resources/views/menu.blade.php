@@ -62,6 +62,10 @@
         <span class="funciones col-8">Lista</span>
         <span class="material-symbols-outlined icono col">  receipt_long</span>
     </a>
+    <a class="opcion row" href="{{route("estado_cuentas.index")}}">
+        <span class="funciones col-8">Estado de cuentas</span>
+        <span class="material-symbols-outlined icono col">balance</span>
+    </a>
 </div>
 
 @endsection

@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\EstadoCuentasController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ZonaController;
@@ -103,9 +104,6 @@ Route::middleware(['auth'])->group(function() {
             Route::post("/registro_empleado",[UserController::class,"registro"])->name("registro_empleado");
             Route::get("/detalle_cuenta/{id}/{fecha}",[CuentaController::class,"DetalleCuenta"])->name("detalle_cuenta");
             Route::get("/cuentas_periodo",[CuentaController::class,"VistaPeriodo"])->name("cuentas_periodo");
-
-
-
             Route::get("/reporte_periodo",[CuentaController::class,"ReportePeriodo"])->name("reporte_periodo");
             Route::get("/reporte_historico",[CuentaController::class,"reporteHistorico"])->name("reporte_historico");
             Route::post("/eliminar_lote/{id}",[IngresoController::class,"Eliminar"])->name("eliminar_lote");
@@ -120,6 +118,10 @@ Route::middleware(['auth'])->group(function() {
            Route::post("/eliminar_producto/{id}",[ProductoController::class,"eliminar"])->name("eliminar_producto");
            Route::get("/reporte_zona",[ZonaController::class,"vistaReporte"])->name("reporte_zona");
            Route::post("/eliminar_zona/{id}",[ZonaController::class,"eliminar"])->name("eliminar_zona");
+
+            Route::get('/estado-cuentas', [EstadoCuentasController::class, 'index'])->name('estado_cuentas.index');
+            Route::post('/estado-cuentas/reporte', [EstadoCuentasController::class, 'reporte'])->name('estado_cuentas.reporte');
+
         });
 
     Route::get('logout',[LoginController::class,'logout'])->name('logout');

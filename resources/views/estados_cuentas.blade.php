@@ -117,6 +117,12 @@
                 </div>
             </div>
 
+            <!-- Nuevo div para el total de ingresos por pagos -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm">
+                <p class="text-xs text-slate-500">Total ingresos por pagos</p>
+                <p id="total_pago" class="text-lg font-bold text-slate-800">0.00</p>
+            </div>
+
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div class="px-4 py-3 border-b border-slate-200">
                     <h4 class="font-semibold text-slate-800">Detalle por producto</h4>
@@ -190,6 +196,7 @@
                 document.getElementById('total_salida').textContent = 'Bs ' + money(data.totales.total_salida);
                 document.getElementById('peso_ing').textContent = numberFormat(data.totales.peso_ing);
                 document.getElementById('peso_salida').textContent = numberFormat(data.totales.peso_salida);
+                document.getElementById('total_pago').textContent = 'Bs ' + money(data.totales.total_pago);  // Mostrar ingresos por pagos
 
                 document.getElementById('stat_almuerzo').textContent = 'Bs ' + money(data.estadisticas?.almuerzo);
                 document.getElementById('stat_desayuno').textContent = 'Bs ' + money(data.estadisticas?.desayuno);

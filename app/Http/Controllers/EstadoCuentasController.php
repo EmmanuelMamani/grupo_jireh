@@ -23,45 +23,53 @@ class EstadoCuentasController extends Controller
 
         // REPORTE POR PRODUCTO SOLO DEL RANGO
         $reporte = DB::select("
+    SELECT
+        c.producto,
+        SUM(c.cant_ing) AS cant_ing,
+        SUM(c.peso_ing) AS peso_ing,
+        SUM(c.total_ing) AS total_ing,
+        SUM(c.cantidad_salida) AS cantidad_salida,
+        SUM(c.peso_salida) AS peso_salida,
+        SUM(c.total_salida) AS total_salida
+    FROM (
         SELECT
-            c.producto,
-            SUM(c.cant_ing) AS cant_ing,
-            SUM(c.peso_ing) AS peso_ing,
-            SUM(c.total_ing) AS total_ing,
-            SUM(c.cantidad_salida) AS cantidad_salida,
-            SUM(c.peso_salida) AS peso_salida,
-            SUM(c.total_salida) AS total_salida
-        FROM (
+            i.CantMoldes AS cant_ing,
+            i.Peso AS peso_ing,
+            CASE
+                WHEN p.Tipo = 'Por Kilo' THEN i.Precio * i.Peso
+                WHEN p.Tipo = 'Por Unidad' THEN i.Precio * i.CantMoldes
+                ELSE 0
+            END AS total_ing,
+            COALESCE(v.total_cant, 0) AS cantidad_salida,
+            COALESCE(v.total_peso, 0) AS peso_salida,
+            COALESCE(v.total_venta, 0) AS total_salida,
+            p.Nombre AS producto
+        FROM ingresos i
+        INNER JOIN productos p ON p.id = i.producto_id
+        LEFT JOIN (
             SELECT
-                i.CantMoldes AS cant_ing,
-                i.Peso AS peso_ing,
-                CASE
-                    WHEN p.Tipo = 'Por Kilo' THEN i.Precio * i.Peso
-                    WHEN p.Tipo = 'Por Unidad' THEN i.Precio * i.CantMoldes
-                    ELSE 0
-                END AS total_ing,
-                COALESCE(v.total_cant, 0) AS cantidad_salida,
-                COALESCE(v.total_peso, 0) AS peso_salida,
-                COALESCE(v.total_venta, 0) AS total_salida,
-                p.Nombre AS producto
-            FROM ingresos i
-            INNER JOIN productos p ON p.id = i.producto_id
-            LEFT JOIN (
-                SELECT
-                    v.ingreso_id,
-                    SUM(s.CantMoldes) AS total_cant,
-                    SUM(s.Peso) AS total_peso,
-                    SUM(s.Total) AS total_venta
-                FROM salidas s
-                INNER JOIN ventas v ON v.salida_id = s.id
-                WHERE s.created_at BETWEEN ? AND ?
-                GROUP BY v.ingreso_id
-            ) AS v ON v.ingreso_id = i.id
-            WHERE i.created_at BETWEEN ? AND ?
-        ) AS c
-        GROUP BY c.producto
-        ORDER BY c.producto ASC
+                v.ingreso_id,
+                SUM(s.CantMoldes) AS total_cant,
+                SUM(s.Peso) AS total_peso,
+                SUM(s.Total) AS total_venta
+            FROM salidas s
+            INNER JOIN ventas v ON v.salida_id = s.id
+            WHERE s.created_at BETWEEN ? AND ?
+            GROUP BY v.ingreso_id
+        ) AS v ON v.ingreso_id = i.id
+        WHERE i.created_at BETWEEN ? AND ?
+    ) AS c
+    GROUP BY c.producto
+    ORDER BY c.producto ASC
     ", [$fechaInicio, $fechaFin, $fechaInicio, $fechaFin]);
+
+        // Obtener ingresos por pagos
+        $ingresosPorPago = DB::selectOne("
+        SELECT SUM(Monto) AS total_pago
+        FROM cuentas c
+        WHERE c.created_at BETWEEN ? AND ?
+        AND c.Detalle LIKE '%pago%'
+    ", [$fechaInicio, $fechaFin]);
 
         $totales = [
             'cant_ing'        => collect($reporte)->sum('cant_ing'),
@@ -70,19 +78,20 @@ class EstadoCuentasController extends Controller
             'cantidad_salida' => collect($reporte)->sum('cantidad_salida'),
             'peso_salida'     => collect($reporte)->sum('peso_salida'),
             'total_salida'    => collect($reporte)->sum('total_salida'),
+            'total_pago'      => $ingresosPorPago->total_pago ?? 0, // Ingresos por pagos
         ];
 
         // ESTADISTICAS DE GASTOS SOLO DEL RANGO
         $estadisticas = DB::selectOne("
-        SELECT
-            COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%almuerzo%' THEN ABS(Monto) ELSE 0 END), 0) AS almuerzo,
-            COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%desayuno%' THEN ABS(Monto) ELSE 0 END), 0) AS desayuno,
-            COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%gasolina%' THEN ABS(Monto) ELSE 0 END), 0) AS gasolina,
-            COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%diesel%' THEN ABS(Monto) ELSE 0 END), 0) AS diesel,
-            COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%transporte%' THEN ABS(Monto) ELSE 0 END), 0) AS transporte,
-            COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%cambio aceite%' THEN ABS(Monto) ELSE 0 END), 0) AS aceite
-        FROM cuentas
-        WHERE Fecha BETWEEN ? AND ?
+    SELECT
+        COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%almuerzo%' THEN ABS(Monto) ELSE 0 END), 0) AS almuerzo,
+        COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%desayuno%' THEN ABS(Monto) ELSE 0 END), 0) AS desayuno,
+        COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%gasolina%' THEN ABS(Monto) ELSE 0 END), 0) AS gasolina,
+        COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%diesel%' THEN ABS(Monto) ELSE 0 END), 0) AS diesel,
+        COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%transporte%' THEN ABS(Monto) ELSE 0 END), 0) AS transporte,
+        COALESCE(SUM(CASE WHEN LOWER(detalle) LIKE '%cambio aceite%' THEN ABS(Monto) ELSE 0 END), 0) AS aceite
+    FROM cuentas
+    WHERE Fecha BETWEEN ? AND ?
     ", [$fechaInicio, $fechaFin]);
 
         $estadisticas_totales = [

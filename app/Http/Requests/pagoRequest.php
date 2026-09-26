@@ -25,7 +25,8 @@ class pagoRequest extends FormRequest
     public function rules()
     {
         return [
-            "monto"=>["bail","required","numeric",new pagoRule,"gt:0"]
+            "monto"=>["bail","required","numeric",new pagoRule,"gt:0"],
+            "venta_id"=>["nullable","exists:ventas,id"]
         ];
     }
     public function messages()

@@ -20,4 +20,7 @@ class Venta extends Model
     public function salida(){
         return $this->belongsTo(Salida::class);
     }
+    public function pagos(){
+        return $this->hasMany(Pago::class);
+    }
 }

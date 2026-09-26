@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\EstadoCuentasController;
+use App\Http\Controllers\ConciliacionController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ZonaController;
@@ -57,6 +58,10 @@ Route::middleware(['auth'])->group(function() {
     Route::get("/saldos",[SaldoController::class,"vistaPago"])->name("saldos");
     Route::post("/saldos",[SaldoController::class,"Pago"])->name("saldos");
     Route::get('/clientes-por-zona/{zonaId}', [SaldoController::class, 'clientesPorZona'])->name('clientes.por.zona');
+    Route::get('/ventas-pendientes-cliente/{clienteId}', [SaldoController::class, 'ventasPendientes'])->name('cliente.ventas.pendientes');
+    Route::get('/conciliacion', [ConciliacionController::class, 'index'])->name('conciliacion');
+    Route::post('/conciliacion', [ConciliacionController::class, 'asignar'])->name('conciliacion.asignar');
+    Route::get('/conciliacion/pendientes/{cliente}', [ConciliacionController::class, 'pendientes'])->name('conciliacion.pendientes');
     Route::get("/ventas_pendientes",[PendienteController::class,"reporte"])->name("ventas_pendientes");
     Route::post("/ventas_pendientes/{id}/{tipo}",[PendienteController::class,"modificar"])->name("modificar");
     Route::get("/perfil",[UserController::class,"perfil"])->name("perfil");

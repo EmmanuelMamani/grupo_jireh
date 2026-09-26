@@ -27,6 +27,13 @@
     <select name="cliente" id="cliente" class="form-select">
         <option value="">Seleccionar Cliente</option>
     </select>
+    <label class="form-label">Imputar a venta (opcional):</label>
+    <select name="venta_id" id="venta_id" class="form-select">
+        <option value="">Automático (la más antigua primero)</option>
+    </select>
+    @if ($errors->has('venta_id'))
+    <span class="error text-danger">{{ $errors->first('venta_id') }}</span>
+    @endif <br>
     <label class="form-label">Monto a pagar:</label>
     <input type="text" name="monto" id="monto" class="form-control"  value="{{old('monto')}}">
     <label class="form-label">Ver compras:</label><br>
@@ -80,7 +87,7 @@
        carga.style.visibility="visible";
     }
 </script>
-<script>
+  <script>
     $('#cliente').change(function(){
         var nuevoHref = "{{ route('ventas_periodo', ['id' => ':idCliente']) }}";
         var idCliente = $(this).val();
@@ -92,6 +99,21 @@
         }
 
         $('#compras').attr('href', nuevoHref);
+
+        var ventaSelect = $('#venta_id');
+        ventaSelect.html('<option value="">Automático (la más antigua primero)</option>');
+        if(idCliente != ''){
+            fetch(`/ventas-pendientes-cliente/${idCliente}`)
+                .then(res => res.json())
+                .then(ventas => {
+                    ventas.forEach(v => {
+                        ventaSelect.append(`<option value="${v.id}">Venta #${v.id} · ${v.fecha} · debe Bs ${v.pendiente}</option>`);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        }
     });
 </script>
 

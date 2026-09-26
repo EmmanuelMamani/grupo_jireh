@@ -104,6 +104,103 @@ class EstadoCuentasController extends Controller
                 ($estadisticas->aceite ?? 0)
         ];
 
+        // VENTAS VS COSTOS POR MES (devengado: fecha de venta)
+        $ventasCostos = DB::select("
+    SELECT
+        DATE_FORMAT(v.created_at, '%Y-%m') AS mes,
+        SUM(s.Total) AS ventas,
+        SUM(COALESCE(s.costo_unitario, i.Precio) *
+            CASE WHEN p.Tipo = 'Por Kilo' THEN COALESCE(s.Peso, 0) ELSE s.CantMoldes END
+        ) AS costo
+    FROM ventas v
+    INNER JOIN salidas s ON s.id = v.salida_id
+    INNER JOIN ingresos i ON i.id = v.ingreso_id
+    INNER JOIN productos p ON p.id = i.producto_id
+    WHERE v.created_at BETWEEN ? AND ?
+    GROUP BY mes
+    ORDER BY mes ASC
+    ", [$fechaInicio, $fechaFin]);
+
+        $ventasCostosTotales = [
+            'ventas' => 0,
+            'costo' => 0,
+            'utilidad' => 0,
+            'margen' => 0,
+        ];
+        foreach ($ventasCostos as $fila) {
+            $fila->ventas = (float) $fila->ventas;
+            $fila->costo = (float) $fila->costo;
+            $fila->utilidad = $fila->ventas - $fila->costo;
+            $fila->margen = $fila->ventas != 0 ? round($fila->utilidad / $fila->ventas * 100, 2) : 0;
+            $ventasCostosTotales['ventas'] += $fila->ventas;
+            $ventasCostosTotales['costo'] += $fila->costo;
+        }
+        $ventasCostosTotales['ventas'] = round($ventasCostosTotales['ventas'], 2);
+        $ventasCostosTotales['costo'] = round($ventasCostosTotales['costo'], 2);
+        $ventasCostosTotales['utilidad'] = round($ventasCostosTotales['ventas'] - $ventasCostosTotales['costo'], 2);
+        $ventasCostosTotales['margen'] = $ventasCostosTotales['ventas'] != 0
+            ? round($ventasCostosTotales['utilidad'] / $ventasCostosTotales['ventas'] * 100, 2)
+            : 0;
+
+        // COBRANZA (percibido: fecha de pago)
+        $fechaIni = $fechaInicio->toDateString();
+        $fechaFinD = $fechaFin->toDateString();
+        $cobradoTotal = DB::selectOne("
+            SELECT COALESCE(SUM(monto), 0) AS total FROM pagos WHERE fecha BETWEEN ? AND ?
+        ", [$fechaIni, $fechaFinD]);
+        $cobradoDelPeriodo = DB::selectOne("
+            SELECT COALESCE(SUM(p.monto), 0) AS total
+            FROM pagos p
+            INNER JOIN ventas v ON v.id = p.venta_id
+            WHERE p.fecha BETWEEN ? AND ? AND v.created_at BETWEEN ? AND ?
+        ", [$fechaIni, $fechaFinD, $fechaInicio, $fechaFin]);
+        $pendientes = DB::selectOne("
+            SELECT COUNT(*) AS cantidad,
+                COALESCE(SUM(GREATEST(s.Total - COALESCE(pp.pagado, 0), 0)), 0) AS total
+            FROM ventas v
+            INNER JOIN salidas s ON s.id = v.salida_id
+            LEFT JOIN (SELECT venta_id, SUM(monto) AS pagado FROM pagos GROUP BY venta_id) pp ON pp.venta_id = v.id
+            WHERE v.cliente_id IS NOT NULL AND (s.Total - COALESCE(pp.pagado, 0)) > 0
+        ");
+        $cobranza = [
+            'cobrado_total' => (float) ($cobradoTotal->total ?? 0),
+            'cobrado_del_periodo' => (float) ($cobradoDelPeriodo->total ?? 0),
+            'pendiente_total' => (float) ($pendientes->total ?? 0),
+            'ventas_con_pendiente' => (int) ($pendientes->cantidad ?? 0),
+        ];
+
+        // PROVEEDORES: compras del período + pagos + deuda total
+        $compras = DB::selectOne("
+            SELECT COUNT(*) AS lotes,
+                COALESCE(SUM(CASE
+                    WHEN p.Tipo = 'Por Kilo' THEN i.Precio * i.Peso
+                    WHEN p.Tipo = 'Por Unidad' THEN i.Precio * i.CantMoldes
+                    ELSE 0
+                END), 0) AS costo_total
+            FROM ingresos i
+            INNER JOIN productos p ON p.id = i.producto_id
+            WHERE i.created_at BETWEEN ? AND ?
+        ", [$fechaInicio, $fechaFin]);
+        $pagosProvRango = DB::selectOne("
+            SELECT COALESCE(SUM(monto), 0) AS total FROM pago_proveedors WHERE fecha BETWEEN ? AND ?
+        ", [$fechaIni, $fechaFinD]);
+        $deudaProv = DB::selectOne("
+            SELECT COALESCE(SUM(CASE
+                    WHEN p.Tipo = 'Por Kilo' THEN i.Precio * i.Peso
+                    WHEN p.Tipo = 'Por Unidad' THEN i.Precio * i.CantMoldes
+                    ELSE 0
+                END), 0) - COALESCE((SELECT SUM(monto) FROM pago_proveedors), 0) AS total
+            FROM ingresos i
+            INNER JOIN productos p ON p.id = i.producto_id
+            WHERE i.Activo = 1
+        ");
+        $proveedores = [
+            'lotes' => (int) ($compras->lotes ?? 0),
+            'compras_total' => (float) ($compras->costo_total ?? 0),
+            'pagado_rango' => (float) ($pagosProvRango->total ?? 0),
+            'deuda_total' => (float) ($deudaProv->total ?? 0),
+        ];
+
         return response()->json([
             'ok' => true,
             'filtros' => [
@@ -114,6 +211,10 @@ class EstadoCuentasController extends Controller
             'totales' => $totales,
             'estadisticas' => $estadisticas,
             'estadisticas_totales' => $estadisticas_totales,
+            'ventas_costos' => $ventasCostos,
+            'ventas_costos_totales' => $ventasCostosTotales,
+            'cobranza' => $cobranza,
+            'proveedores' => $proveedores,
         ]);
     }
 }

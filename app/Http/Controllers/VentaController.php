@@ -13,6 +13,7 @@ use App\Models\Cuenta;
 use App\Models\Ingreso;
 use App\Models\Lista;
 use App\Models\Merma;
+use App\Models\Pago;
 use App\Models\Producto;
 use App\Models\Saldo;
 use App\Models\Salida;
@@ -69,6 +70,10 @@ class VentaController extends Controller
             if($request->contado){
                 $salida->al_contado=true;
             }
+            $loteCosto = Ingreso::firstWhere('id', $request->lote);
+            if ($loteCosto) {
+                $salida->costo_unitario = $loteCosto->Precio;
+            }
             $salida->save();
             $venta=new Venta();
             $venta->cliente_id = $request->cliente; 
@@ -105,6 +110,16 @@ class VentaController extends Controller
                 $saldo->cliente_id= $request->cliente;
         
                 $saldo->save();
+                if ($request->acuenta > 0 && isset($cuenta) && $cuenta->id) {
+                    $pagoAcuenta = new Pago();
+                    $pagoAcuenta->venta_id = $venta->id;
+                    $pagoAcuenta->saldo_id = $saldo->id;
+                    $pagoAcuenta->cuenta_id = $cuenta->id;
+                    $pagoAcuenta->cliente_id = $venta->cliente_id;
+                    $pagoAcuenta->monto = $request->acuenta;
+                    $pagoAcuenta->fecha = date('Y-m-d');
+                    $pagoAcuenta->save();
+                }
             }else{
                 $saldo=new Saldo();
                 $saldo->Monto=$total;
@@ -123,6 +138,14 @@ class VentaController extends Controller
                 $cuenta->Detalle="Venta al contado";
                 $cuenta->Fecha=date("Y-m-d");
                 $cuenta->save();
+                $pagoContado = new Pago();
+                $pagoContado->venta_id = $venta->id;
+                $pagoContado->saldo_id = $saldo->id;
+                $pagoContado->cuenta_id = $cuenta->id;
+                $pagoContado->cliente_id = $venta->cliente_id;
+                $pagoContado->monto = $salida->Total;
+                $pagoContado->fecha = date("Y-m-d");
+                $pagoContado->save();
               }
             
             $lote=Ingreso::firstWhere('id',$request->lote);
@@ -185,6 +208,10 @@ class VentaController extends Controller
         }else{
             $salida->Total=round($total,0);
         }
+        $loteCosto = Ingreso::firstWhere('id', $request->lote);
+        if ($loteCosto) {
+            $salida->costo_unitario = $loteCosto->Precio;
+        }
         $salida->save();       
         $venta=new Venta();
         $venta->cliente_id = $request->cliente; 
@@ -221,6 +248,14 @@ class VentaController extends Controller
         $cuenta->Detalle="Venta rápida";
         $cuenta->Fecha=date("Y-m-d");
         $cuenta->save();
+        $pagoRapido = new Pago();
+        $pagoRapido->venta_id = $venta->id;
+        $pagoRapido->saldo_id = null;
+        $pagoRapido->cuenta_id = $cuenta->id;
+        $pagoRapido->cliente_id = $venta->cliente_id;
+        $pagoRapido->monto = $salida->Total;
+        $pagoRapido->fecha = date("Y-m-d");
+        $pagoRapido->save();
 
         $lote=Ingreso::firstWhere('id',$request->lote);
         if($tipo=="Por Kilo"){
@@ -321,6 +356,10 @@ class VentaController extends Controller
         }else{
             $salida->Total=round($total,0);
         }
+        $loteCosto = Ingreso::firstWhere('id', $request->lote);
+        if ($loteCosto) {
+            $salida->costo_unitario = $loteCosto->Precio;
+        }
         $salida->save();
        
         $venta=new Venta();
@@ -357,6 +396,14 @@ class VentaController extends Controller
             $cuenta->Detalle="Venta al contado";
             $cuenta->Fecha=date("Y-m-d");
             $cuenta->save();
+            $pagoCompleta = new Pago();
+            $pagoCompleta->venta_id = $venta->id;
+            $pagoCompleta->saldo_id = null;
+            $pagoCompleta->cuenta_id = $cuenta->id;
+            $pagoCompleta->cliente_id = $venta->cliente_id;
+            $pagoCompleta->monto = $salida->Total;
+            $pagoCompleta->fecha = date("Y-m-d");
+            $pagoCompleta->save();
           }
 
         $lote=Ingreso::firstWhere('id',$request->lote);

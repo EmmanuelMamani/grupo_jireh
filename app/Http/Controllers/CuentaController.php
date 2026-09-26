@@ -16,73 +16,119 @@ class CuentaController extends Controller
     public function vistaRegistro(){
         return view("registro_gasto");
     }
-    public function estadisticas(){
-        $results = DB::select("SELECT 
-            meses.año,
-            meses.mes,
-            COALESCE(almuerzo.gasto_mensual, 0) AS almuerzo,
-            COALESCE(desayuno.gasto_mensual, 0) AS desayuno,
-            COALESCE(gasolina.gasto_mensual, 0) AS gasolina,
-            COALESCE(diesel.gasto_mensual, 0) AS diesel,
-            COALESCE(transporte.gasto_mensual, 0) AS transporte,
-            COALESCE(cambio_aceite.gasto_mensual, 0) AS aceite
-        FROM 
-            (SELECT DISTINCT YEAR(Fecha) AS año, MONTH(Fecha) AS mes FROM cuentas) AS meses
-        LEFT JOIN
-            (SELECT 
+    public function estadisticas(Request $request){
+        $categoriasDisponibles = [
+            'almuerzo' => 'almuerzo',
+            'desayuno' => 'desayuno',
+            'gasolina' => 'gasolina',
+            'diesel' => 'diesel',
+            'transporte' => 'transporte',
+            'aceite' => 'cambio aceite',
+        ];
+
+        $validated = $request->validate([
+            'desde' => 'nullable|date',
+            'hasta' => 'nullable|date',
+            'categorias' => 'nullable|array',
+            'categorias.*' => 'in:almuerzo,desayuno,gasolina,diesel,transporte,aceite',
+        ], [
+            'hasta.date' => 'La fecha hasta no es válida',
+            'desde.date' => 'La fecha desde no es válida',
+        ]);
+
+        $desde = $validated['desde'] ?? null;
+        $hasta = $validated['hasta'] ?? null;
+        $seleccionadas = $validated['categorias'] ?? array_keys($categoriasDisponibles);
+        if (empty($seleccionadas)) {
+            $seleccionadas = array_keys($categoriasDisponibles);
+        }
+
+        if ($desde && $hasta && $desde > $hasta) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'hasta' => 'La fecha hasta debe ser posterior o igual a la fecha desde.',
+            ]);
+        }
+
+        $whereFecha = '';
+        $dateBindings = [];
+        if ($desde && $hasta) {
+            $whereFecha = 'Fecha BETWEEN ? AND ?';
+            $dateBindings = [$desde, $hasta];
+        } elseif ($desde) {
+            $whereFecha = 'Fecha >= ?';
+            $dateBindings = [$desde];
+        } elseif ($hasta) {
+            $whereFecha = 'Fecha <= ?';
+            $dateBindings = [$hasta];
+        }
+
+        $bindings = $dateBindings;
+        $baseFiltro = $whereFecha ? " WHERE {$whereFecha}" : '';
+        $selects = ['meses.año', 'meses.mes'];
+        $joins = '';
+        foreach ($seleccionadas as $key) {
+            $keyword = $categoriasDisponibles[$key];
+            $filtroFecha = $whereFecha ? " AND {$whereFecha}" : '';
+            $joins .= " LEFT JOIN
+            (SELECT
                 YEAR(Fecha) AS año,
                 MONTH(Fecha) AS mes,
                 SUM(ABS(Monto)) AS gasto_mensual
             FROM cuentas
-            WHERE LOWER(detalle) LIKE '%almuerzo%'
-            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS almuerzo
-        ON meses.año = almuerzo.año AND meses.mes = almuerzo.mes
-        LEFT JOIN
-            (SELECT 
-                YEAR(Fecha) AS año,
-                MONTH(Fecha) AS mes,
-                SUM(ABS(Monto)) AS gasto_mensual
-            FROM cuentas
-            WHERE LOWER(detalle) LIKE '%desayuno%'
-            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS desayuno
-        ON meses.año = desayuno.año AND meses.mes = desayuno.mes
-        LEFT JOIN
-            (SELECT 
-                YEAR(Fecha) AS año,
-                MONTH(Fecha) AS mes,
-                SUM(ABS(Monto)) AS gasto_mensual
-            FROM cuentas
-            WHERE LOWER(detalle) LIKE '%gasolina%'
-            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS gasolina
-        ON meses.año = gasolina.año AND meses.mes = gasolina.mes
-        LEFT JOIN
-            (SELECT 
-                YEAR(Fecha) AS año,
-                MONTH(Fecha) AS mes,
-                SUM(ABS(Monto)) AS gasto_mensual
-            FROM cuentas
-            WHERE LOWER(detalle) LIKE '%diesel%'
-            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS diesel
-        ON meses.año = diesel.año AND meses.mes = diesel.mes
-        LEFT JOIN
-            (SELECT 
-                YEAR(Fecha) AS año,
-                MONTH(Fecha) AS mes,
-                SUM(ABS(Monto)) AS gasto_mensual
-            FROM cuentas
-            WHERE LOWER(detalle) LIKE '%transporte%'
-            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS transporte
-        ON meses.año = transporte.año AND meses.mes = transporte.mes
-        LEFT JOIN
-            (SELECT 
-                YEAR(Fecha) AS año,
-                MONTH(Fecha) AS mes,
-                SUM(ABS(Monto)) AS gasto_mensual
-            FROM cuentas
-            WHERE LOWER(detalle) LIKE '%cambio aceite%'
-            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS cambio_aceite
-        ON meses.año = cambio_aceite.año AND meses.mes = cambio_aceite.mes");
-        return view("estadisticas_cuentas",['results'=>$results]);
+            WHERE LOWER(detalle) LIKE ?{$filtroFecha}
+            GROUP BY YEAR(Fecha), MONTH(Fecha)) AS {$key}
+        ON meses.año = {$key}.año AND meses.mes = {$key}.mes";
+            $bindings[] = '%' . strtolower($keyword) . '%';
+            foreach ($dateBindings as $b) {
+                $bindings[] = $b;
+            }
+            $selects[] = "COALESCE({$key}.gasto_mensual, 0) AS {$key}";
+        }
+
+        $results = DB::select("SELECT " . implode(', ', $selects) . "
+        FROM
+            (SELECT DISTINCT YEAR(Fecha) AS año, MONTH(Fecha) AS mes FROM cuentas{$baseFiltro}) AS meses
+        {$joins}
+        ORDER BY meses.año, meses.mes", $bindings);
+
+        $totales = [];
+        foreach ($seleccionadas as $key) {
+            $totales[$key] = 0;
+        }
+        foreach ($results as $row) {
+            foreach ($seleccionadas as $key) {
+                $totales[$key] += (float) $row->$key;
+            }
+        }
+        $totalGeneral = array_sum($totales);
+
+        $mesesConDatos = count($results);
+        $categoriaTop = null;
+        $montoTop = 0;
+        foreach ($totales as $key => $monto) {
+            if ($monto > $montoTop) {
+                $montoTop = $monto;
+                $categoriaTop = $key;
+            }
+        }
+        $kpis = [
+            'total' => $totalGeneral,
+            'categoriaTop' => $categoriaTop ? $categoriasDisponibles[$categoriaTop] : null,
+            'montoTop' => $montoTop,
+            'meses' => $mesesConDatos,
+            'promedio' => $mesesConDatos > 0 ? $totalGeneral / $mesesConDatos : 0,
+        ];
+
+        return view("estadisticas_cuentas", [
+            'results' => $results,
+            'categoriasDisponibles' => $categoriasDisponibles,
+            'seleccionadas' => $seleccionadas,
+            'desde' => $desde,
+            'hasta' => $hasta,
+            'totales' => $totales,
+            'totalGeneral' => $totalGeneral,
+            'kpis' => $kpis,
+        ]);
     }
     public function registro(cuentaRequest $request){
         $cuenta=new Cuenta();

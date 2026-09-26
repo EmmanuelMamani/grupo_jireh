@@ -66,6 +66,10 @@
         <span class="funciones col-8">Estado de cuentas</span>
         <span class="material-symbols-outlined icono col">balance</span>
     </a>
+    <a class="opcion row" href="{{route("conciliacion")}}">
+        <span class="funciones col-8">Conciliación</span>
+        <span class="material-symbols-outlined icono col">link</span>
+    </a>
 </div>
 
 @endsection

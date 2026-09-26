@@ -7,10 +7,13 @@ use App\Models\Producto;
 use Illuminate\Http\Request;
 use App\Http\Requests\loteRule;
 use App\Models\Asignacion;
+use App\Models\Cuenta;
+use App\Models\PagoProveedor;
 use App\Models\Venta;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Salida;
 use App\Models\Merma;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class IngresoController extends Controller
@@ -62,10 +65,51 @@ class IngresoController extends Controller
         return redirect()->route('reporte_lotes')->with('eliminar', 'ok');
     }
     
-    public function Pagar($id){
-        $lote=Ingreso::find($id);
-        $lote->Pagado=1;
-        $lote->save();
+    public function Pagar(Request $request, $id){
+        $lote=Ingreso::findOrFail($id);
+        $tipo = ($lote->producto && $lote->producto->Tipo == 'Por Kilo') ? 'Por Kilo' : 'Por Unidad';
+        $costoTotal = $tipo == 'Por Kilo'
+            ? $lote->Precio * $lote->Peso
+            : $lote->Precio * $lote->CantMoldes;
+        $pagadoPrevio = PagoProveedor::where('ingreso_id', $id)->sum('monto');
+        $pendiente = round($costoTotal - $pagadoPrevio, 2);
+        if ($pendiente <= 0) {
+            $lote->Pagado = 1;
+            $lote->save();
+            return redirect()->route('reporte_lotes')->withErrors(['pago' => 'El lote ya está pagado en su totalidad.']);
+        }
+        $request->validate([
+            'monto' => 'nullable|numeric|gt:0|lte:' . $pendiente,
+            'fecha' => 'nullable|date',
+        ], [
+            'monto.lte' => 'El monto no puede ser mayor al pendiente de Bs ' . number_format($pendiente, 2),
+        ]);
+        $monto = $request->monto ?? $pendiente;
+        $fecha = $request->fecha ?? date('Y-m-d');
+        DB::beginTransaction();
+        try {
+            $cuenta = new Cuenta();
+            $cuenta->user_id = Auth::user()->id;
+            $cuenta->Monto = $monto * -1;
+            $cuenta->Detalle = "Pago a proveedor " . $lote->Proveedor . " lote #" . $lote->id;
+            $cuenta->Fecha = $fecha;
+            $cuenta->save();
+            $pagoProv = new PagoProveedor();
+            $pagoProv->ingreso_id = $lote->id;
+            $pagoProv->monto = $monto;
+            $pagoProv->fecha = $fecha;
+            $pagoProv->cuenta_id = $cuenta->id;
+            $pagoProv->user_id = Auth::user()->id;
+            $pagoProv->save();
+            if (round($pendiente - $monto, 2) <= 0) {
+                $lote->Pagado = 1;
+                $lote->save();
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
         return redirect()->route('reporte_lotes')->with('registrar', 'ok');
 
     }

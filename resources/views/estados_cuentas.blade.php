@@ -8,51 +8,75 @@
 @section("estilos")
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@5.1.0/dist/apexcharts.min.css">
+    <style>
+        .jireh-green { background-color: #125149; }
+        .jireh-orange { background-color: #DA7922; }
+        .jireh-orange:hover { background-color: #b8621a; }
+        .kpi-top-green { border-top: 4px solid #125149; }
+        .kpi-top-orange { border-top: 4px solid #DA7922; }
+        .kpi-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 9999px;
+            background-color: #e7f0ee; color: #125149;
+        }
+        .kpi-icon-orange { background-color: #fbeedf; color: #DA7922; }
+        .kpi-icon-red { background-color: #fdecec; color: #b91c1c; }
+        .chart-type-btn.active { background-color: #125149; color: #fff; }
+    </style>
 @endsection
 
 @section("contenido")
-    <div class="max-w-md mx-auto px-3 py-4">
-        <h3 class="text-xl font-bold text-slate-800 mb-1">Reporte de estados de cuentas</h3>
+    <div class="max-w-5xl mx-auto px-3 py-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+            <h3 class="text-xl font-bold text-slate-800">Reporte de estados de cuentas</h3>
+            <span id="periodo_badge" class="hidden text-xs font-semibold text-white rounded-full px-3 py-1 jireh-green"></span>
+        </div>
         <p class="text-sm text-slate-500 mb-4">Consulta por rango de fechas</p>
 
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
-            <form id="formReporte" class="space-y-4">
-                <div>
-                    <label for="fecha_inicio" class="block text-sm font-medium text-slate-700 mb-1">
-                        Fecha inicio
-                    </label>
-                    <input
-                        type="date"
-                        name="fecha_inicio"
-                        id="fecha_inicio"
-                        class="w-full rounded-xl border border-slate-300 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-800"
-                        required
-                    >
-                </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-4">
+            <div class="jireh-green px-4 py-2">
+                <p class="text-white font-semibold text-sm">Filtros</p>
+            </div>
+            <form id="formReporte" class="p-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="fecha_inicio" class="block text-sm font-medium text-slate-700 mb-1">
+                            Fecha inicio
+                        </label>
+                        <input
+                            type="date"
+                            name="fecha_inicio"
+                            id="fecha_inicio"
+                            class="w-full rounded-xl border border-slate-300 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-800"
+                            required
+                        >
+                    </div>
 
-                <div>
-                    <label for="fecha_fin" class="block text-sm font-medium text-slate-700 mb-1">
-                        Fecha fin
-                    </label>
-                    <input
-                        type="date"
-                        name="fecha_fin"
-                        id="fecha_fin"
-                        class="w-full rounded-xl border border-slate-300 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-800"
-                        required
-                    >
+                    <div>
+                        <label for="fecha_fin" class="block text-sm font-medium text-slate-700 mb-1">
+                            Fecha fin
+                        </label>
+                        <input
+                            type="date"
+                            name="fecha_fin"
+                            id="fecha_fin"
+                            class="w-full rounded-xl border border-slate-300 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-800"
+                            required
+                        >
+                    </div>
                 </div>
 
                 <button
                     type="submit"
                     id="btnGenerar"
-                    class="w-full rounded-xl bg-slate-900 text-white py-3 font-medium active:scale-[0.99] transition"
+                    class="w-full rounded-xl text-white py-3 font-medium active:scale-[0.99] transition mt-4 jireh-orange"
                 >
                     Generar reporte
                 </button>
             </form>
 
-            <div id="errores" class="hidden mt-4 rounded-xl bg-red-50 border border-red-200 p-3 text-sm text-red-700"></div>
+            <div id="errores" class="hidden mx-4 mb-4 rounded-xl bg-red-50 border border-red-200 p-3 text-sm text-red-700"></div>
         </div>
 
         <div id="loading" class="hidden mt-4 text-center text-sm text-slate-500">
@@ -60,15 +84,56 @@
         </div>
 
         <div id="resultado" class="hidden mt-5 space-y-4">
-            <div class="grid grid-cols-2 gap-3">
-                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm">
-                    <p class="text-xs text-slate-500">Total ingreso</p>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined kpi-icon">payments</span>
+                        <p class="text-xs text-slate-500">Total ingreso</p>
+                    </div>
                     <p id="total_ing" class="text-lg font-bold text-slate-800">0.00</p>
                 </div>
-                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm">
-                    <p class="text-xs text-slate-500">Total salida</p>
+                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined kpi-icon kpi-icon-orange">shopping_cart</span>
+                        <p class="text-xs text-slate-500">Total salida</p>
+                    </div>
                     <p id="total_salida" class="text-lg font-bold text-slate-800">0.00</p>
                 </div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined kpi-icon">trending_up</span>
+                        <p class="text-xs text-slate-500">Utilidad bruta</p>
+                    </div>
+                    <p id="kpi_utilidad" class="text-lg font-bold text-emerald-800">Bs 0.00</p>
+                    <p class="text-xs text-slate-500">Margen: <span id="kpi_margen" class="font-semibold">0.00%</span></p>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined kpi-icon kpi-icon-orange">account_balance_wallet</span>
+                        <p class="text-xs text-slate-500">Cobrado del período</p>
+                    </div>
+                    <p id="kpi_cobrado_periodo" class="text-lg font-bold text-slate-800">Bs 0.00</p>
+                    <p class="text-xs text-slate-500">Por pagos: <span id="total_pago">Bs 0.00</span></p>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined kpi-icon kpi-icon-red">schedule</span>
+                        <p class="text-xs text-slate-500">Pendiente de cobro</p>
+                    </div>
+                    <p id="kpi_pendiente" class="text-lg font-bold text-amber-800">Bs 0.00</p>
+                    <p id="kpi_pendiente_n" class="text-xs text-slate-500">0 ventas pendientes</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined kpi-icon kpi-icon-red">local_shipping</span>
+                        <p class="text-xs text-slate-500">Deuda proveedores</p>
+                    </div>
+                    <p id="prov_deuda" class="text-lg font-bold text-red-700">Bs 0.00</p>
+                    <p class="text-xs text-slate-500">Compras: <span id="prov_compras">Bs 0.00</span></p>
+                </div>
+            </div>
+
+            <div class="hidden md:grid grid-cols-4 gap-3">
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm">
                     <p class="text-xs text-slate-500">Peso ingreso</p>
                     <p id="peso_ing" class="text-lg font-bold text-slate-800">0.00</p>
@@ -76,6 +141,49 @@
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm">
                     <p class="text-xs text-slate-500">Peso salida</p>
                     <p id="peso_salida" class="text-lg font-bold text-slate-800">0.00</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm">
+                    <p class="text-xs text-slate-500">Lotes comprados</p>
+                    <p id="prov_lotes" class="text-lg font-bold text-slate-800">0</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm">
+                    <p class="text-xs text-slate-500">Pagado a proveedores</p>
+                    <p id="prov_pagado" class="text-lg font-bold text-slate-800">Bs 0.00</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="jireh-green px-4 py-2 flex flex-wrap items-center justify-between gap-2">
+                    <p class="text-white font-semibold text-sm">Ventas vs costos por mes</p>
+                    <div class="flex gap-1" role="group" aria-label="Tipo de gráfico">
+                        <button type="button" class="chart-type-btn active text-xs px-2 py-1 rounded bg-white/90" data-mchart-type="line">Línea</button>
+                        <button type="button" class="chart-type-btn text-xs px-2 py-1 rounded bg-white/90" data-mchart-type="bar">Barras</button>
+                        <button type="button" class="chart-type-btn text-xs px-2 py-1 rounded bg-white/90" data-mchart-type="area">Área</button>
+                    </div>
+                </div>
+                <div class="p-3">
+                    <div id="chartMensual"></div>
+                    <p class="text-xs text-slate-400 mt-1">Usa el menú de la esquina del gráfico para descargar como PNG, SVG o CSV.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-4 py-3 border-b border-slate-200 jireh-green">
+                    <h4 class="font-semibold text-white">Detalle mensual</h4>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="text-left text-xs text-slate-500 border-b border-slate-200">
+                                <th class="px-4 py-2 font-medium">Mes</th>
+                                <th class="px-4 py-2 font-medium text-right">Ventas</th>
+                                <th class="px-4 py-2 font-medium text-right">Costo</th>
+                                <th class="px-4 py-2 font-medium text-right">Utilidad</th>
+                                <th class="px-4 py-2 font-medium text-right">Margen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaMensual"></tbody>
+                    </table>
                 </div>
             </div>
 
@@ -85,7 +193,7 @@
                     <p class="text-xs text-slate-500">Resumen del rango consultado</p>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                     <div class="bg-slate-50 rounded-xl p-3">
                         <p class="text-xs text-slate-500">Almuerzo</p>
                         <p id="stat_almuerzo" class="text-base font-bold text-slate-800">Bs 0.00</p>
@@ -110,22 +218,16 @@
                         <p class="text-xs text-slate-500">Aceite</p>
                         <p id="stat_aceite" class="text-base font-bold text-slate-800">Bs 0.00</p>
                     </div>
-                    <div class="bg-slate-100 rounded-xl p-3 col-span-2">
+                    <div class="bg-slate-100 rounded-xl p-3 col-span-2 md:col-span-3">
                         <p class="text-xs text-slate-500">Total gastos</p>
                         <p id="stat_total_gastos" class="text-lg font-bold text-slate-900">Bs 0.00</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Nuevo div para el total de ingresos por pagos -->
-            <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm">
-                <p class="text-xs text-slate-500">Total ingresos por pagos</p>
-                <p id="total_pago" class="text-lg font-bold text-slate-800">0.00</p>
-            </div>
-
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="px-4 py-3 border-b border-slate-200">
-                    <h4 class="font-semibold text-slate-800">Detalle por producto</h4>
+                <div class="px-4 py-3 border-b border-slate-200 jireh-green">
+                    <h4 class="font-semibold text-white">Detalle por producto</h4>
                 </div>
 
                 <div id="tablaReporte" class="divide-y divide-slate-100"></div>
@@ -133,6 +235,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
         const form = document.getElementById('formReporte');
         const errores = document.getElementById('errores');
@@ -140,6 +243,7 @@
         const resultado = document.getElementById('resultado');
         const tablaReporte = document.getElementById('tablaReporte');
         const btnGenerar = document.getElementById('btnGenerar');
+        let chartMensual = null;
 
         function money(valor) {
             return Number(valor || 0).toFixed(2);
@@ -149,6 +253,55 @@
             return Number(valor || 0).toFixed(2);
         }
 
+        function setChartType(type) {
+            if (chartMensual) {
+                chartMensual.updateOptions({ chart: { type: type } });
+            }
+            document.querySelectorAll('[data-mchart-type]').forEach(function (b) {
+                b.classList.toggle('active', b.dataset.mchartType === type);
+            });
+        }
+        document.querySelectorAll('[data-mchart-type]').forEach(function (b) {
+            b.addEventListener('click', function () { setChartType(b.dataset.mchartType); });
+        });
+
+        function renderChartMensual(items) {
+            if (chartMensual) {
+                chartMensual.destroy();
+                chartMensual = null;
+            }
+            document.querySelector('#chartMensual').innerHTML = '';
+            if (!items || items.length === 0) {
+                document.querySelector('#chartMensual').innerHTML =
+                    '<p class="text-sm text-slate-500 text-center py-6">Sin ventas en ese rango de fechas.</p>';
+                return;
+            }
+            const options = {
+                series: [
+                    { name: 'Ventas', data: items.map(i => Number(i.ventas || 0)) },
+                    { name: 'Costo', data: items.map(i => Number(i.costo || 0)) },
+                    { name: 'Utilidad', data: items.map(i => Number(i.utilidad || 0)) }
+                ],
+                colors: ['#125149', '#DA7922', '#2E86AB'],
+                chart: {
+                    height: 350,
+                    type: 'line',
+                    toolbar: {
+                        show: true,
+                        tools: { download: true, selection: false, zoom: false, zoomin: false, zoomout: false, pan: false, reset: false }
+                    }
+                },
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth', width: 3 },
+                markers: { size: 3 },
+                xaxis: { categories: items.map(i => i.mes) },
+                yaxis: { labels: { formatter: function (v) { return 'Bs ' + v; } } },
+                legend: { position: 'bottom' }
+            };
+            chartMensual = new ApexCharts(document.querySelector('#chartMensual'), options);
+            chartMensual.render();
+        }
+
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -156,6 +309,7 @@
             errores.innerHTML = '';
             resultado.classList.add('hidden');
             tablaReporte.innerHTML = '';
+            document.getElementById('tablaMensual').innerHTML = '';
             loading.classList.remove('hidden');
             btnGenerar.disabled = true;
             btnGenerar.classList.add('opacity-70');
@@ -192,11 +346,48 @@
                     return;
                 }
 
+                const badge = document.getElementById('periodo_badge');
+                badge.textContent = formData.get('fecha_inicio') + ' al ' + formData.get('fecha_fin');
+                badge.classList.remove('hidden');
+
                 document.getElementById('total_ing').textContent = 'Bs ' + money(data.totales.total_ing);
                 document.getElementById('total_salida').textContent = 'Bs ' + money(data.totales.total_salida);
                 document.getElementById('peso_ing').textContent = numberFormat(data.totales.peso_ing);
                 document.getElementById('peso_salida').textContent = numberFormat(data.totales.peso_salida);
-                document.getElementById('total_pago').textContent = 'Bs ' + money(data.totales.total_pago);  // Mostrar ingresos por pagos
+                document.getElementById('total_pago').textContent = 'Bs ' + money(data.totales.total_pago);
+
+                document.getElementById('kpi_utilidad').textContent = 'Bs ' + money(data.ventas_costos_totales?.utilidad);
+                document.getElementById('kpi_margen').textContent = money(data.ventas_costos_totales?.margen) + '%';
+                document.getElementById('kpi_cobrado_periodo').textContent = 'Bs ' + money(data.cobranza?.cobrado_del_periodo);
+                document.getElementById('kpi_pendiente').textContent = 'Bs ' + money(data.cobranza?.pendiente_total);
+                document.getElementById('kpi_pendiente_n').textContent = (data.cobranza?.ventas_con_pendiente || 0) + ' ventas pendientes';
+                document.getElementById('prov_lotes').textContent = data.proveedores?.lotes || 0;
+                document.getElementById('prov_compras').textContent = 'Bs ' + money(data.proveedores?.compras_total);
+                document.getElementById('prov_pagado').textContent = 'Bs ' + money(data.proveedores?.pagado_rango);
+                document.getElementById('prov_deuda').textContent = 'Bs ' + money(data.proveedores?.deuda_total);
+
+                renderChartMensual(data.ventas_costos);
+
+                const tm = document.getElementById('tablaMensual');
+                if (!data.ventas_costos || data.ventas_costos.length === 0) {
+                    tm.innerHTML = `
+                        <tr><td colspan="5" class="px-4 py-3 text-sm text-slate-500 text-center">
+                            Sin ventas en ese rango de fechas.
+                        </td></tr>
+                    `;
+                } else {
+                    data.ventas_costos.forEach(item => {
+                        tm.innerHTML += `
+                            <tr class="border-b border-slate-100">
+                                <td class="px-4 py-2 font-semibold">${item.mes}</td>
+                                <td class="px-4 py-2 text-right">Bs ${money(item.ventas)}</td>
+                                <td class="px-4 py-2 text-right">Bs ${money(item.costo)}</td>
+                                <td class="px-4 py-2 text-right font-semibold text-emerald-800">Bs ${money(item.utilidad)}</td>
+                                <td class="px-4 py-2 text-right">${money(item.margen)}%</td>
+                            </tr>
+                        `;
+                    });
+                }
 
                 document.getElementById('stat_almuerzo').textContent = 'Bs ' + money(data.estadisticas?.almuerzo);
                 document.getElementById('stat_desayuno').textContent = 'Bs ' + money(data.estadisticas?.desayuno);

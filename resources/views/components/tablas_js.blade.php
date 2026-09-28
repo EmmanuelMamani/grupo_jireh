@@ -13,6 +13,7 @@ if (window.jQuery && jQuery.fn.dataTable) {
     autoWidth: false,
     deferRender: true,
     pageLength: 25,
+    pagingType: window.matchMedia('(max-width: 600px)').matches ? 'simple' : 'simple_numbers',
     language: {
       lengthMenu: "Mostrar _MENU_  ",
       zeroRecords: "No hay resultados",

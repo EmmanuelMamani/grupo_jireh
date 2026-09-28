@@ -246,9 +246,23 @@ class VentaController extends Controller
         $lotes = Ingreso::orderBy('id', 'desc')
                 ->where("Activo", 1)
                 ->with('producto', 'salidas')
-                ->limit(50)
                 ->get();
-        return view("reporte_ventas",["lotes"=>$lotes]);
+        $stock = 0;
+        $vendidas = 0;
+        foreach ($lotes as $lote) {
+            $v = (int) $lote->salidas->sum('CantMoldes');
+            $vendidas += $v;
+            $stock += $lote->CantMoldes - $v;
+            $lote->setAttribute('vendidas', $v);
+        }
+        $kpis = [
+            'activos' => $lotes->count(),
+            'stock' => $stock,
+            'vendidas' => $vendidas,
+            'avance' => ($stock + $vendidas) > 0 ? round($vendidas / ($stock + $vendidas) * 100, 1) : 0,
+        ];
+        $productos = Producto::all();
+        return view("reporte_ventas",["lotes"=>$lotes,'kpis'=>$kpis,'productos'=>$productos]);
      //return  $pdf->download('archivo.pdf');
     }
 

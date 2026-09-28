@@ -12,8 +12,12 @@ use PhpParser\Node\Stmt\Echo_;
 class PendienteController extends Controller
 {
     public function reporte(){
-        $ventas=Venta::where("Estado",0)->with('cliente', 'salida')->limit(50)->get();
-        return view("ventas_pendientes",["ventas"=>$ventas]);
+        $ventas=Venta::where("Estado",0)->with('cliente', 'salida')->orderByDesc('id')->limit(50)->get();
+        $kpis = [
+            'n' => $ventas->count(),
+            'total' => round($ventas->sum(function ($v) { return $v->salida->Total ?? 0; }), 2),
+        ];
+        return view("ventas_pendientes",["ventas"=>$ventas,'kpis'=>$kpis]);
     }
     public function modificar($id, $tipo){
         $venta=Venta::find($id);

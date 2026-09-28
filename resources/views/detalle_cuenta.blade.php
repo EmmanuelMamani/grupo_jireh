@@ -11,34 +11,50 @@
 @endif
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/reporte.css")}}">
 @include('components.tablas_css')
+<script src="https://cdn.tailwindcss.com"></script>
 @endsection
 @section("contenido")
-<h3>Detalle de cuentas</h3>
-<table id="tabla" class="table ">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Monto</th>
-        <th>Detalle</th>
-        <th>Fecha</th>
-      </tr>
-    </thead>
-    <tbody>
-       @foreach ($cuentas as $cuenta )
-            <tr class="fila">
-                <td>{{$user->Nombre}}</td>
-                <td>{{$cuenta->Monto}}</td>
-                <td>{{$cuenta->Detalle}}</td>
-                <td>{{date('d-m-Y', strtotime($cuenta->Fecha));}}</td>
+<div class="max-w-6xl mx-auto px-3 py-4">
+  <h3 class="text-xl font-bold text-slate-800 mb-1">Detalle de cuentas</h3>
+  <p class="text-sm text-slate-500 mb-4">{{$user->Nombre}} · {{date('d-m-Y', strtotime($cuentas->first()->Fecha ?? date('Y-m-d')))}}</p>
+
+  <div class="grid grid-cols-2 gap-3 mb-4">
+    <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm">
+      <p class="text-xs text-slate-500">Movimientos</p>
+      <p class="text-lg font-bold text-slate-800">{{ $cuentas->count() }}</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm">
+      <p class="text-xs text-slate-500">Total del día</p>
+      <p class="text-lg font-bold text-slate-800">Bs {{ number_format($cuentas->sum('Monto'), 2, ',', '.') }}</p>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+      <table id="tabla" class="table w-full text-sm">
+        <thead>
+          <tr class="text-left text-xs text-slate-500 border-b border-slate-200">
+            <th class="px-3 py-2">Detalle</th>
+            <th class="px-3 py-2">Fecha</th>
+            <th class="px-3 py-2 text-right">Monto</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach ($cuentas as $cuenta )
+            <tr class="fila border-b border-slate-100">
+              <td class="px-3 py-2 text-slate-700">{{$cuenta->Detalle}}</td>
+              <td class="px-3 py-2 text-slate-600 whitespace-nowrap">{{date('d-m-Y', strtotime($cuenta->Fecha))}}</td>
+              <td class="px-3 py-2 text-right font-semibold whitespace-nowrap">Bs {{ number_format($cuenta->Monto, 2, ',', '.') }}</td>
             </tr>
-        @endforeach 
-    </tbody>
-  </table>
-  <a href="{{route('descarga_diario',['user_id'=>$user->id])}}" id="descarga" aria-label="Descargar"><x-icon name="download" class="icono"/></a>
-  @include('components.tablas_js')
-  <script>
-         $('#tabla').DataTable();
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+@include('components.tablas_js')
+<script>
+  $('#tabla').DataTable();
 </script>
 @endsection

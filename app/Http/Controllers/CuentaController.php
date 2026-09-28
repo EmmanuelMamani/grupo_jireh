@@ -156,7 +156,11 @@ class CuentaController extends Controller
             array_push($cuentas,$c);
         }
         $usuarios=User::all()->keyBy('id');
-        return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo]);
+        $kpis = [
+            'total' => round(collect($cuentas)->sum('monto'), 2),
+            'empleados' => collect($cuentas)->pluck('user_id')->unique()->count(),
+        ];
+        return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo,'kpis'=>$kpis]);
     }
 
     public function reporteDiario(){
@@ -187,7 +191,11 @@ class CuentaController extends Controller
             $monto+=$c->monto;
         }
         $usuarios=User::all()->keyBy('id');
-        return view("reporte_periodo",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"monto"=>$monto,'inicio'=>$inicio,'fin'=>$fin,"titulo"=>$titulo]);
+        $kpis = [
+            'empleados' => collect($cuentas)->pluck('user_id')->unique()->count(),
+            'dias' => collect($cuentas)->pluck('Fecha')->unique()->count(),
+        ];
+        return view("reporte_periodo",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"monto"=>$monto,'inicio'=>$inicio,'fin'=>$fin,"titulo"=>$titulo,'kpis'=>$kpis]);
     }
     public function reporteHistorico(){
         $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
@@ -197,7 +205,11 @@ class CuentaController extends Controller
                 array_push($cuentas,$c);
         }
         $usuarios=User::all()->keyBy('id');
-        return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo]);
+        $kpis = [
+            'total' => round(collect($cuentas)->sum('monto'), 2),
+            'empleados' => collect($cuentas)->pluck('user_id')->unique()->count(),
+        ];
+        return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo,'kpis'=>$kpis]);
     }
     public function descarga_diario($user_id){
         $fecha=date('Y-m-d');

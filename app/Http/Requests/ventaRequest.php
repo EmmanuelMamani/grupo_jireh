@@ -35,10 +35,9 @@ class ventaRequest extends FormRequest
             'lote'=>[new RuleLote],
             'cantidad_moldes'=>['required','numeric','integer',new RuleCantMoldes,"gt:0"],
             'peso'=>['bail',new RulePeso,'numeric','regex:/^[\d]{0,11}(\.[\d]{1,3})?$/'],
-            'precio'=>'required|numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/|gt:0',     
+            'precio'=>'required|numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/|gt:0',
             'tipo'=>'boolean',
-            'comprobante'=>'required', 
-           
+
         ];
     }
 
@@ -55,8 +54,7 @@ class ventaRequest extends FormRequest
             'precio.required'=>'El campo es obligatorio',
             'precio.numeric'=>'Solo se admiten números',
             'precio.regex'=>'Máximo 2 decimales',
-            'precio.gt'=>'El precio debe ser mayor a 0',
-            'comprobante.required'=>'El campo es obligatorio'
+            'precio.gt'=>'El precio debe ser mayor a 0'
         ];
     }
 }

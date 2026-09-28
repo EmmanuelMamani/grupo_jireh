@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @section("contenido")
-<form action="{{route('venta')}}" id="formulario" method="POST" enctype="multipart/form-data">
+<form action="{{route('venta')}}" id="formulario" method="POST">
     <h3>Pre-Venta</h3>
     @csrf
     <label class="form-label">Zona:</label>
@@ -192,52 +192,11 @@
     @if ($errors->has('acuenta'))
         <span class="error text-danger" for="acuenta">{{ $errors->first('acuenta') }}</span>
     @endif  
-    <label class="form-label">Comprobante:</label>
-    <input type="file" name="comprobante[]" id="comprobante" class="form-control" multiple="">
-    @if ($errors->has('comprobante'))
-               <span class="error text-danger" for="comprobante">{{ $errors->first('comprobante') }} </span>
-            @endif  
     <div class="row" id="cont_btn">
         <div class="col"><a id="cancelar" href="/menu">Cancelar</a></div>
         <div class="col"><button id="enviar" type='submit'>Vender</button></div>
     </div>
 </form>
-<script>
-    //------------------Imagenes--------------------------
-    var comprobante=document.getElementById("comprobante");
-    comprobante.addEventListener('change', mostrar, 'false');
-    comprobante.addEventListener('click', mostrar, 'false');
-    var formulario=document.getElementById("formulario");
- 
-    function mostrar(e){
-        var reader = new FileReader();
-        var file = e.target.files;
-        var contenedor=document.getElementById("imagenes");
-        if(contenedor==null){
-            contenedor=document.createElement("div");
-            contenedor.id="imagenes";
-        }else{
-            contenedor.innerHTML="";
-        }
-    
-        for (let i = 0; i < file.length; i++) {
-            imagen=file[i];
-            var reader = new FileReader();
-            reader.readAsDataURL(imagen);
-            reader.onload = function (e) {
-                
-                var img=document.createElement("img");
-                img.className="imagen"+i;
-                img.setAttribute('src', e.target.result);
-                img.setAttribute('width', '40%');
-                img.setAttribute('heigth', 'auto');
-                contenedor.appendChild(img);
-
-            }
-        }
-        comprobante.insertAdjacentElement("afterend", contenedor);
-    }
-</script>
 <script>
     var carga=document.getElementById("contenedor_carga");
     var enviar=document.getElementById("enviar");

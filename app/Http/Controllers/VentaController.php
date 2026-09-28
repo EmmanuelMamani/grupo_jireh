@@ -8,7 +8,6 @@ use App\Http\Requests\ventaRapidaRequest;
 use App\Http\Requests\ventaRequest;
 use App\Models\Asignacion;
 use App\Models\Cliente;
-use App\Models\Comprobante;
 use App\Models\Cuenta;
 use App\Models\Ingreso;
 use App\Models\Lista;
@@ -21,7 +20,6 @@ use App\Models\Venta;
 use App\Models\Zona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Nette\Utils\Image;
 use PDF;
 use Illuminate\Support\Facades\DB;
 
@@ -162,20 +160,6 @@ class VentaController extends Controller
                     $merma->save();
                 }
             }
-            $fi=$request->file('comprobante');
-            foreach ($fi as $fil) {
-                $tipo_ext=$fil->getClientOriginalExtension();
-                if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
-                    $archivo=$fil->getClientOriginalName();
-                    $file=Image::fromFile($fil)->resize(300, null);
-        
-                    $prueba=new Comprobante();
-                    $prueba->venta_id= $venta->id;
-                    $prueba->Comprobante=$file;
-                    $prueba->save();
-                }
-                
-            }
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack(); 
@@ -221,22 +205,6 @@ class VentaController extends Controller
         $venta->Estado=1;
         $venta->save();
 
-        $fi=$request->file('comprobante');
-        
-        foreach ($fi as $fil) {
-            $tipo_ext=$fil->getClientOriginalExtension();
-            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
-                $archivo=$fil->getClientOriginalName();
-                $file=Image::fromFile($fil)->resize(300, null);
-    
-                $prueba=new Comprobante();
-                $prueba->venta_id= $venta->id;
-                $prueba->Comprobante=$file;
-                $prueba->save();
-            }
-            
-        }
-        
         $asignacion=Asignacion::where('asignado_id',Auth::user()->id)->where('ingreso_id',$request->lote)->get();
         
         $asignacion[0]->CantMoldes=$asignacion[0]->CantMoldes - $request->cantidad_moldes;
@@ -290,8 +258,7 @@ class VentaController extends Controller
 
     public function detalle($id){
         $venta=Venta::find($id);
-        $comprobantes=Comprobante::where("venta_id",$id)->get();
-        return view("detalle_venta",["venta"=>$venta,"comprobantes"=>$comprobantes]);
+        return view("detalle_venta",["venta"=>$venta]);
     }
     public function VistaDevolucion($id){
         $venta=Venta::find($id);
@@ -421,27 +388,11 @@ class VentaController extends Controller
             }
         }
 
-        $fi=$request->file('comprobante');
-        
-        foreach ($fi as $fil) {
-            $tipo_ext=$fil->getClientOriginalExtension();
-            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
-                $archivo=$fil->getClientOriginalName();
-                $file=Image::fromFile($fil)->resize(300, null);
-    
-                $prueba=new Comprobante();
-                $prueba->venta_id= $venta->id;
-                $prueba->Comprobante=$file;
-                $prueba->save();
-            }
-            
-        }
       return redirect()->route('menu')->with('registrar','ok');
     }
     public function vistaEditar($id){
         $venta=Venta::find($id);
-        $comprobantes=Comprobante::where("venta_id",$id)->get();
-        return view("editar_venta",["venta"=>$venta,"comprobantes"=>$comprobantes]);
+        return view("editar_venta",["venta"=>$venta]);
     }
     public function Editar(requestEditVenta $request, $id){
         $salida=Salida::find($id);

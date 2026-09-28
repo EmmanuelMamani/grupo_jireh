@@ -21,12 +21,6 @@
     <span>Precio/kilo o unidad : {{$venta->salida->Precio}}</span><br>
     <span>Peso: {{$venta->salida->Peso}} Kg.</span><br>
     <span>Total : {{$venta->salida->Total}}</span><br>
-    <span>Comprobantes :</span><br>
-    @foreach ($comprobantes as $comprobante)
-    <img src="data:image/jpeg;base64,<?php
-        echo base64_encode($comprobante->Comprobante);
-    ?>">
-    @endforeach
 
 </div>
 <script>

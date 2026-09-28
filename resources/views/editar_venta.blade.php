@@ -75,12 +75,6 @@
             @endif  
         </div>
     </div>
-    <label class="form-label">Comprobante:</label>
-    @foreach ($comprobantes as $comprobante)
-    <img src="data:image/jpeg;base64,<?php
-        echo base64_encode($comprobante->Comprobante);
-    ?>">
-    @endforeach
     <div class="row" id="cont_btn">
         <div class="col"><a id="cancelar" href="/menu">Cancelar</a></div>
         <div class="col"><button id="enviar" type='submit'>Vender</button></div>

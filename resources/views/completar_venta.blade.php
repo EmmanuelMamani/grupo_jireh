@@ -59,7 +59,7 @@
           </div>
           <div>
             <x-ui-label for="peso">Peso total</x-ui-label>
-            <x-ui-input type="text" name="peso" id="peso" inputmode="decimal" autocomplete="off" @if (old('peso')!= null) value="{{old('peso')}}" @else value="0.00" @endif/>
+            <x-ui-input type="text" name="peso" id="peso" inputmode="decimal" autocomplete="off" value="{{ old('peso', '0.00') }}"/>
             <x-ui-error field="peso"/>
           </div>
         </div>

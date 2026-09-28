@@ -12,12 +12,12 @@
       <p class="text-sm text-slate-600">Producto: {{$venta->ingreso->producto->Nombre}} {{$venta->ingreso->producto->Tipo}}</p>
       <div>
         <x-ui-label for="unidades">Unidades</x-ui-label>
-        <x-ui-input type="text" name="unidades" id="unidades" inputmode="numeric" autocomplete="off" value="{{old("unidades")}}"/>
+        <x-ui-input type="text" name="unidades" id="unidades" inputmode="numeric" autocomplete="off" value="{{ old('unidades') }}"/>
         <x-ui-error field="unidades"/>
       </div>
       <div>
         <x-ui-label for="monto">Monto</x-ui-label>
-        <x-ui-input type="text" name="monto" id="monto" inputmode="decimal" autocomplete="off" value="{{old("monto")}}"/>
+        <x-ui-input type="text" name="monto" id="monto" inputmode="decimal" autocomplete="off" value="{{ old('monto') }}"/>
         <x-ui-error field="monto"/>
       </div>
       <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">

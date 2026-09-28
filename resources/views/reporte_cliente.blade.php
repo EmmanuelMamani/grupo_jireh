@@ -84,7 +84,6 @@
                 <p class="font-semibold text-slate-800">{{$cliente->Nombre}}</p>
                 <p class="text-xs whitespace-nowrap">
                   <a href="tel:+{{$tel}}" class="text-slate-500">{{$cliente->Telefono}}</a>
-                  <a href="https://wa.me/{{$tel}}" target="_blank" rel="noopener" class="ml-2 text-emerald-700 font-semibold">WhatsApp</a>
                 </p>
               </td>
               <td class="px-3 py-2"><span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-700 whitespace-nowrap">{{$cliente->zona->Nombre ?? '—'}}</span></td>

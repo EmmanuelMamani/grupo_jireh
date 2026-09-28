@@ -55,6 +55,15 @@
             <span id="titulo"><small>Grupo JIREH</small><strong id="seccion_actual">{{ $seccionActual }}</strong></span>
           </a>
           <div class="nav-links" id="nav_links">
+            @auth
+            <div class="drawer-profile">
+              <span class="user-avatar drawer-avatar">{{ strtoupper(mb_substr(Auth::user()->Nombre, 0, 1)) }}</span>
+              <p class="drawer-name">{{ Auth::user()->Nombre }}</p>
+              <p class="drawer-rol">{{ Auth::user()->Rol }}</p>
+              <a href="{{route('perfil')}}">Mi perfil</a>
+              <a href="{{route('logout')}}">Salir</a>
+            </div>
+            @endauth
             @yield("opciones")
           </div>
           <div id="nav_backdrop" aria-hidden="true"></div>

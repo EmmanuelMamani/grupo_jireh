@@ -12,7 +12,7 @@ use PhpParser\Node\Stmt\Echo_;
 class PendienteController extends Controller
 {
     public function reporte(){
-        $ventas=Venta::where("Estado",0)->limit(50)->get();;
+        $ventas=Venta::where("Estado",0)->with('cliente', 'salida')->limit(50)->get();
         return view("ventas_pendientes",["ventas"=>$ventas]);
     }
     public function modificar($id, $tipo){

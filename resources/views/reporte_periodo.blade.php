@@ -26,17 +26,16 @@
       </tr>
     </thead>
     <tbody>
-      @foreach ($usuarios as $usuario )
-        @foreach ($cuentas as $cuenta )
-          @if ($usuario->id == $cuenta->user_id)
+      @foreach ($cuentas as $cuenta )
+        @php($usuario = $usuarios[$cuenta->user_id] ?? null)
+        @if ($usuario)
             <tr class="fila">
               <td>{{$usuario->Nombre}}</td>
               <td>{{date('d-m-Y', strtotime($cuenta->Fecha));}}</td>
               <td>{{$cuenta->monto}}</td>
               <th><form action="{{route("detalle_cuenta",['id'=>$usuario->id,'fecha'=>$cuenta->Fecha])}}" method="GET">@csrf <button class="btn btn-secondary">Detalle</button></form></th>
             </tr>
-          @endif
-        @endforeach
+        @endif
       @endforeach
     </tbody>
   </table>

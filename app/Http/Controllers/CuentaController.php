@@ -157,7 +157,7 @@ class CuentaController extends Controller
                 array_push($cuentas,$c);
            }
         }
-        $usuarios=User::all();
+        $usuarios=User::all()->keyBy('id');
         return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo]);
     }
 
@@ -170,7 +170,7 @@ class CuentaController extends Controller
     }
 
     public function DetalleCuenta($id,$fecha){
-        $cuentas=Cuenta::all()->where("user_id",$id)->where("Fecha",$fecha);
+        $cuentas=Cuenta::where("user_id",$id)->where("Fecha",$fecha)->get();
         $user=User::find($id);
      return view("detalle_cuenta",["cuentas"=>$cuentas,"user"=>$user]);
     }
@@ -190,7 +190,7 @@ class CuentaController extends Controller
                 $monto+=$c->monto;
            }
         }
-        $usuarios=User::all();
+        $usuarios=User::all()->keyBy('id');
         return view("reporte_periodo",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"monto"=>$monto,'inicio'=>$inicio,'fin'=>$fin,"titulo"=>$titulo]);
     }
     public function reporteHistorico(){
@@ -200,7 +200,7 @@ class CuentaController extends Controller
         foreach($consultas as $c){
                 array_push($cuentas,$c);
         }
-        $usuarios=User::all();
+        $usuarios=User::all()->keyBy('id');
         return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo]);
     }
     public function descarga_diario($user_id){

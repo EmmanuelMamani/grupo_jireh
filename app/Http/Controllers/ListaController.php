@@ -32,7 +32,7 @@ class ListaController extends Controller
         return redirect()->route('registro_lista')->with('registrar','ok');
     }
     public function reporte(){
-        $listas=Lista::all()->where("user_id",Auth::user()->id);
+        $listas=Lista::with('cliente', 'producto')->where("user_id",Auth::user()->id)->get();
         $usuarios=User::all()->where("id","!=",Auth::user()->id);
         return view("lista_reporte",["listas"=>$listas,"usuarios"=>$usuarios]);
     }

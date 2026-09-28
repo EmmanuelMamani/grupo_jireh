@@ -245,6 +245,7 @@ class VentaController extends Controller
 
         $lotes = Ingreso::orderBy('id', 'desc')
                 ->where("Activo", 1)
+                ->with('producto', 'salidas')
                 ->limit(50)
                 ->get();
         return view("reporte_ventas",["lotes"=>$lotes]);
@@ -252,7 +253,7 @@ class VentaController extends Controller
     }
 
     public function vistaReporteVentas($id){
-        $ventas=Venta::where('ingreso_id',$id)->orderByDesc('id')->get();
+        $ventas=Venta::where('ingreso_id',$id)->with('cliente', 'user', 'ingreso.producto', 'salida')->orderByDesc('id')->get();
         return view('reporte_lote_ventas',["ventas"=>$ventas,'id'=>$id]);
     }
 
@@ -297,7 +298,7 @@ class VentaController extends Controller
     }
     public function descarga($id)
     {
-        $ventas=Venta::where('ingreso_id',$id)->orderByDesc('id')->get();
+        $ventas=Venta::where('ingreso_id',$id)->with('cliente', 'user', 'ingreso.producto', 'salida')->orderByDesc('id')->get();
         $producto= Producto::find($ventas->last()->ingreso->producto_id);
         $lote= Ingreso::find($ventas->last()->ingreso_id);
         $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_ventas_pdf",['ventas'=>$ventas,'producto'=>$producto,'lote'=>$lote]);

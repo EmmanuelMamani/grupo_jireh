@@ -43,9 +43,9 @@
     </tbody>
   </table>
   @if ($titulo=="Historico")
-    <a href="{{route('descarga_cuentas')}}" id="descarga"  class="material-symbols-outlined icono">download</a>   
+    <a href="{{route('descarga_cuentas')}}" id="descarga" aria-label="Descargar"><x-icon name="download" class="icono"/></a>
   @else
-    <a href="{{route('descarga_cuentas_diarias')}}" id="descarga"  class="material-symbols-outlined icono">download</a>    
+    <a href="{{route('descarga_cuentas_diarias')}}" id="descarga" aria-label="Descargar"><x-icon name="download" class="icono"/></a>
   @endif
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>

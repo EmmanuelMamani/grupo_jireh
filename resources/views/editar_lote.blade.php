@@ -1,7 +1,7 @@
 @extends("header")
 @section("titulo", "Grupo JIREH")
 @section("opciones")
-<a href="{{route("reporte_lotes")}}" class="opciones_head material-symbols-outlined" id="flecha">arrow_back</a>
+<a href="{{route("reporte_lotes")}}" class="opciones_head" id="flecha" aria-label="Volver"><x-icon name="arrow_back"/></a>
 @endsection
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">

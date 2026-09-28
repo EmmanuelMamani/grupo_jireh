@@ -40,7 +40,7 @@
         <div class="col-6 col-md-3">
             <div class="card kpi shadow-sm h-100">
                 <div class="card-body">
-                    <span class="material-symbols-outlined kpi-icon">payments</span>
+                    <x-icon name="payments" class="kpi-icon"/>
                     <p class="kpi-label">Total general</p>
                     <h4 class="kpi-value">Bs {{ number_format($kpis['total'] ?? 0, 2) }}</h4>
                 </div>
@@ -49,7 +49,7 @@
         <div class="col-6 col-md-3">
             <div class="card kpi kpi-accent shadow-sm h-100">
                 <div class="card-body">
-                    <span class="material-symbols-outlined kpi-icon kpi-accent-icon">workspace_premium</span>
+                    <x-icon name="workspace_premium" class="kpi-icon kpi-accent-icon"/>
                     <p class="kpi-label">Categoría top</p>
                     <h4 class="kpi-value">{{ $kpis['categoriaTop'] ?? '—' }}</h4>
                     <small class="text-muted">Bs {{ number_format($kpis['montoTop'] ?? 0, 2) }}</small>
@@ -59,7 +59,7 @@
         <div class="col-6 col-md-3">
             <div class="card kpi shadow-sm h-100">
                 <div class="card-body">
-                    <span class="material-symbols-outlined kpi-icon">calendar_month</span>
+                    <x-icon name="calendar_month" class="kpi-icon"/>
                     <p class="kpi-label">Meses con datos</p>
                     <h4 class="kpi-value">{{ $kpis['meses'] ?? 0 }}</h4>
                 </div>
@@ -68,7 +68,7 @@
         <div class="col-6 col-md-3">
             <div class="card kpi kpi-accent shadow-sm h-100">
                 <div class="card-body">
-                    <span class="material-symbols-outlined kpi-icon kpi-accent-icon">trending_up</span>
+                    <x-icon name="trending_up" class="kpi-icon kpi-accent-icon"/>
                     <p class="kpi-label">Promedio mensual</p>
                     <h4 class="kpi-value">Bs {{ number_format($kpis['promedio'] ?? 0, 2) }}</h4>
                 </div>

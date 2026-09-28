@@ -45,7 +45,5 @@ a{text-decoration: none;}
 .icono{
     color: #4D2507;
     font-size: 40px;
-}
-.material-symbols-outlined{
-    font-size: 40px;
+    flex-shrink: 0;
 }

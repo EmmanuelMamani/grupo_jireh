@@ -87,21 +87,21 @@
             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="material-symbols-outlined kpi-icon">payments</span>
+                        <x-icon name="payments" class="kpi-icon"/>
                         <p class="text-xs text-slate-500">Total ingreso</p>
                     </div>
                     <p id="total_ing" class="text-lg font-bold text-slate-800">0.00</p>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="material-symbols-outlined kpi-icon kpi-icon-orange">shopping_cart</span>
+                        <x-icon name="shopping_cart" class="kpi-icon kpi-icon-orange"/>
                         <p class="text-xs text-slate-500">Total salida</p>
                     </div>
                     <p id="total_salida" class="text-lg font-bold text-slate-800">0.00</p>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="material-symbols-outlined kpi-icon">trending_up</span>
+                        <x-icon name="trending_up" class="kpi-icon"/>
                         <p class="text-xs text-slate-500">Utilidad bruta</p>
                     </div>
                     <p id="kpi_utilidad" class="text-lg font-bold text-emerald-800">Bs 0.00</p>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="material-symbols-outlined kpi-icon kpi-icon-orange">account_balance_wallet</span>
+                        <x-icon name="account_balance_wallet" class="kpi-icon kpi-icon-orange"/>
                         <p class="text-xs text-slate-500">Cobrado del período</p>
                     </div>
                     <p id="kpi_cobrado_periodo" class="text-lg font-bold text-slate-800">Bs 0.00</p>
@@ -117,7 +117,7 @@
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="material-symbols-outlined kpi-icon kpi-icon-red">schedule</span>
+                        <x-icon name="schedule" class="kpi-icon kpi-icon-red"/>
                         <p class="text-xs text-slate-500">Pendiente de cobro</p>
                     </div>
                     <p id="kpi_pendiente" class="text-lg font-bold text-amber-800">Bs 0.00</p>
@@ -125,7 +125,7 @@
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="material-symbols-outlined kpi-icon kpi-icon-red">local_shipping</span>
+                        <x-icon name="local_shipping" class="kpi-icon kpi-icon-red"/>
                         <p class="text-xs text-slate-500">Deuda proveedores</p>
                     </div>
                     <p id="prov_deuda" class="text-lg font-bold text-red-700">Bs 0.00</p>

@@ -13,7 +13,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     @yield('estilos')
     @stack('head-scripts')
     <title>@yield("titulo", "Grupo Jireh")</title>
@@ -30,7 +29,7 @@
            <span id="titulo">@yield("titulo")</span>
           </a>
           @yield("opciones")
-          <button type="button" id="menu" class="material-symbols-outlined" aria-label="Mostrar u ocultar navegación" aria-expanded="false" aria-controls="navbar">menu</button>
+          <button type="button" id="menu" aria-label="Mostrar u ocultar navegación" aria-expanded="false" aria-controls="navbar"><span id="menu_open"><x-icon name="menu"/></span><span id="menu_close" hidden><x-icon name="close"/></span></button>
             
         </div>
       </nav><div id="inf"></div>
@@ -62,7 +61,8 @@
       menu.addEventListener("click",function(){
         var open=navbar.classList.toggle("open");
         menu.setAttribute("aria-expanded",open?"true":"false");
-        menu.textContent=open?"close":"menu";
+        document.getElementById("menu_open").hidden=open;
+        document.getElementById("menu_close").hidden=!open;
       });
       // Anti doble-envío global: en todo POST muestra el loader y bloquea el botón.
       document.addEventListener("submit",function(e){

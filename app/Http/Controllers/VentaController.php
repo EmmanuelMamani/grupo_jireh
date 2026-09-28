@@ -485,12 +485,13 @@ class VentaController extends Controller
         $fecha_inicio = date('Y-m-d 00:00:00', strtotime($fecha_inicio));
         $fecha_fin = date('Y-m-d 23:59:59', strtotime($fecha_fin));
     
-        // Filtra las ventas según las fechas
+        // Filtra las ventas según las fechas (más reciente primero)
         $ventas = Venta::where('cliente_id', $id)
                         ->where('created_at', '>=', $fecha_inicio)
                         ->where('created_at', '<=', $fecha_fin)
                         ->with('salida', 'ingreso.producto', 'user')
-                        ->orderBy('created_at')
+                        ->orderByDesc('created_at')
+                        ->orderByDesc('id')
                         ->get();
         $saldos = DB::select("
         SELECT s.*, u.Nombre,
@@ -507,6 +508,7 @@ class VentaController extends Controller
         WHERE s.cliente_id = ?
             AND DATE(s.created_at) >= ?
             AND DATE(s.created_at) <= ?
+        ORDER BY s.created_at DESC, s.id DESC
     ", ["%{$cliente->Nombre}%", $id, $fecha_inicio, $fecha_fin]);
 
         $totales = [
@@ -517,7 +519,7 @@ class VentaController extends Controller
             }), 2),
             'pagos' => round(collect($saldos)->sum(function ($s) { return $s->Monto ?? 0; }), 2),
         ];
-        $totales['ultimo_saldo'] = collect($saldos)->last();
+        $totales['ultimo_saldo'] = collect($saldos)->first();
 
         return view('reporte_periodo_ventas',['ventas'=>$ventas,'cliente'=>$cliente,'inicio'=>$request->inicio,"fin"=>$request->fin,"saldos"=>$saldos,'totales'=>$totales]);
     } 
@@ -530,13 +532,17 @@ class VentaController extends Controller
         $fecha_inicio = date('Y-m-d 00:00:00', strtotime($fecha_inicio));
         $fecha_fin = date('Y-m-d 23:59:59', strtotime($fecha_fin));
     
-        // Filtra las ventas según las fechas
+        // Filtra las ventas según las fechas (más reciente primero)
         $ventas = Venta::where('cliente_id', $id)
                         ->where('created_at', '>=', $fecha_inicio)
                         ->where('created_at', '<=', $fecha_fin)
+                        ->orderByDesc('created_at')
+                        ->orderByDesc('id')
                         ->get();
         $saldos = Saldo::where('cliente_id', $id)
                         ->where('created_at', '>=', $fecha_inicio)
+                        ->orderByDesc('created_at')
+                        ->orderByDesc('id')
                         ->get();
         $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_ventas_cliente_pdf",['ventas'=>$ventas,'cliente'=>$cliente,'saldos'=>$saldos]);
         return  $pdf->download('reporteVentas_cliente.pdf');

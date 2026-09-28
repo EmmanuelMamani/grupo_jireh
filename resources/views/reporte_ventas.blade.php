@@ -67,7 +67,7 @@
             <tr class="fila border-b border-slate-100">
               <td class="px-3 py-2 font-semibold text-slate-800">{{$lote->Proveedor}}</td>
               <td class="px-3 py-2"><span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-700 whitespace-nowrap">{{$lote->producto->Nombre}} {{$lote->producto->Tipo}}</span></td>
-              <td class="px-3 py-2 text-slate-600 whitespace-nowrap">{{$lote->created_at->format('d-m-Y')}}</td>
+              <td class="px-3 py-2 text-slate-600 whitespace-nowrap" data-order="{{ $lote->created_at->timestamp }}{{ str_pad($lote->id, 10, '0', STR_PAD_LEFT) }}">{{$lote->created_at->format('d-m-Y')}}</td>
               <td class="px-3 py-2" style="min-width:130px">
                 <div class="h-2 rounded-full bg-slate-200 mb-1"><div class="h-2 rounded-full" style="width:{{ min(100, $av) }}%;background-color:#125149"></div></div>
                 <p class="text-xs text-slate-600">{{$lote->vendidas}} / {{$lote->CantMoldes}} ({{$av}}%)</p>
@@ -82,7 +82,7 @@
 </div>
 @include('components.tablas_js')
 <script>
-  var tablaLotesVender = $('#tabla').DataTable({ dom: 'rtip' });
+  var tablaLotesVender = $('#tabla').DataTable({ dom: 'rtip', order: [[2, 'desc']] });
   $('#buscarLote').on('input', function () { tablaLotesVender.search(this.value).draw(); });
   $('#filtroProducto').on('change', function () { tablaLotesVender.column(1).search(this.value).draw(); });
 </script>

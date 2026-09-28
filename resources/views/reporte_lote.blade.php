@@ -79,7 +79,7 @@
               $estado = ($tieneStock ? 'con_stock' : 'agotado') . ' ' . ($lote->Pagado == 1 ? 'pagado' : 'pendiente');
             @endphp
             <tr class="fila border-b border-slate-100" data-estado="{{$estado}}" data-producto="{{$lote->producto->Nombre}} {{$lote->producto->Tipo}}">
-              <td class="px-3 py-2">
+              <td class="px-3 py-2" data-order="{{ $lote->created_at->timestamp }}{{ str_pad($lote->id, 10, '0', STR_PAD_LEFT) }}">
                 <p class="font-semibold text-slate-800">{{$lote->Proveedor}}</p>
                 <p class="text-xs"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">{{$lote->producto->Nombre}} {{$lote->producto->Tipo}}</span></p>
                 <p class="text-xs text-slate-400">{{$lote->created_at->format('d-m-Y')}}</p>
@@ -126,7 +126,7 @@
   .accion-btn { white-space: nowrap; }
 </style>
 <script>
-  var tablaLotes = $('#tabla').DataTable({ dom: 'rtip' });
+  var tablaLotes = $('#tabla').DataTable({ dom: 'rtip', order: [[0, 'desc']] });
   $('#buscarLote').on('input', function () { tablaLotes.search(this.value).draw(); });
   $('#filtroProducto').on('change', function () { tablaLotes.column(0).search(this.value).draw(); });
   var filtroEstado = 'todos';

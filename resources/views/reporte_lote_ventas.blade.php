@@ -82,7 +82,7 @@
               <td class="px-3 py-2 font-semibold text-slate-800">{{$venta->cliente->Nombre ?? 'Sin nombre'}}</td>
               <td class="px-3 py-2 text-slate-600">{{$venta->user->Nombre}}</td>
               <td class="px-3 py-2 text-right font-semibold whitespace-nowrap">Bs {{ number_format($venta->salida->Total, 2, ',', '.') }}</td>
-              <td class="px-3 py-2 text-slate-600 whitespace-nowrap">{{$venta->created_at->format('d-m-Y')}}</td>
+              <td class="px-3 py-2 text-slate-600 whitespace-nowrap" data-order="{{ $venta->created_at->timestamp }}{{ str_pad($venta->id, 10, '0', STR_PAD_LEFT) }}">{{$venta->created_at->format('d-m-Y')}}</td>
               <td class="px-3 py-2">
                 @if ($venta->pendiente > 0)
                   <span class="text-xs px-2 py-1 rounded-full bg-amber-100 text-amber-800 whitespace-nowrap">Debe Bs {{ number_format($venta->pendiente, 2, ',', '.') }}</span>
@@ -109,7 +109,7 @@
 </div>
 @include('components.tablas_js')
 <script>
-  var tablaVentas = $('#tabla').DataTable({ dom: 'rtip' });
+  var tablaVentas = $('#tabla').DataTable({ dom: 'rtip', order: [[4, 'desc']] });
   $('#buscarVenta').on('input', function () { tablaVentas.search(this.value).draw(); });
   $('#filtroVendedor').on('change', function () { tablaVentas.column(2).search(this.value).draw(); });
   var filtroPago = 'todas';

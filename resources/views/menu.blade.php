@@ -100,6 +100,7 @@
       </a>
     </div>
   </section>
+  @endif
 
   <section>
     <h4 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-2">Finanzas</h4>
@@ -111,6 +112,7 @@
           <span class="block text-xs text-slate-500">Gastos e ingresos del día</span>
         </span>
       </a>
+      @if ($esAdmin)
       <a href="{{route("estado_cuentas.index")}}" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex items-center gap-3 active:scale-[0.99] transition">
         <span class="shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-2xl text-white" style="background-color:#125149"><x-icon name="balance"/></span>
         <span class="flex-1">
@@ -125,8 +127,8 @@
           <span class="block text-xs text-slate-500">Control de gastos</span>
         </span>
       </a>
+      @endif
     </div>
   </section>
-  @endif
 </div>
 @endsection

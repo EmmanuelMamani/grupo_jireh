@@ -25,7 +25,7 @@ su costo y cada cobro sabe qué venta paga.
 
 ## Operatoria futura
 - Vender, cobrar y comprar como siempre: el sistema enlaza todo solo.
-- Nueva pantalla **Conciliación** para asignar cobros a ventas cuando se quiera.
 - Nueva pantalla **Estado de cuentas** con el reporte mensual completo.
+- La pantalla **Conciliación** se retiró por no usarse (la cobranza ya imputa a ventas).
 - Auditoría mensual de un minuto (`auditoria:cuadre`) para detectar a tiempo
   cualquier descuadre futuro.

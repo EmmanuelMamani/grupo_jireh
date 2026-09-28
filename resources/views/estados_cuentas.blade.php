@@ -118,18 +118,53 @@
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
                     <div class="flex items-center gap-2 mb-1">
                         <x-icon name="schedule" class="kpi-icon kpi-icon-red"/>
-                        <p class="text-xs text-slate-500">Pendiente de cobro</p>
+                        <p class="text-xs text-slate-500">Pendiente de cobro (histórico)</p>
                     </div>
                     <p id="kpi_pendiente" class="text-lg font-bold text-amber-800">Bs 0.00</p>
-                    <p id="kpi_pendiente_n" class="text-xs text-slate-500">0 ventas pendientes</p>
+                    <p id="kpi_pendiente_n" class="text-xs text-slate-500">0 ventas pendientes en total</p>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
                     <div class="flex items-center gap-2 mb-1">
                         <x-icon name="local_shipping" class="kpi-icon kpi-icon-red"/>
-                        <p class="text-xs text-slate-500">Deuda proveedores</p>
+                        <p class="text-xs text-slate-500">Deuda proveedores (histórica)</p>
                     </div>
                     <p id="prov_deuda" class="text-lg font-bold text-red-700">Bs 0.00</p>
-                    <p class="text-xs text-slate-500">Compras: <span id="prov_compras">Bs 0.00</span></p>
+                    <p class="text-xs text-slate-500">Compras del período: <span id="prov_compras">Bs 0.00</span></p>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
+                    <div class="flex items-center gap-2 mb-1">
+                        <x-icon name="schedule" class="kpi-icon kpi-icon-orange"/>
+                        <p class="text-xs text-slate-500">Pendiente generado en el período</p>
+                    </div>
+                    <p id="kpi_pendiente_periodo" class="text-lg font-bold text-amber-800">Bs 0.00</p>
+                    <p id="kpi_pendiente_periodo_n" class="text-xs text-slate-500">0 ventas del período con saldo</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
+                    <div class="flex items-center gap-2 mb-1">
+                        <x-icon name="local_shipping" class="kpi-icon"/>
+                        <p class="text-xs text-slate-500">Flujo neto proveedores (período)</p>
+                    </div>
+                    <p id="prov_flujo" class="text-lg font-bold text-slate-800">Bs 0.00</p>
+                    <p class="text-xs text-slate-500">Compras menos pagos del período</p>
+                </div>
+            </div>
+            <p id="prov_nota" class="hidden text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2">Sin pagos a proveedores registrados: la deuda histórica equivale al total comprado. Registra pagos con Pagar lote en el reporte de lotes.</p>
+
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-4 py-3 border-b border-slate-200 jireh-green">
+                    <h4 class="font-semibold text-white">Antigüedad del pendiente de cobro</h4>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="text-left text-xs text-slate-500 border-b border-slate-200">
+                                <th class="px-4 py-2 font-medium">Antigüedad</th>
+                                <th class="px-4 py-2 font-medium text-right">Ventas</th>
+                                <th class="px-4 py-2 font-medium text-right">Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaAntiguedad"></tbody>
+                    </table>
                 </div>
             </div>
 
@@ -310,6 +345,8 @@
             resultado.classList.add('hidden');
             tablaReporte.innerHTML = '';
             document.getElementById('tablaMensual').innerHTML = '';
+            document.getElementById('tablaAntiguedad').innerHTML = '';
+            document.getElementById('prov_nota').classList.add('hidden');
             loading.classList.remove('hidden');
             btnGenerar.disabled = true;
             btnGenerar.classList.add('opacity-70');
@@ -360,11 +397,24 @@
                 document.getElementById('kpi_margen').textContent = money(data.ventas_costos_totales?.margen) + '%';
                 document.getElementById('kpi_cobrado_periodo').textContent = 'Bs ' + money(data.cobranza?.cobrado_del_periodo);
                 document.getElementById('kpi_pendiente').textContent = 'Bs ' + money(data.cobranza?.pendiente_total);
-                document.getElementById('kpi_pendiente_n').textContent = (data.cobranza?.ventas_con_pendiente || 0) + ' ventas pendientes';
+                document.getElementById('kpi_pendiente_n').textContent = (data.cobranza?.ventas_con_pendiente || 0) + ' ventas pendientes en total';
+                document.getElementById('kpi_pendiente_periodo').textContent = 'Bs ' + money(data.cobranza?.pendiente_periodo);
+                document.getElementById('kpi_pendiente_periodo_n').textContent = (data.cobranza?.ventas_con_pendiente_periodo || 0) + ' ventas del período con saldo';
                 document.getElementById('prov_lotes').textContent = data.proveedores?.lotes || 0;
                 document.getElementById('prov_compras').textContent = 'Bs ' + money(data.proveedores?.compras_total);
                 document.getElementById('prov_pagado').textContent = 'Bs ' + money(data.proveedores?.pagado_rango);
                 document.getElementById('prov_deuda').textContent = 'Bs ' + money(data.proveedores?.deuda_total);
+                document.getElementById('prov_flujo').textContent = 'Bs ' + money(data.proveedores?.flujo_neto_rango);
+                document.getElementById('prov_nota').classList.toggle('hidden', (data.proveedores?.pagos_historico_n || 0) > 0);
+
+                const ta = document.getElementById('tablaAntiguedad');
+                const orden = ['0-30', '31-90', '91-180', '>180'];
+                const ant = {};
+                (data.cobranza?.pendiente_antiguedad || []).forEach(function (r) { ant[r.bucket] = r; });
+                ta.innerHTML = orden.map(function (b) {
+                    const r = ant[b] || { cantidad: 0, total: 0 };
+                    return `<tr class="border-b border-slate-100"><td class="px-4 py-2">${b} días</td><td class="px-4 py-2 text-right">${r.cantidad}</td><td class="px-4 py-2 text-right">Bs ${money(r.total)}</td></tr>`;
+                }).join('');
 
                 renderChartMensual(data.ventas_costos);
 

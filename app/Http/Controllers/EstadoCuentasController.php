@@ -162,11 +162,39 @@ class EstadoCuentasController extends Controller
             LEFT JOIN (SELECT venta_id, SUM(monto) AS pagado FROM pagos GROUP BY venta_id) pp ON pp.venta_id = v.id
             WHERE v.cliente_id IS NOT NULL AND (s.Total - COALESCE(pp.pagado, 0)) > 0
         ");
+        $pendientesPeriodo = DB::selectOne("
+            SELECT COUNT(*) AS cantidad,
+                COALESCE(SUM(GREATEST(s.Total - COALESCE(pp.pagado, 0), 0)), 0) AS total
+            FROM ventas v
+            INNER JOIN salidas s ON s.id = v.salida_id
+            LEFT JOIN (SELECT venta_id, SUM(monto) AS pagado FROM pagos GROUP BY venta_id) pp ON pp.venta_id = v.id
+            WHERE v.cliente_id IS NOT NULL AND (s.Total - COALESCE(pp.pagado, 0)) > 0
+            AND v.created_at BETWEEN ? AND ?
+        ", [$fechaInicio, $fechaFin]);
+        $pendientesAntiguedad = DB::select("
+            SELECT
+                CASE
+                    WHEN DATEDIFF(CURDATE(), DATE(v.created_at)) <= 30 THEN '0-30'
+                    WHEN DATEDIFF(CURDATE(), DATE(v.created_at)) <= 90 THEN '31-90'
+                    WHEN DATEDIFF(CURDATE(), DATE(v.created_at)) <= 180 THEN '91-180'
+                    ELSE '>180'
+                END AS bucket,
+                COUNT(*) AS cantidad,
+                COALESCE(SUM(GREATEST(s.Total - COALESCE(pp.pagado, 0), 0)), 0) AS total
+            FROM ventas v
+            INNER JOIN salidas s ON s.id = v.salida_id
+            LEFT JOIN (SELECT venta_id, SUM(monto) AS pagado FROM pagos GROUP BY venta_id) pp ON pp.venta_id = v.id
+            WHERE v.cliente_id IS NOT NULL AND (s.Total - COALESCE(pp.pagado, 0)) > 0
+            GROUP BY bucket
+        ");
         $cobranza = [
             'cobrado_total' => (float) ($cobradoTotal->total ?? 0),
             'cobrado_del_periodo' => (float) ($cobradoDelPeriodo->total ?? 0),
             'pendiente_total' => (float) ($pendientes->total ?? 0),
             'ventas_con_pendiente' => (int) ($pendientes->cantidad ?? 0),
+            'pendiente_periodo' => (float) ($pendientesPeriodo->total ?? 0),
+            'ventas_con_pendiente_periodo' => (int) ($pendientesPeriodo->cantidad ?? 0),
+            'pendiente_antiguedad' => $pendientesAntiguedad,
         ];
 
         // PROVEEDORES: compras del período + pagos + deuda total
@@ -194,11 +222,17 @@ class EstadoCuentasController extends Controller
             INNER JOIN productos p ON p.id = i.producto_id
             WHERE i.Activo = 1
         ");
+        $pagosProvHist = DB::selectOne("
+            SELECT COUNT(*) AS n, COALESCE(SUM(monto), 0) AS total FROM pago_proveedors
+        ");
         $proveedores = [
             'lotes' => (int) ($compras->lotes ?? 0),
             'compras_total' => (float) ($compras->costo_total ?? 0),
             'pagado_rango' => (float) ($pagosProvRango->total ?? 0),
             'deuda_total' => (float) ($deudaProv->total ?? 0),
+            'flujo_neto_rango' => round((float) ($compras->costo_total ?? 0) - (float) ($pagosProvRango->total ?? 0), 2),
+            'pagos_historico_n' => (int) ($pagosProvHist->n ?? 0),
+            'pagos_historico' => (float) ($pagosProvHist->total ?? 0),
         ];
 
         return response()->json([

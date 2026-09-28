@@ -44,15 +44,52 @@ class IngresoController extends Controller
     public function vistaReporte(){
         $lotes = Ingreso::orderBy('id', 'desc')
                 ->where("Activo", 1)
+                ->with('producto', 'salidas')
                 ->limit(50)
                 ->get();
-       return view("reporte_lote",['lotes'=>$lotes]);
+        $this->enriquecerLotes($lotes);
+        $kpis = $this->kpisLotes($lotes);
+        $productos = Producto::all();
+       return view("reporte_lote",['lotes'=>$lotes,'kpis'=>$kpis,'productos'=>$productos,'alcance'=>'50 últimos']);
     }
     public function vistaReporteTotal(){
         $lotes = Ingreso::orderBy('id', 'desc')
                 ->where("Activo", 1)
+                ->with('producto', 'salidas')
                 ->get();
-       return view("reporte_lote",['lotes'=>$lotes]);
+        $this->enriquecerLotes($lotes);
+        $kpis = $this->kpisLotes($lotes);
+        $productos = Producto::all();
+        return view("reporte_lote",['lotes'=>$lotes,'kpis'=>$kpis,'productos'=>$productos,'alcance'=>'todos']);
+    }
+
+    protected function enriquecerLotes($lotes){
+        foreach ($lotes as $lote) {
+            $esKilo = $lote->producto && $lote->producto->Tipo == 'Por Kilo';
+            $costo = $esKilo ? $lote->Precio * $lote->Peso : $lote->Precio * $lote->CantMoldes;
+            $vendido = (float) $lote->salidas->sum('Total');
+            $vendidas = (int) $lote->salidas->sum('CantMoldes');
+            $stock = $lote->CantMoldes - $vendidas;
+            $lote->setAttribute('costo_total', round($costo, 2));
+            $lote->setAttribute('vendido_total', round($vendido, 2));
+            $lote->setAttribute('ganancia', round($vendido - $costo, 2));
+            $lote->setAttribute('vendidas', $vendidas);
+            $lote->setAttribute('stock_restante', $stock);
+            $lote->setAttribute('pct_vendido', $lote->CantMoldes > 0 ? round($vendidas / $lote->CantMoldes * 100, 1) : 0);
+            $merma = (!$esKilo || $stock > 0) ? 0 : round($lote->Peso - (float) $lote->salidas->sum('Peso'), 2);
+            $lote->setAttribute('merma_kg', $merma);
+        }
+    }
+
+    protected function kpisLotes($lotes){
+        return [
+            'inversion' => round($lotes->sum('costo_total'), 2),
+            'vendido' => round($lotes->sum('vendido_total'), 2),
+            'ganancia' => round($lotes->sum('ganancia'), 2),
+            'stock' => (int) $lotes->sum('stock_restante'),
+            'activos' => $lotes->count(),
+            'pagados' => $lotes->where('Pagado', 1)->count(),
+        ];
     }
     public function Eliminar($id){
         $lote=Ingreso::find($id);

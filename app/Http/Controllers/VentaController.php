@@ -479,7 +479,12 @@ class VentaController extends Controller
                         ->orderBy('created_at')
                         ->get();
         $saldos = DB::select("
-        SELECT s.*, u.Nombre
+        SELECT s.*, u.Nombre,
+            (SELECT GROUP_CONCAT(DISTINCT u2.Nombre SEPARATOR ', ')
+             FROM pagos pg
+             INNER JOIN cuentas cc ON cc.id = pg.cuenta_id
+             INNER JOIN users u2 ON u2.id = cc.user_id
+             WHERE pg.saldo_id = s.id) AS cobrado_por
         FROM saldos s
         LEFT JOIN cuentas c ON c.Detalle LIKE ?
             AND DATE(c.created_at) = DATE(s.created_at)

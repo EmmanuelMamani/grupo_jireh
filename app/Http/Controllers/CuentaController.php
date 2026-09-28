@@ -150,12 +150,10 @@ class CuentaController extends Controller
     public function vistaReporte(){
         $fecha=date('Y-m-d');
         $titulo="Diario total";
-        $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
+        $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas WHERE Fecha = ? GROUP BY user_id,Fecha ORDER BY Fecha DESC", [$fecha]);
         $cuentas=[];
         foreach($consultas as $c){
-            if($c->Fecha==$fecha){
-                array_push($cuentas,$c);
-           }
+            array_push($cuentas,$c);
         }
         $usuarios=User::all()->keyBy('id');
         return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo]);
@@ -181,14 +179,12 @@ class CuentaController extends Controller
        $inicio=$request->inicio;
         $fin=$request->fin;
         $titulo="Periodo";
-        $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
+        $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas WHERE Fecha BETWEEN ? AND ? GROUP BY user_id,Fecha ORDER BY Fecha DESC", [$inicio, $fin]);
         $cuentas=[];
         $monto=0;
         foreach($consultas as $c){
-            if($c->Fecha>=$inicio && $c->Fecha<=$fin){
-                array_push($cuentas,$c);
-                $monto+=$c->monto;
-           }
+            array_push($cuentas,$c);
+            $monto+=$c->monto;
         }
         $usuarios=User::all()->keyBy('id');
         return view("reporte_periodo",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"monto"=>$monto,'inicio'=>$inicio,'fin'=>$fin,"titulo"=>$titulo]);

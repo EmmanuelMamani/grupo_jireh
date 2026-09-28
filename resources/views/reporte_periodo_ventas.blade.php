@@ -253,7 +253,7 @@
                                 <div class="bg-white rounded-xl p-2">
                                     <p class="text-slate-500 text-xs">Cobrador</p>
                                     <p class="font-medium text-slate-800">
-                                        {{ !empty($saldo->Nombre) ? $saldo->Nombre : 'Sin dato' }}
+                                        {{ !empty($saldo->cobrado_por) ? $saldo->cobrado_por : (!empty($saldo->Nombre) ? $saldo->Nombre : 'Sin dato') }}
                                     </p>
                                 </div>
 

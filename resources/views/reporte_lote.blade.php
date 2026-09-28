@@ -87,6 +87,10 @@
               <td class="px-3 py-2" style="min-width:130px">
                 <div class="h-2 rounded-full bg-slate-200 mb-1"><div class="h-2 rounded-full" style="width:{{ min(100, $lote->pct_vendido) }}%;background-color:#125149"></div></div>
                 <p class="text-xs text-slate-600">{{$lote->vendidas}} / {{$lote->CantMoldes}} ({{$lote->pct_vendido}}%)</p>
+                @if ($lote->producto && $lote->producto->Tipo == 'Por Kilo')
+                  <p class="text-xs text-slate-600">Peso: {{ number_format($lote->peso_vendido, 2, ',', '.') }} / {{ number_format($lote->Peso, 2, ',', '.') }} Kg ({{$lote->pct_peso}}%)</p>
+                  <p class="text-xs text-slate-500">Restante: {{ number_format($lote->peso_restante, 2, ',', '.') }} Kg</p>
+                @endif
                 @if ($lote->merma_kg > 0)
                   <p class="text-xs text-amber-700">Merma: {{$lote->merma_kg}} Kg</p>
                 @endif

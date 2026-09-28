@@ -84,6 +84,7 @@ class IngresoController extends Controller
             $ag = $agregados->get($lote->id);
             $vendido = $ag ? (float) $ag->vendido : 0;
             $vendidas = $ag ? (int) $ag->vendidas : 0;
+            $pesoVendido = $ag ? (float) $ag->peso_v : 0;
             $stock = $lote->CantMoldes - $vendidas;
             $lote->setAttribute('costo_total', round($costo, 2));
             $lote->setAttribute('vendido_total', round($vendido, 2));
@@ -91,7 +92,10 @@ class IngresoController extends Controller
             $lote->setAttribute('vendidas', $vendidas);
             $lote->setAttribute('stock_restante', $stock);
             $lote->setAttribute('pct_vendido', $lote->CantMoldes > 0 ? round($vendidas / $lote->CantMoldes * 100, 1) : 0);
-            $merma = (!$esKilo || $stock > 0) ? 0 : round($lote->Peso - ($ag ? (float) $ag->peso_v : 0), 2);
+            $lote->setAttribute('peso_vendido', round($pesoVendido, 2));
+            $lote->setAttribute('peso_restante', round($lote->Peso - $pesoVendido, 2));
+            $lote->setAttribute('pct_peso', $lote->Peso > 0 ? round($pesoVendido / $lote->Peso * 100, 1) : 0);
+            $merma = (!$esKilo || $stock > 0) ? 0 : round($lote->Peso - $pesoVendido, 2);
             $lote->setAttribute('merma_kg', $merma);
         }
     }

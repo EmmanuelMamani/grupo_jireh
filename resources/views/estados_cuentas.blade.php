@@ -23,6 +23,9 @@
         .kpi-icon-orange { background-color: #fbeedf; color: #DA7922; }
         .kpi-icon-red { background-color: #fdecec; color: #b91c1c; }
         .chart-type-btn.active { background-color: #125149; color: #fff; }
+        .kpi-ayuda { border: none; background: transparent; color: #94a3b8; padding: 0; line-height: 1; cursor: pointer; }
+        .kpi-ayuda:hover { color: #125149; }
+        .kpi-ayuda:focus { outline: none; }
     </style>
 @endsection
 
@@ -88,21 +91,21 @@
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
                     <div class="flex items-center gap-2 mb-1">
                         <x-icon name="payments" class="kpi-icon"/>
-                        <p class="text-xs text-slate-500">Total ingreso</p>
+                        <p class="text-xs text-slate-500">Total ingreso <x-kpi-ayuda texto="Costo de la mercadería comprada en el período, aunque siga en stock."/></p>
                     </div>
                     <p id="total_ing" class="text-lg font-bold text-slate-800">0.00</p>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
                     <div class="flex items-center gap-2 mb-1">
                         <x-icon name="shopping_cart" class="kpi-icon kpi-icon-orange"/>
-                        <p class="text-xs text-slate-500">Total salida</p>
+                        <p class="text-xs text-slate-500">Total salida <x-kpi-ayuda texto="Ventas del período de lotes comprados en el período."/></p>
                     </div>
                     <p id="total_salida" class="text-lg font-bold text-slate-800">0.00</p>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
                     <div class="flex items-center gap-2 mb-1">
                         <x-icon name="trending_up" class="kpi-icon"/>
-                        <p class="text-xs text-slate-500">Utilidad bruta</p>
+                        <p class="text-xs text-slate-500">Utilidad bruta <x-kpi-ayuda texto="Ventas menos el costo de lo vendido, venta por venta. No incluye gastos."/></p>
                     </div>
                     <p id="kpi_utilidad" class="text-lg font-bold text-emerald-800">Bs 0.00</p>
                     <p class="text-xs text-slate-500">Margen: <span id="kpi_margen" class="font-semibold">0.00%</span></p>
@@ -110,7 +113,7 @@
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
                     <div class="flex items-center gap-2 mb-1">
                         <x-icon name="account_balance_wallet" class="kpi-icon kpi-icon-orange"/>
-                        <p class="text-xs text-slate-500">Cobrado del período</p>
+                        <p class="text-xs text-slate-500">Cobrado del período <x-kpi-ayuda texto="Plata cobrada en el período por ventas del período."/></p>
                     </div>
                     <p id="kpi_cobrado_periodo" class="text-lg font-bold text-slate-800">Bs 0.00</p>
                     <p class="text-xs text-slate-500">Por pagos: <span id="total_pago">Bs 0.00</span></p>
@@ -118,7 +121,7 @@
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
                     <div class="flex items-center gap-2 mb-1">
                         <x-icon name="schedule" class="kpi-icon kpi-icon-red"/>
-                        <p class="text-xs text-slate-500">Pendiente de cobro (histórico)</p>
+                        <p class="text-xs text-slate-500">Pendiente de cobro (histórico) <x-kpi-ayuda texto="Todo lo fiado sin cobrar de toda la historia, no solo del mes."/></p>
                     </div>
                     <p id="kpi_pendiente" class="text-lg font-bold text-amber-800">Bs 0.00</p>
                     <p id="kpi_pendiente_n" class="text-xs text-slate-500">0 ventas pendientes en total</p>
@@ -126,7 +129,7 @@
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
                     <div class="flex items-center gap-2 mb-1">
                         <x-icon name="local_shipping" class="kpi-icon kpi-icon-red"/>
-                        <p class="text-xs text-slate-500">Deuda proveedores (histórica)</p>
+                        <p class="text-xs text-slate-500">Deuda proveedores (histórica) <x-kpi-ayuda texto="Compras acumuladas menos todos los pagos a proveedores registrados."/></p>
                     </div>
                     <p id="prov_deuda" class="text-lg font-bold text-red-700">Bs 0.00</p>
                     <p class="text-xs text-slate-500">Compras del período: <span id="prov_compras">Bs 0.00</span></p>
@@ -134,7 +137,7 @@
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-orange">
                     <div class="flex items-center gap-2 mb-1">
                         <x-icon name="schedule" class="kpi-icon kpi-icon-orange"/>
-                        <p class="text-xs text-slate-500">Pendiente generado en el período</p>
+                        <p class="text-xs text-slate-500">Pendiente generado en el período <x-kpi-ayuda texto="Fiado nuevo del mes: ventas del período con saldo pendiente."/></p>
                     </div>
                     <p id="kpi_pendiente_periodo" class="text-lg font-bold text-amber-800">Bs 0.00</p>
                     <p id="kpi_pendiente_periodo_n" class="text-xs text-slate-500">0 ventas del período con saldo</p>
@@ -142,7 +145,7 @@
                 <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-sm kpi-top-green">
                     <div class="flex items-center gap-2 mb-1">
                         <x-icon name="local_shipping" class="kpi-icon"/>
-                        <p class="text-xs text-slate-500">Flujo neto proveedores (período)</p>
+                        <p class="text-xs text-slate-500">Flujo neto proveedores (período) <x-kpi-ayuda texto="Compras del período menos pagos a proveedores del período."/></p>
                     </div>
                     <p id="prov_flujo" class="text-lg font-bold text-slate-800">Bs 0.00</p>
                     <p class="text-xs text-slate-500">Compras menos pagos del período</p>
@@ -152,7 +155,7 @@
 
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div class="px-4 py-3 border-b border-slate-200 jireh-green">
-                    <h4 class="font-semibold text-white">Antigüedad del pendiente de cobro</h4>
+                    <h4 class="font-semibold text-white">Antigüedad del pendiente de cobro <x-kpi-ayuda texto="Deuda agrupada por días desde la venta. Lo de más de 180 días es cartera vieja."/></h4>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
@@ -500,6 +503,13 @@
                 btnGenerar.disabled = false;
                 btnGenerar.classList.remove('opacity-70');
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof bootstrap === 'undefined') return;
+            document.querySelectorAll('[data-bs-toggle="popover"]').forEach(function (el) {
+                new bootstrap.Popover(el);
+            });
         });
     </script>
 @endsection

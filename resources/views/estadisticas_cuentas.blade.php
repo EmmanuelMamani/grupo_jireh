@@ -42,7 +42,7 @@
                 <div class="card-body">
                     <x-icon name="payments" class="kpi-icon"/>
                     <p class="kpi-label">Total general</p>
-                    <h4 class="kpi-value">Bs {{ number_format($kpis['total'] ?? 0, 2) }}</h4>
+                    <h4 class="kpi-value">Bs {{ number_format($kpis['total'] ?? 0, 2, ',', '.') }}</h4>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
                     <x-icon name="workspace_premium" class="kpi-icon kpi-accent-icon"/>
                     <p class="kpi-label">Categoría top</p>
                     <h4 class="kpi-value">{{ $kpis['categoriaTop'] ?? '—' }}</h4>
-                    <small class="text-muted">Bs {{ number_format($kpis['montoTop'] ?? 0, 2) }}</small>
+                    <small class="text-muted">Bs {{ number_format($kpis['montoTop'] ?? 0, 2, ',', '.') }}</small>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
                 <div class="card-body">
                     <x-icon name="trending_up" class="kpi-icon kpi-accent-icon"/>
                     <p class="kpi-label">Promedio mensual</p>
-                    <h4 class="kpi-value">Bs {{ number_format($kpis['promedio'] ?? 0, 2) }}</h4>
+                    <h4 class="kpi-value">Bs {{ number_format($kpis['promedio'] ?? 0, 2, ',', '.') }}</h4>
                 </div>
             </div>
         </div>
@@ -144,14 +144,14 @@
                         @foreach ($seleccionadas as $key)
                             <tr>
                                 <td>{{ $categoriasDisponibles[$key] }}</td>
-                                <td class="text-end">Bs {{ number_format($totales[$key] ?? 0, 2) }}</td>
+                                <td class="text-end">Bs {{ number_format($totales[$key] ?? 0, 2, ',', '.') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr class="fw-bold table-light">
                             <td>Total general</td>
-                            <td class="text-end">Bs {{ number_format($totalGeneral ?? 0, 2) }}</td>
+                            <td class="text-end">Bs {{ number_format($totalGeneral ?? 0, 2, ',', '.') }}</td>
                         </tr>
                     </tfoot>
                 </table>

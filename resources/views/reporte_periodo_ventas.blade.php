@@ -55,19 +55,19 @@
 
                 <div class="bg-white rounded-2xl p-3 shadow-sm border border-slate-200">
                     <p class="text-xs text-slate-500">Monto vendido</p>
-                    <p class="text-lg font-bold text-slate-900">Bs {{ number_format($totalVentas, 2) }}</p>
+                    <p class="text-lg font-bold text-slate-900">Bs {{ number_format($totalVentas, 2, ',', '.') }}</p>
                     <p class="text-[11px] text-slate-400 mt-1">Total acumulado</p>
                 </div>
 
                 <div class="bg-white rounded-2xl p-3 shadow-sm border border-slate-200">
                     <p class="text-xs text-slate-500">Peso vendido</p>
-                    <p class="text-lg font-bold text-slate-900">{{ number_format($totalPeso, 2) }} Kg</p>
+                    <p class="text-lg font-bold text-slate-900">{{ number_format($totalPeso, 2, ',', '.') }} Kg</p>
                     <p class="text-[11px] text-slate-400 mt-1">Peso total</p>
                 </div>
 
                 <div class="bg-white rounded-2xl p-3 shadow-sm border border-slate-200">
                     <p class="text-xs text-slate-500">Pagos</p>
-                    <p class="text-lg font-bold text-slate-900">Bs {{ number_format($totalPagos, 2) }}</p>
+                    <p class="text-lg font-bold text-slate-900">Bs {{ number_format($totalPagos, 2, ',', '.') }}</p>
                     <p class="text-[11px] text-slate-400 mt-1">Abonos registrados</p>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                 <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 shadow-sm">
                     <p class="text-xs text-emerald-700">Último saldo registrado</p>
                     <p class="text-2xl font-bold text-emerald-900 mt-1">
-                        Bs {{ number_format($ultimoSaldo->Saldo, 2) }}
+                        Bs {{ number_format($ultimoSaldo->Saldo, 2, ',', '.') }}
                     </p>
                     <p class="text-xs text-emerald-700 mt-1">
                         Actualizado:
@@ -103,7 +103,7 @@
                                 </div>
 
                                 <span class="shrink-0 rounded-full bg-slate-900 text-white text-xs font-semibold px-3 py-1">
-                                    Bs {{ number_format($venta->salida->Total, 2) }}
+                                    Bs {{ number_format($venta->salida->Total, 2, ',', '.') }}
                                 </span>
                             </div>
 
@@ -125,13 +125,13 @@
 
                                 <div class="bg-white rounded-xl p-2">
                                     <p class="text-slate-500 text-xs">Costo unitario</p>
-                                    <p class="font-medium text-slate-800">Bs {{ number_format($venta->salida->Precio, 2) }}</p>
+                                    <p class="font-medium text-slate-800">Bs {{ number_format($venta->salida->Precio, 2, ',', '.') }}</p>
                                 </div>
 
                                 <div class="bg-white rounded-xl p-2 col-span-2">
                                     <p class="text-slate-500 text-xs">Peso</p>
                                     <p class="font-medium text-slate-800">
-                                        {{ number_format(($venta->salida->Peso === '' || $venta->salida->Peso === null) ? 0 : $venta->salida->Peso, 2) }} Kg
+                                        {{ number_format(($venta->salida->Peso === '' || $venta->salida->Peso === null) ? 0 : $venta->salida->Peso, 2, ',', '.') }} Kg
                                     </p>
                                 </div>
                             </div>
@@ -208,7 +208,7 @@
                                         <p class="text-slate-400">Saldo anterior</p>
                                         <p class="font-semibold text-slate-800 mt-1">
                                             @if(!is_null($saldoAnterior))
-                                                Bs {{ number_format($saldoAnterior, 2) }}
+                                                Bs {{ number_format($saldoAnterior, 2, ',', '.') }}
                                             @else
                                                 -
                                             @endif
@@ -218,14 +218,14 @@
                                     <div class="text-center">
                                         <p class="text-slate-400">Movimiento</p>
                                         <p class="font-bold mt-1 {{ $colorMonto }}">
-                                            {{ $signo }}Bs {{ number_format($monto, 2) }}
+                                            {{ $signo }}Bs {{ number_format($monto, 2, ',', '.') }}
                                         </p>
                                     </div>
 
                                     <div class="text-right">
                                         <p class="text-slate-400">Saldo actual</p>
                                         <p class="font-semibold text-slate-900 mt-1">
-                                            Bs {{ number_format($saldoActual, 2) }}
+                                            Bs {{ number_format($saldoActual, 2, ',', '.') }}
                                         </p>
                                     </div>
                                 </div>
@@ -242,12 +242,12 @@
                             <div class="grid grid-cols-2 gap-2 mt-3 text-sm">
                                 <div class="bg-white rounded-xl p-2">
                                     <p class="text-slate-500 text-xs">Monto</p>
-                                    <p class="font-medium text-slate-800">Bs {{ number_format($monto, 2) }}</p>
+                                    <p class="font-medium text-slate-800">Bs {{ number_format($monto, 2, ',', '.') }}</p>
                                 </div>
 
                                 <div class="bg-white rounded-xl p-2">
                                     <p class="text-slate-500 text-xs">Saldo actual</p>
-                                    <p class="font-medium text-emerald-700">Bs {{ number_format($saldoActual, 2) }}</p>
+                                    <p class="font-medium text-emerald-700">Bs {{ number_format($saldoActual, 2, ',', '.') }}</p>
                                 </div>
 
                                 <div class="bg-white rounded-xl p-2">

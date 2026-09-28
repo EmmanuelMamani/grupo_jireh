@@ -283,12 +283,14 @@
         const btnGenerar = document.getElementById('btnGenerar');
         let chartMensual = null;
 
+        const fmtBO = new Intl.NumberFormat('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
         function money(valor) {
-            return Number(valor || 0).toFixed(2);
+            return fmtBO.format(Number(valor || 0));
         }
 
         function numberFormat(valor) {
-            return Number(valor || 0).toFixed(2);
+            return fmtBO.format(Number(valor || 0));
         }
 
         function setChartType(type) {

@@ -59,7 +59,7 @@ class ClienteController extends Controller
             'Activo',
             \DB::raw('CASE WHEN tienda IS NOT NULL THEN "si" ELSE "no" END as getTienda')
         ])
-        ->with('saldos:id,cliente_id,Saldo', 'zona:id,Nombre')
+        ->with('ultimoSaldo', 'zona:id,Nombre')
         ->where('Activo', 1)
         ->get();
         $zonas=Zona::all();
@@ -70,7 +70,7 @@ class ClienteController extends Controller
         $total=0;
         $conDeuda=0;
         foreach ($clientes as $cliente){
-            $saldo = $cliente->saldos->isNotEmpty() ? (float) $cliente->saldos->last()->Saldo : 0;
+            $saldo = $cliente->ultimoSaldo ? (float) $cliente->ultimoSaldo->Saldo : 0;
             $cliente->setAttribute('deuda_actual', $saldo);
             if($saldo > 0){
                 $total += $saldo;

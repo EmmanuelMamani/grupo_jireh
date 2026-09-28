@@ -17,4 +17,7 @@ class Cliente extends Model
     public function saldos(){
         return $this->hasMany(Saldo::class);
     }
+    public function ultimoSaldo(){
+        return $this->hasOne(Saldo::class)->latestOfMany();
+    }
 }

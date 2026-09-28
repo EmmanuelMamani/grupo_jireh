@@ -19,7 +19,7 @@
     <label class="form-label">Zona:</label>
     <select name="zona" id="zona" class="form-select">
 
-        <option>Elije la zona</option>
+        <option>Elige la zona</option>
         @foreach ($zonas as $zona)
             <option value="{{$zona->id}}" @if(old('zona') == $zona->id ) selected @endif  > {{$zona->Nombre}}</option>
         @endforeach
@@ -28,7 +28,7 @@
     @if ($errors->has('zona'))
                <span class="error text-danger" for="zona">{{ $errors->first('zona') }}</span><br>
     @endif  
-    <label class="form-label">Cliente:</label>
+    <label class="form-label" for="cliente">Cliente:</label>
     <div class="form-check">
         <input class="form-check-input" type="checkbox" value="0" id="tipo" name="tipo">
         <label class="form-check-label">
@@ -41,10 +41,10 @@
           Al contado
         </label>
     </div>
-    <label for="" class="form-label">Buscar Cliente:</label>
+    <label for="buscar" class="form-label">Buscar Cliente:</label>
     <input type="text" id="buscar" class="form-control"><br>
     <select name="cliente" id="cliente" class="form-select">
-        <option >Elije un cliente</option>
+        <option >Elige un cliente</option>
         @foreach ($clientes as $cliente)
             <option class="cliente" value="{{$cliente->id}}" @if(old('cliente') == $cliente->id ) selected @endif>{{$cliente->Nombre}}</option>
         @endforeach
@@ -58,20 +58,20 @@
                 var zona_id=zona.options[zona.selectedIndex].value;
                 var zona_text=zona.options[zona.selectedIndex].text;
                 var cliente=document.getElementById("cliente");
-                cliente.innerHTML="<option>Elije un cliente</option>";
+                cliente.innerHTML="<option>Elige un cliente</option>";
                 @foreach ($clientes as $cliente)
                     if(zona_id=={{$cliente->zona_id}}){
                         cliente.innerHTML+="<option class='cliente' value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>";
                     }
-                    if(zona_text=="Elije la zona"){
+                    if(zona_text=="Elige la zona"){
                         cliente.innerHTML+="<option class='cliente' value='{{$cliente->id}}'>{{$cliente->Nombre}}</option>"; 
                     }
                 @endforeach
             });
         </script>
-    <label class="form-label">Producto:</label>
+    <label class="form-label" for="producto">Producto:</label>
     <select name="producto" id="producto" class="form-select">
-        <option >Elije un producto</option>
+        <option >Elige un producto</option>
         @foreach ($productos as $producto)
             <option value="{{$producto->id}}" @if(old('producto') == $producto->id ) selected @endif>{{$producto->Nombre}} {{$producto->Tipo}}</option>
         @endforeach
@@ -79,9 +79,9 @@
     @if ($errors->has('producto'))
                <span class="error text-danger" for="producto">{{ $errors->first('producto') }}</span><br>
     @endif  
-    <label class="form-label">Lote:</label>
+    <label class="form-label" for="lote">Lote:</label>
     <select name="lote" id="lote" class="form-select">
-        <option >Elije un lote</option>
+        <option >Elige un lote</option>
     </select>
     
     @if ($errors->has('lote'))
@@ -93,7 +93,7 @@
         var producto_id=producto.options[producto.selectedIndex].value;
         var label=document.getElementById("cantidad_lotes");
         var lote=document.getElementById("lote");
-        lote.innerHTML="<option>Elije un lote</option>";
+        lote.innerHTML="<option>Elige un lote</option>";
         @foreach ($lotes as $lote)
                 
                 if(producto_id=={{$lote->ingreso->producto_id}} &&  {{$lote->ingreso->Activo}} == 1){
@@ -129,7 +129,7 @@
             //--------------------------------------------
             var producto_id=producto.options[producto.selectedIndex].value;
             var lote=document.getElementById("lote");
-                lote.innerHTML="<option>Elije un lote</option>";
+                lote.innerHTML="<option>Elige un lote</option>";
                 @foreach ($lotes as $lote)
                     if(producto_id=={{$lote->ingreso->producto_id}} &&  {{$lote->ingreso->Activo}} == 1){
                         lote.innerHTML+="<option value='{{$lote->ingreso->id}}'>{{$lote->ingreso->Proveedor}} - {{$lote->ingreso->CantMoldes}} - {{$lote->ingreso->created_at->format('Y-m-d')}}</option>";
@@ -147,7 +147,7 @@
                     label.innerHTML="Cantidad restante en el lote: {{$lote->CantMoldes}}";
                 }
             @endforeach
-            if(texto== "Elije un lote"){
+            if(texto== "Elige un lote"){
                 label.innerHTML="";
             }
         });
@@ -156,22 +156,22 @@
     </script>
     <div class="row">
         <div class="col">
-            <label class="form-label">Cantidad de moldes:</label>
+            <label class="form-label" for="cantidad_moldes">Cantidad de moldes:</label>
         </div>
-        
+
         <div class="col">
-            <label class="form-label">Peso total:</label>
+            <label class="form-label" for="peso">Peso total:</label>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <input type="text" name="cantidad_moldes" class="form-control" value="{{old('cantidad_moldes')}}">
+            <input type="text" name="cantidad_moldes" id="cantidad_moldes" class="form-control" inputmode="numeric" autocomplete="off" value="{{old('cantidad_moldes')}}">
             @if ($errors->has('cantidad_moldes'))
                <span class="error text-danger" for="cantidad_moldes">{{ $errors->first('cantidad_moldes') }}</span>
             @endif  
         </div>
         <div class="col">
-            <input type="text" name="peso" class="form-control" id="peso" @if (old('peso')!= null)
+            <input type="text" name="peso" class="form-control" id="peso" inputmode="decimal" autocomplete="off" @if (old('peso')!= null)
                 value="{{old('peso')}}"
             @else
                 value="0.00"
@@ -181,32 +181,34 @@
             @endif  
         </div>
     </div>
-    <label class="form-label">Precio por kilo o unidad:</label>
+    <label class="form-label" for="precio">Precio por kilo o unidad:</label>
     <div class="row">
         <div class="col">
-            <input type="text" name="precio" id="precio" class="form-control" value="{{old('precio')}}">
+            <input type="text" name="precio" id="precio" class="form-control" inputmode="decimal" autocomplete="off" value="{{old('precio')}}">
             @if ($errors->has('precio'))
                <span class="error text-danger" for="precio">{{ $errors->first('precio') }}</span>
             @endif  
         </div>
     </div>
-    <label class="form-label">Dinero a cuenta:</label>
-    <input type="text" name="acuenta" class="form-control"  value="0.00">
+    <label class="form-label" for="acuenta">Dinero a cuenta:</label>
+    <input type="text" name="acuenta" id="acuenta" class="form-control" inputmode="decimal" autocomplete="off" value="0.00">
     @if ($errors->has('acuenta'))
         <span class="error text-danger" for="acuenta">{{ $errors->first('acuenta') }}</span>
-    @endif  
+    @endif
+    <div class="row">
+        <div class="col">
+            <div id="total_box">Total: <strong id="total_vivo">—</strong> Bs | Resta: <strong id="resto_vivo">—</strong> Bs</div>
+        </div>
+    </div>
+    <script src="{{asset('js/venta_total.js')}}"></script>
+    <script>
+        initVentaTotal({formId:"formulario",productoId:"producto",moldesId:"cantidad_moldes",pesoId:"peso",precioId:"precio",roundId:"tipo",acuentaId:"acuenta",totalId:"total_vivo",restoId:"resto_vivo",clienteId:"cliente",loteId:"lote"});
+    </script>
     <div class="row" id="cont_btn">
         <div class="col"><a id="cancelar" href="{{route('menu')}}">Cancelar</a></div>
         <div class="col"><button id="enviar" type='submit'>Vender</button></div>
     </div>
 </form>
-<script>
-    var carga=document.getElementById("contenedor_carga");
-    var enviar=document.getElementById("enviar");
-    enviar.onclick=function(){
-       carga.style.visibility="visible";
-    }
-</script>
 <script>
     var contado=document.getElementById("contado")
     contado.onclick=function(){

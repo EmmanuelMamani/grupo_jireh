@@ -76,11 +76,4 @@
       });
     });
   </script>
-  <script>
-    var carga=document.getElementById("contenedor_carga");
-    var enviar=document.getElementById("enviar");
-    enviar.onclick=function(){
-       carga.style.visibility="visible";
-    }
-</script>
 @endsection

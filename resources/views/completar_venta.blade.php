@@ -32,7 +32,7 @@
    
     <label class="form-label">Lote:</label>
     <select name="lote" id="lote" class="form-select">
-        <option >Elije un lote</option>
+        <option >Elige un lote</option>
         @foreach ($lotes as $lote)
             @if ($lote->ingreso->producto->Tipo==$lista->producto->Tipo && $lote->ingreso->producto->Nombre==$lista->producto->Nombre) 
                 <option value='{{$lote->ingreso->id}}' @if(old('lote') == $lote->ingreso->id) selected @endif>{{$lote->ingreso->Proveedor}} - {{$lote->ingreso->CantMoldes}} - {{$lote->ingreso->created_at->format('Y-m-d')}}</option> 
@@ -49,7 +49,7 @@
         var producto_id=producto.options[producto.selectedIndex].value;
         var label=document.getElementById("cantidad_lotes");
         var lote=document.getElementById("lote");
-        lote.innerHTML="<option>Elije un lote</option>";
+        lote.innerHTML="<option>Elige un lote</option>";
         @foreach ($lotes as $lote)
                 
                 if("{{$lote->ingreso->producto->Tipo}}" == "{{$lista->producto->Tipo}}" && "{{$lote->ingreso->producto->Nombre}}"=="{{$lista->producto->Nombre}}"){
@@ -78,7 +78,7 @@
                     label.innerHTML="Cantidad restante en el lote: {{$lote->CantMoldes}}";
                 }
             @endforeach
-            if(texto== "Elije un lote"){
+            if(texto== "Elige un lote"){
                 label.innerHTML="";
             }
         });
@@ -96,10 +96,10 @@
     </div>
     <div class="row">
         <div class="col">
-            <input type="text" name="cantidad_moldes" class="form-control" value="{{$lista->Unidades}}">
+            <input type="text" name="cantidad_moldes" id="cantidad_moldes" class="form-control" inputmode="numeric" autocomplete="off" value="{{$lista->Unidades}}">
         </div>
         <div class="col">
-            <input type="text" name="peso" class="form-control" id="peso" @if (old('peso')!= null)
+            <input type="text" name="peso" class="form-control" id="peso" inputmode="decimal" autocomplete="off" @if (old('peso')!= null)
                 value="{{old('peso')}}"
             @else
                 value="0.00"
@@ -112,12 +112,21 @@
     <label class="form-label">Precio por kilo o unidad:</label>
     <div class="row">
         <div class="col">
-            <input type="text" name="precio" id="precio" class="form-control" value="{{old('precio')}}">
+            <input type="text" name="precio" id="precio" class="form-control" inputmode="decimal" autocomplete="off" value="{{old('precio')}}">
             @if ($errors->has('precio'))
                <span class="error text-danger" for="precio">{{ $errors->first('precio') }}</span>
-            @endif  
+            @endif
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <div id="total_box">Total: <strong id="total_vivo">—</strong> Bs</div>
+        </div>
+    </div>
+    <script src="{{asset('js/venta_total.js')}}"></script>
+    <script>
+        initVentaTotal({formId:"formulario",productoId:"producto",moldesId:"cantidad_moldes",pesoId:"peso",precioId:"precio",roundId:"tipo",totalId:"total_vivo",clienteId:"cliente",loteId:"lote"});
+    </script>
     <div class="row" id="cont_btn">
         <div class="col"><a id="cancelar" href="{{route('lista_reporte')}}">Cancelar</a></div>
         <div class="col"><button id="enviar" type='submit'>Aceptar</button></div>

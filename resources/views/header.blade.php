@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{asset('css/login.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     @yield('estilos')
     @stack('head-scripts')
@@ -63,6 +63,15 @@
         var open=navbar.classList.toggle("open");
         menu.setAttribute("aria-expanded",open?"true":"false");
         menu.textContent=open?"close":"menu";
+      });
+      // Anti doble-envío global: en todo POST muestra el loader y bloquea el botón.
+      document.addEventListener("submit",function(e){
+        var form=e.target;
+        if(!form||form.tagName!=="FORM"||form.method.toLowerCase()!=="post")return;
+        var carga=document.getElementById("contenedor_carga");
+        if(carga)carga.style.visibility="visible";
+        var btn=form.querySelector('button[type="submit"], button:not([type])');
+        if(btn)btn.disabled=true;
       });
     })();
   </script>

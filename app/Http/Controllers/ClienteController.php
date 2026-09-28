@@ -51,14 +51,15 @@ class ClienteController extends Controller
 
     public function vistaReporte(){
         $clientes = Cliente::select([
-            'id', 
-            'Nombre', 
+            'id',
+            'Nombre',
             'zona_id',
             'Telefono',
             'direccion_map',
             'Activo',
             \DB::raw('CASE WHEN tienda IS NOT NULL THEN "si" ELSE "no" END as getTienda')
         ])
+        ->with('saldos:id,cliente_id,Saldo')
         ->where('Activo', 1)
         ->get();
         $zonas=Zona::all();

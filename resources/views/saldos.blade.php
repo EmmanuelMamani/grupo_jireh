@@ -38,7 +38,7 @@
     <span class="error text-danger">{{ $errors->first('venta_id') }}</span>
     @endif <br>
     <label class="form-label">Monto a pagar:</label>
-    <input type="text" name="monto" id="monto" class="form-control"  value="{{old('monto')}}">
+    <input type="text" name="monto" id="monto" class="form-control" inputmode="decimal" autocomplete="off" value="{{old('monto')}}">
     <label class="form-label">Ver compras:</label><br>
     <a href="#" class="btn btn-warning" id="compras">Kardex</a>
     @if ($errors->has('monto'))
@@ -83,13 +83,7 @@
         });
     });
   </script>
-  <script>
-    var carga=document.getElementById("contenedor_carga");
-    var enviar=document.getElementById("enviar");
-    enviar.onclick=function(){
-       carga.style.visibility="visible";
-    }
-</script>
+
   <script>
     $('#cliente').change(function(){
         var nuevoHref = "{{ route('ventas_periodo', ['id' => ':idCliente']) }}";

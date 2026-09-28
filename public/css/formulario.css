@@ -79,3 +79,14 @@ h3{
     }
 }
 /* Loader global: estilos en css/login.css (cargado en el header de todas las páginas). */
+#total_box{
+    background-color: #125149;
+    color: white;
+    padding: 2%;
+    margin-top: 2%;
+    font-size: 18px;
+    text-align: center;
+}
+#total_box strong{
+    font-size: 22px;
+}

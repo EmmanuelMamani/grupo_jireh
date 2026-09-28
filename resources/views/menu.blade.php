@@ -5,7 +5,6 @@
 <a href="{{route("perfil")}}" class="opciones_head">{{Auth::user()->Nombre}}</a>
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <link rel="stylesheet" href="{{asset("css/menu.css")}}">
 @endsection
 @section("titulo", "Grupo JIREH")
@@ -34,7 +33,7 @@
             <span class="material-symbols-outlined icono col">map</span>
         </a>
         <a href="{{route("estadisticas_cuentas")}}" class="opcion row">
-            <span class="funciones col-8">estadisticas</span>
+            <span class="funciones col-8">Estadísticas</span>
             <span class="material-symbols-outlined icono col">analytics</span>
         </a>
     @endif

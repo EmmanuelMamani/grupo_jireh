@@ -166,6 +166,60 @@ h3{
       transform: scale(1.2, 1);
     }
   }
+/* Paginación móvil compacta (DataTables): sin números, Anterior/Siguiente
+   grandes. Global para que aplique a todas las tablas, incluida
+   reporte_cliente que no carga reporte.css. */
+@media (max-width: 600px){
+    #tabla_wrapper{
+        width: 100%;
+        margin-left: 0;
+    }
+    #tabla_wrapper .row > div{
+        text-align: center;
+    }
+    #tabla_filter{
+        margin-bottom: .5rem;
+    }
+    #tabla_filter label{
+        width: 100%;
+    }
+    #tabla_filter input{
+        width: 100%;
+        margin-left: 0;
+        margin-top: .25rem;
+    }
+    #tabla_info{
+        text-align: center;
+        margin-bottom: .5rem;
+    }
+    #tabla_paginate .pagination{
+        justify-content: center;
+        gap: .5rem;
+        flex-wrap: nowrap;
+    }
+    #tabla_paginate .paginate_button:not(.previous):not(.next){
+        display: none;
+    }
+    #tabla_paginate .paginate_button.previous .page-link,
+    #tabla_paginate .paginate_button.next .page-link{
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 16px;
+        background-color: #125149;
+        border-color: #125149;
+        color: #fff;
+    }
+    #tabla_paginate .paginate_button.disabled.previous .page-link,
+    #tabla_paginate .paginate_button.disabled.next .page-link{
+        background-color: #A1C0BF;
+        border-color: #A1C0BF;
+        color: #fff;
+    }
+}
 @media (max-width: 920px){
     .opciones_head{
         display: none;

@@ -95,10 +95,16 @@
     </script> 
     <div class="form-check">
         <input class="form-check-input" type="checkbox" value="0" id="centavos" name="centavos">
-        <label class="form-check-label">
-          Con centavos
+        <label class="form-check-label" for="centavos">
+          Redondear total a entero
         </label>
     </div>
+<script>
+    var centavos=document.getElementById("centavos")
+    centavos.onclick=function(){
+        if(centavos.value=="0"){centavos.value="1"}else{centavos.value="0"}
+    }
+</script>
     <div class="row">
         <div class="col">
             <label class="form-label" >Cantidad de moldes:</label>

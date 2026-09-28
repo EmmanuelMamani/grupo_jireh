@@ -11,8 +11,8 @@
     <label class="form-label">Cliente:</label>
     <div class="form-check">
         <input class="form-check-input" type="checkbox" value="0" id="tipo" name="tipo">
-        <label class="form-check-label">
-          Cliente empresa
+        <label class="form-check-label" for="tipo">
+          Redondear total a entero
         </label>
     </div>
     <div class="form-check">
@@ -138,6 +138,10 @@
     contado.onclick=function(){
         if(contado.value=="0"){contado.value="1"}else{contado.value="0"}
         console.log(contado.value);
+    }
+    var tipo=document.getElementById("tipo")
+    tipo.onclick=function(){
+        if(tipo.value=="0"){tipo.value="1"}else{tipo.value="0"}
     }
 </script>
 @endsection

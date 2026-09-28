@@ -1,6 +1,6 @@
 @extends("header")
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
+<script src="https://cdn.tailwindcss.com"></script>
 @endsection
 @section("opciones")
 <a href="{{route("menu")}}" class="opciones_head">Inicio</a>
@@ -13,26 +13,26 @@
 @endif
 @endsection
 @section("contenido")
-<form action="{{route("reporte_periodo")}}" method="GET" id="formulario">
-    @csrf
-    <h3>Periodo</h3>
-    <div class="row"></div>
-    <label>Fecha de inicio:</label>
-    <div class="row"></div>
-    <input type="date" name="inicio" class="form-control">
-    @if ($errors->has('inicio'))
-    <span class="error text-danger">{{ $errors->first('inicio') }}</span>
-    @endif <br>
-    <div class="row"></div>
-    <label>Fecha de fin:</label>
-    <div class="row"></div>
-    <input type="date" name="fin" class="form-control">
-    @if ($errors->has('fin'))
-    <span class="error text-danger">{{ $errors->first('fin') }}</span>
-    @endif <br>
-    <div class="row" id="cont_btn">
-        <div class="col"><a href="{{route('menu')}}" id="cancelar">Cancelar</a></div>
-        <div class="col"><button id="enviar">Aceptar</button></div>
-    </div>
-</form>
+<div class="max-w-xl mx-auto px-3 py-4">
+  <x-ui-card>
+    <form action="{{route("reporte_periodo")}}" method="GET" id="form_periodo" class="space-y-4">
+      @csrf
+      <h3 class="text-xl font-bold text-slate-800">Periodo</h3>
+      <div>
+        <x-ui-label for="inicio">Fecha de inicio</x-ui-label>
+        <x-ui-input type="date" name="inicio" id="inicio"/>
+        <x-ui-error field="inicio"/>
+      </div>
+      <div>
+        <x-ui-label for="fin">Fecha de fin</x-ui-label>
+        <x-ui-input type="date" name="fin" id="fin"/>
+        <x-ui-error field="fin"/>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
+        <x-ui-ghost href="{{route('menu')}}" id="cancelar">Cancelar</x-ui-ghost>
+        <x-ui-primary id="enviar">Aceptar</x-ui-primary>
+      </div>
+    </form>
+  </x-ui-card>
+</div>
 @endsection

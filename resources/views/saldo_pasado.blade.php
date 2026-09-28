@@ -8,47 +8,57 @@
 @endif
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
+<script src="https://cdn.tailwindcss.com"></script>
 @endsection
 @push('head-scripts')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 @endpush
 @section("contenido")
-<form id="formulario" method="POST" action="{{route('saldo_pasado')}}">
-    @csrf
-    <h3>Deudas pasadas</h3>
-    <label class="form-label">Zonas:</label>
-    <select name="" id="zona" class="form-select" onchange="cambio()">
-        @foreach ($zonas as $zona)
+<div class="max-w-xl mx-auto px-3 py-4">
+  <x-ui-card>
+    <form id="form_saldo_pasado" method="POST" action="{{route('saldo_pasado')}}" class="space-y-4">
+      @csrf
+      <h3 class="text-xl font-bold text-slate-800">Deudas pasadas</h3>
+      <div>
+        <x-ui-label for="zona">Zonas</x-ui-label>
+        <x-ui-select name="" id="zona" onchange="cambio()">
+          @foreach ($zonas as $zona)
             <option value="{{$zona->id}}">{{$zona->Nombre}}</option>
-        @endforeach
-    </select>
-    <label for="" class="form-label">Buscar Cliente:</label>
-    <input type="text" id="buscar" class="form-control"><br>
-    <label class="form-label">Cliente:</label>
-    <select name="cliente" id="cliente" class="form-select">
-        <option value="">Seleccionar Cliente</option>
-        @foreach ($clientes as $cliente )
+          @endforeach
+        </x-ui-select>
+      </div>
+      <div>
+        <x-ui-label for="buscar">Buscar cliente</x-ui-label>
+        <x-ui-input type="text" id="buscar" autocomplete="off"/>
+      </div>
+      <div>
+        <x-ui-label for="cliente">Cliente</x-ui-label>
+        <x-ui-select name="cliente" id="cliente">
+          <option value="">Seleccionar Cliente</option>
+          @foreach ($clientes as $cliente )
             @if ($cliente->zona_id == $zonas->first()->id)
-                    <option class="cliente" value="{{$cliente->id}}">{{$cliente->Nombre}}</option>
+              <option class="cliente" value="{{$cliente->id}}">{{$cliente->Nombre}}</option>
             @endif
-        @endforeach
-    </select>
-    <Label class="form-label">Monto:</Label>
-    <input type="text" class="form-control" name="monto"  value="{{old('monto')}}">
-    @if ($errors->has('monto'))
-    <span class="error text-danger">{{ $errors->first('monto') }}</span>
-    @endif <br>
-    <label class="form-label">Motivo de deuda:</label>
-    <input type="text" class="form-control" name="motivo"  value="{{old('motivo')}}">
-    @if ($errors->has('motivo'))
-    <span class="error text-danger">{{ $errors->first('motivo') }}</span>
-    @endif <br>
-    <div class="row" id="cont_btn">
-        <div class="col"><a href="{{route('menu')}}" id="cancelar">Cancelar</a></div>
-        <div class="col"><button id="enviar">Registrar</button></div>
-    </div>
-</form>
+          @endforeach
+        </x-ui-select>
+      </div>
+      <div>
+        <x-ui-label for="monto">Monto</x-ui-label>
+        <x-ui-input type="text" name="monto" id="monto" inputmode="decimal" autocomplete="off" value="{{old('monto')}}"/>
+        <x-ui-error field="monto"/>
+      </div>
+      <div>
+        <x-ui-label for="motivo">Motivo de deuda</x-ui-label>
+        <x-ui-input type="text" name="motivo" id="motivo" autocomplete="off" value="{{old('motivo')}}"/>
+        <x-ui-error field="motivo"/>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
+        <x-ui-ghost href="{{route('menu')}}" id="cancelar">Cancelar</x-ui-ghost>
+        <x-ui-primary id="enviar">Registrar</x-ui-primary>
+      </div>
+    </form>
+  </x-ui-card>
+</div>
 <script>
     function cambio(){
         var zona = document.getElementById('zona').value
@@ -64,16 +74,16 @@
 <script>
     $(document).ready(function() {
       $('#buscar').on('input', function() {
-        var textoBuscado = $(this).val().toLowerCase(); // Obtener el texto ingresado y convertirlo a minúsculas
+        var textoBuscado = $(this).val().toLowerCase();
         $('.cliente').each(function() {
-          var textoOpcion = $(this).text().toLowerCase(); // Obtener el texto de la opción y convertirlo a minúsculas
+          var textoOpcion = $(this).text().toLowerCase();
           if (textoOpcion.includes(textoBuscado)) {
-            $(this).show(); // Mostrar la opción si coincide con el texto buscado
+            $(this).show();
           } else {
-            $(this).hide(); // Ocultar la opción si no coincide con el texto buscado
+            $(this).hide();
           }
         });
       });
     });
-  </script>
+</script>
 @endsection

@@ -4,25 +4,29 @@
 <a href="{{route("menu")}}" class="opciones_head">Inicio</a>
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
+<script src="https://cdn.tailwindcss.com"></script>
 @endsection
 @section("contenido")
-<form  id="formulario" method="POST" action="{{route("cambiar_contraseña")}}">
-    @csrf
-    <h3>Cambiar contraseña</h3>
-    <label class="form-label">Contraseña actual</label>
-    <input type="password" name="actual" class="form-control">
-    @if ($errors->has('actual'))
-    <span class="error text-danger">{{ $errors->first('actual') }}</span>
-    @endif <br>
-    <label class="form-label">Nueva contraseña:</label>
-    <input type="password" name="nueva" class="form-control">
-    @if ($errors->has('nueva'))
-    <span class="error text-danger">{{ $errors->first('nueva') }}</span>
-    @endif <br>
-    <div class="row" id="cont_btn">
-        <div class="col"><a href="{{route('menu')}}" id="cancelar">Cancelar</a></div>
-        <div class="col"><button id="enviar">Registrar</button></div>
-    </div>
-</form>
+<div class="max-w-xl mx-auto px-3 py-4">
+  <x-ui-card>
+    <form id="form_clave" method="POST" action="{{route("cambiar_contraseña")}}" class="space-y-4">
+      @csrf
+      <h3 class="text-xl font-bold text-slate-800">Cambiar contraseña</h3>
+      <div>
+        <x-ui-label for="actual">Contraseña actual</x-ui-label>
+        <x-ui-input type="password" name="actual" id="actual" autocomplete="current-password"/>
+        <x-ui-error field="actual"/>
+      </div>
+      <div>
+        <x-ui-label for="nueva">Nueva contraseña</x-ui-label>
+        <x-ui-input type="password" name="nueva" id="nueva" autocomplete="new-password"/>
+        <x-ui-error field="nueva"/>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
+        <x-ui-ghost href="{{route('menu')}}" id="cancelar">Cancelar</x-ui-ghost>
+        <x-ui-primary id="enviar">Guardar</x-ui-primary>
+      </div>
+    </form>
+  </x-ui-card>
+</div>
 @endsection

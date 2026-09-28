@@ -6,47 +6,49 @@
 <a href="{{route("reporte_empleados")}}" class="opciones_head">Reporte</a>
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
+<script src="https://cdn.tailwindcss.com"></script>
 @endsection
 @section("contenido")
-<form id="formulario" method="POST" action="{{route('registro_empleado')}}">
-    @csrf
-    <h3>Registro de empleado</h3>
-    <label class="form-label">Nombre completo:</label>
-    <input type="text" name="nombre" class="form-control" value="{{old('nombre')}}">
-    @if ($errors->has('nombre'))
-    <span class="error text-danger" for="nombre">{{ $errors->first('nombre') }}</span><br>
-    @endif  
-    <label class="form-label">Cedula de indentidad:</label>
-    <input type="text" name="ci" class="form-control" value="{{old('ci')}}">
-    @if ($errors->has('ci'))
-    <span class="error text-danger" for="ci">{{ $errors->first('ci') }}</span><br>
-    @endif  
-    <label class="form-label">Email:</label>
-    <input type="text" name="email" class="form-control" value="{{old('email')}}">
-    @if ($errors->has('email'))
-    <span class="error text-danger" for="email">{{ $errors->first('email') }}</span><br>
-    @endif  
-    <label class="form-label">Telefono:</label>
-    <input type="text" name="telefono" class="form-control" value="{{old('telefono')}}">
-    @if ($errors->has('telefono'))
-    <span class="error text-danger" for="telefono">{{ $errors->first('telefono') }}</span><br>
-    @endif 
-
-    <label class="form-label">Usuario:</label>
-    <input type="text" name="usuario" class="form-control" value="{{old('usuario')}}">
-    @if ($errors->has('usuario'))
-    <span class="error text-danger" for="usuario">{{ $errors->first('usuario') }}</span><br>
-    @endif 
-    <label class="form-label">Contraseña:</label>
-    <input type="text" name="contrasenia" class="form-control" value="{{old('contrasenia')}}">
-    @if ($errors->has('contrasenia'))
-    <span class="error text-danger" for="contrasenia">{{ $errors->first('contrasenia') }}</span><br>
-    @endif 
-
-    <div class="row" id="cont_btn">
-        <div class="col"><a href="menu" id="cancelar">Cancelar</a></div>
-        <div class="col"><button id="enviar">Registrar</button></div>
-    </div>
-</form>
+<div class="max-w-xl mx-auto px-3 py-4">
+  <x-ui-card>
+    <form id="form_empleado" method="POST" action="{{route('registro_empleado')}}" class="space-y-4">
+      @csrf
+      <h3 class="text-xl font-bold text-slate-800">Registro de empleado</h3>
+      <div>
+        <x-ui-label for="nombre">Nombre completo</x-ui-label>
+        <x-ui-input type="text" name="nombre" id="nombre" autocomplete="off" value="{{old('nombre')}}"/>
+        <x-ui-error field="nombre"/>
+      </div>
+      <div>
+        <x-ui-label for="ci">Cédula de identidad</x-ui-label>
+        <x-ui-input type="text" name="ci" id="ci" inputmode="numeric" autocomplete="off" value="{{old('ci')}}"/>
+        <x-ui-error field="ci"/>
+      </div>
+      <div>
+        <x-ui-label for="email">Email</x-ui-label>
+        <x-ui-input type="email" name="email" id="email" autocomplete="off" value="{{old('email')}}"/>
+        <x-ui-error field="email"/>
+      </div>
+      <div>
+        <x-ui-label for="telefono">Teléfono</x-ui-label>
+        <x-ui-input type="tel" name="telefono" id="telefono" autocomplete="off" value="{{old('telefono')}}"/>
+        <x-ui-error field="telefono"/>
+      </div>
+      <div>
+        <x-ui-label for="usuario">Usuario</x-ui-label>
+        <x-ui-input type="text" name="usuario" id="usuario" autocomplete="off" value="{{old('usuario')}}"/>
+        <x-ui-error field="usuario"/>
+      </div>
+      <div>
+        <x-ui-label for="contrasenia">Contraseña</x-ui-label>
+        <x-ui-input type="password" name="contrasenia" id="contrasenia" autocomplete="new-password"/>
+        <x-ui-error field="contrasenia"/>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
+        <x-ui-ghost href="{{route('menu')}}" id="cancelar">Cancelar</x-ui-ghost>
+        <x-ui-primary id="enviar">Registrar</x-ui-primary>
+      </div>
+    </form>
+  </x-ui-card>
+</div>
 @endsection

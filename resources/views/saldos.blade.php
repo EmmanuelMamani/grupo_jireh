@@ -8,47 +8,59 @@
 @endif
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
+<script src="https://cdn.tailwindcss.com"></script>
 @endsection
 @push('head-scripts')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 @endpush
 @section("contenido")
-<form id="formulario" action="{{route("saldos")}}" method="POST">
-    @csrf
-    <h3>Cobranza</h3>
-    <label class="form-label">Zonas:</label>
-    <select name="" id="zona" class="form-select" onchange="cambio()">
-        <option> Selecciona una zona </option>
-        @foreach ($zonas as $zona)
+<div class="max-w-xl mx-auto px-3 py-4">
+  <x-ui-card>
+    <form id="form_cobranza" action="{{route("saldos")}}" method="POST" class="space-y-4">
+      @csrf
+      <h3 class="text-xl font-bold text-slate-800">Cobranza</h3>
+      <div>
+        <x-ui-label for="zona">Zonas</x-ui-label>
+        <x-ui-select name="" id="zona" onchange="cambio()">
+          <option> Selecciona una zona </option>
+          @foreach ($zonas as $zona)
             <option value="{{$zona->id}}">{{$zona->Nombre}}</option>
-        @endforeach
-    </select>
-    <label for="" class="form-label">Buscar Cliente:</label>
-    <input type="text" id="buscar" class="form-control"><br>
-    <label class="form-label">Cliente:</label>
-    <select name="cliente" id="cliente" class="form-select">
-        <option value="">Seleccionar Cliente</option>
-    </select>
-    <label class="form-label">Imputar a venta (opcional):</label>
-    <select name="venta_id" id="venta_id" class="form-select">
-        <option value="">Automático (la más antigua primero)</option>
-    </select>
-    @if ($errors->has('venta_id'))
-    <span class="error text-danger">{{ $errors->first('venta_id') }}</span>
-    @endif <br>
-    <label class="form-label">Monto a pagar:</label>
-    <input type="text" name="monto" id="monto" class="form-control" inputmode="decimal" autocomplete="off" value="{{old('monto')}}">
-    <label class="form-label">Ver compras:</label><br>
-    <a href="#" class="btn btn-warning" id="compras">Kardex</a>
-    @if ($errors->has('monto'))
-    <span class="error text-danger">{{ $errors->first('monto') }}</span>
-    @endif <br>
-    <div class="row" id="cont_btn">
-        <div class="col"><a href="{{route('menu')}}" id="cancelar">Cancelar</a></div>
-        <div class="col"><button id="enviar">Pagar</button></div>
-    </div>
-</form>
+          @endforeach
+        </x-ui-select>
+      </div>
+      <div>
+        <x-ui-label for="buscar">Buscar cliente</x-ui-label>
+        <x-ui-input type="text" id="buscar" autocomplete="off"/>
+      </div>
+      <div>
+        <x-ui-label for="cliente">Cliente</x-ui-label>
+        <x-ui-select name="cliente" id="cliente">
+          <option value="">Seleccionar Cliente</option>
+        </x-ui-select>
+      </div>
+      <div>
+        <x-ui-label for="venta_id">Imputar a venta (opcional)</x-ui-label>
+        <x-ui-select name="venta_id" id="venta_id">
+          <option value="">Automático (la más antigua primero)</option>
+        </x-ui-select>
+        <x-ui-error field="venta_id"/>
+      </div>
+      <div>
+        <x-ui-label for="monto">Monto a pagar</x-ui-label>
+        <x-ui-input type="text" name="monto" id="monto" inputmode="decimal" autocomplete="off" value="{{old('monto')}}"/>
+        <x-ui-error field="monto"/>
+      </div>
+      <div>
+        <x-ui-label>Ver compras</x-ui-label>
+        <a href="#" class="inline-block rounded-xl border border-slate-300 text-slate-700 px-4 py-2 text-sm font-medium" id="compras">Kardex</a>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
+        <x-ui-ghost href="{{route('menu')}}" id="cancelar">Cancelar</x-ui-ghost>
+        <x-ui-primary id="enviar">Pagar</x-ui-primary>
+      </div>
+    </form>
+  </x-ui-card>
+</div>
 <script>
     function cambio() {
         const zonaId = document.getElementById('zona').value;
@@ -60,7 +72,6 @@
             .then(clientes => {
                 clienteSelect.innerHTML = '<option value="">Seleccionar Cliente</option>';
                 clientes.forEach(cliente => {
-
                     clienteSelect.innerHTML += `<option class="cliente" value="${cliente.id}">${cliente.nombre} Debe: ${cliente.saldo} Bs</option>`;
                 });
             })
@@ -70,8 +81,6 @@
             });
     }
 </script>
-
-
 <script>
     $(document).ready(function() {
         $('#buscar').on('input', function() {
@@ -82,9 +91,8 @@
             });
         });
     });
-  </script>
-
-  <script>
+</script>
+<script>
     $('#cliente').change(function(){
         var nuevoHref = "{{ route('ventas_periodo', ['id' => ':idCliente']) }}";
         var idCliente = $(this).val();
@@ -144,5 +152,4 @@
         }
     })();
 </script>
-
 @endsection

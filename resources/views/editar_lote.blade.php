@@ -4,39 +4,45 @@
 <a href="{{route("reporte_lotes")}}" class="opciones_head" id="flecha" aria-label="Volver"><x-icon name="arrow_back"/></a>
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
+<script src="https://cdn.tailwindcss.com"></script>
 @endsection
 @section("contenido")
-<form id="formulario" method="POST" action="{{route("editar_lote",["id"=>$lote->id])}}">
-    @csrf
-    <h3>Nuevo lote</h3>
-    <label class="form-label">Nombre del proveedor</label>
-    <input type="text" name="proveedor" class="form-control"  value={{$lote->Proveedor}} readonly>
-    @if ($errors->has('proveedor'))
-    <span class="error text-danger">{{ $errors->first('proveedor') }}</span>
-    @endif <br>
-    <label class="form-label">Producto:</label>
-    <select name="producto" id="producto" class="form-select">
-            <option value="{{$lote->producto_id}}">{{$lote->producto->Nombre}} {{$lote->producto->Tipo}}</option>
-    </select>
-    <label class="form-label">Cantidad de moldes</label>
-    <input type="text" name="moldes" class="form-control"  value={{$lote->CantMoldes}}>
-    @if ($errors->has('moldes'))
-    <span class="error text-danger">{{ $errors->first('moldes') }}</span>
-    @endif <br>
-    <label class="form-label">Peso total:</label>
-    <input type="text" name="peso" class="form-control"  value={{$lote->Peso}}>
-    @if ($errors->has('peso'))
-    <span class="error text-danger">{{ $errors->first('peso') }}</span>
-    @endif <br>
-    <label class="form-label">Costo por kilo o unidad:</label>
-    <input type="text" name="costo" class="form-control"  value={{$lote->Precio}}>
-    @if ($errors->has('costo'))
-    <span class="error text-danger">{{ $errors->first('costo') }}</span>
-    @endif <br>
-    <div class="row" id="cont_btn">
-        <div class="col"><a href="{{route("reporte_lotes")}}" id="cancelar">Cancelar</a></div>
-        <div class="col"><button id="enviar">Modificar</button></div>
-    </div>
-</form>
+<div class="max-w-xl mx-auto px-3 py-4">
+  <x-ui-card>
+    <form id="form_editar_lote" method="POST" action="{{route("editar_lote",["id"=>$lote->id])}}" class="space-y-4">
+      @csrf
+      <h3 class="text-xl font-bold text-slate-800">Editar lote</h3>
+      <div>
+        <x-ui-label for="proveedor">Nombre del proveedor</x-ui-label>
+        <x-ui-input type="text" name="proveedor" id="proveedor" autocomplete="off" value="{{$lote->Proveedor}}" readonly/>
+        <x-ui-error field="proveedor"/>
+      </div>
+      <div>
+        <x-ui-label for="producto">Producto</x-ui-label>
+        <x-ui-select name="producto" id="producto">
+          <option value="{{$lote->producto_id}}">{{$lote->producto->Nombre}} {{$lote->producto->Tipo}}</option>
+        </x-ui-select>
+      </div>
+      <div>
+        <x-ui-label for="moldes">Cantidad de moldes</x-ui-label>
+        <x-ui-input type="text" name="moldes" id="moldes" inputmode="numeric" autocomplete="off" value="{{$lote->CantMoldes}}"/>
+        <x-ui-error field="moldes"/>
+      </div>
+      <div>
+        <x-ui-label for="peso">Peso total</x-ui-label>
+        <x-ui-input type="text" name="peso" id="peso" inputmode="decimal" autocomplete="off" value="{{$lote->Peso}}"/>
+        <x-ui-error field="peso"/>
+      </div>
+      <div>
+        <x-ui-label for="costo">Costo por kilo o unidad</x-ui-label>
+        <x-ui-input type="text" name="costo" id="costo" inputmode="decimal" autocomplete="off" value="{{$lote->Precio}}"/>
+        <x-ui-error field="costo"/>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
+        <x-ui-ghost href="{{route("reporte_lotes")}}" id="cancelar">Cancelar</x-ui-ghost>
+        <x-ui-primary id="enviar">Modificar</x-ui-primary>
+      </div>
+    </form>
+  </x-ui-card>
+</div>
 @endsection

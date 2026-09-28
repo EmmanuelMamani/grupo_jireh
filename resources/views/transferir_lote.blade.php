@@ -1,37 +1,47 @@
 @extends("header")
 @section("titulo","Grupo JIREH")
-@section("estilos") 
-<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
+@section("estilos")
+<script src="https://cdn.tailwindcss.com"></script>
 @endsection
 @section("opciones")
 <a href="{{route("menu")}}" class="opciones_head">Inicio</a>
 @endsection
 @section("contenido")
-<form id="formulario" method="POST" action="{{route("transferir_lote")}}">
-    @csrf
-    <h3>Transferir lote</h3>
-    <label class="form-label">Lote:</label>
-    <select name="lote" id="lote" class="form-select">
-        @foreach ($asignaciones as $asignacion )
+<div class="max-w-xl mx-auto px-3 py-4">
+  <x-ui-card>
+    <form id="form_transferir" method="POST" action="{{route("transferir_lote")}}" class="space-y-4">
+      @csrf
+      <h3 class="text-xl font-bold text-slate-800">Transferir lote</h3>
+      <div>
+        <x-ui-label for="lote">Lote</x-ui-label>
+        <x-ui-select name="lote" id="lote">
+          @foreach ($asignaciones as $asignacion )
             @if ($asignacion->ingreso->Activo == 1)
             <option value="{{$asignacion->id}}">{{$asignacion->ingreso->Proveedor}} {{$asignacion->ingreso->created_at->format('Y-m-d')}} Producto:{{$asignacion->ingreso->producto->Nombre}} Lote: {{$asignacion->ingreso->CantMoldes}} Unidades:{{$asignacion->CantMoldes}} </option>
             @endif
-        @endforeach
-    </select>
-    <label class="form-label">Transferir a:</label>
-    <select name="receptor" id="transferido" class="form-select">
-            @foreach ($usuarios as $usuario)
-                <option value="{{$usuario->id}}">{{$usuario->Nombre}}</option>
-            @endforeach
-    </select>
-    <label class="form-label">Cantidad de moldes:</label>
-    <input type="number" name="cantidad_moldes" class="form-control" id="moldes">
-    <p id="alerta"></p>
-    <div class="row" id="cont_btn">
-        <div class="col"><a href="{{route('menu')}}" id="cancelar">Cancelar</a></div>
-        <div class="col"><button id="enviar">Transferir</button></div>
-    </div>
-</form>
+          @endforeach
+        </x-ui-select>
+      </div>
+      <div>
+        <x-ui-label for="transferido">Transferir a</x-ui-label>
+        <x-ui-select name="receptor" id="transferido">
+          @foreach ($usuarios as $usuario)
+            <option value="{{$usuario->id}}">{{$usuario->Nombre}}</option>
+          @endforeach
+        </x-ui-select>
+      </div>
+      <div>
+        <x-ui-label for="moldes">Cantidad de moldes</x-ui-label>
+        <x-ui-input type="number" name="cantidad_moldes" id="moldes" inputmode="numeric" autocomplete="off"/>
+        <p id="alerta" class="text-sm text-red-600 mt-1"></p>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
+        <x-ui-ghost href="{{route('menu')}}" id="cancelar">Cancelar</x-ui-ghost>
+        <x-ui-primary id="enviar">Transferir</x-ui-primary>
+      </div>
+    </form>
+  </x-ui-card>
+</div>
 <script>
     var enviar= document.getElementById("enviar");
     var lote=document.getElementById("lote");
@@ -46,10 +56,6 @@
         if(moldes.value.match('^[0-9]+$')!=null){
             if(almacen-parseInt(moldes.value)<0){
                 alerta.innerHTML="No cuentas con esa cantidad de moldes"
-                e.preventDefault();
-            }
-            if(parseInt(moldes.value)<1){
-                alerta.innerHTML="Los moldes deben ser mayor a 0"
                 e.preventDefault();
             }
             if(alerta.innerHTML==""){

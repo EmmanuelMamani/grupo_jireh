@@ -6,54 +6,62 @@
 <a href="{{route("registro_lista")}}" class="opciones_head">Registro</a>
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="{{asset("css/formulario.css")}}">
+<script src="https://cdn.tailwindcss.com"></script>
 @endsection
 @push('head-scripts')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 @endpush
 @section("contenido")
-<form action="{{route("registro_lista")}}" method="post" id="formulario">
-  @csrf
-    <h3>Registrar pedido</h3>
-    <label>Zona:</label>
-    <select name="zona" class="form-select" id="zona">
-      <option>Elige una zona</option>
-      @foreach ($zonas as $zona)
-        <option value="{{$zona->id}}">{{$zona->Nombre}}</option>
-      @endforeach
-    </select>
-    <label for="" class="form-label">Buscar Cliente:</label>
-    <input type="text" id="buscar" class="form-control"><br>
-    <label>Cliente:</label>
-    <select name="cliente" class="form-select" id="cliente">
-      <option>Elige un cliente</option>
-      @foreach ($clientes as $cliente )
-        <option class="cliente" value="{{$cliente->id}}" @if(old('cliente') == $cliente->id ) selected @endif>{{$cliente->Nombre}}</option>
-      @endforeach
-    </select>
-    @if ($errors->has('cliente'))
-    <span class="error text-danger" for="cliente">{{ $errors->first('cliente') }}</span><br>
-    @endif  
-    <label>producto</label>
-    <select name="producto" class="form-select">
-      <option>Elige un producto</option>
-      @foreach ($productos as $producto )
-        <option value="{{$producto->id}}" @if(old('producto') == $producto->id ) selected @endif>{{$producto->Nombre}}</option>
-      @endforeach
-    </select>
-    @if ($errors->has('producto'))
-    <span class="error text-danger" for="cliente">{{ $errors->first('producto') }}</span><br>
-  @endif  
-    <label>Unidades:</label>
-    <input type="text" class="form-control" name="unidades" value="{{old("unidades")}}">
-    @if ($errors->has('unidades'))
-    <span class="error text-danger" for="cliente">{{ $errors->first('unidades') }}</span><br>
-  @endif  
-    <div class="row" id="cont_btn">
-        <div class="col"><a href="menu" id="cancelar">Cancelar</a></div>
-        <div class="col"><button id="enviar">Agregar</button></div>
-    </div>
-</form>
+<div class="max-w-xl mx-auto px-3 py-4">
+  <x-ui-card>
+    <form action="{{route("registro_lista")}}" method="post" id="form_pedido" class="space-y-4">
+      @csrf
+      <h3 class="text-xl font-bold text-slate-800">Registrar pedido</h3>
+      <div>
+        <x-ui-label for="zona">Zona</x-ui-label>
+        <x-ui-select name="zona" id="zona">
+          <option>Elige una zona</option>
+          @foreach ($zonas as $zona)
+            <option value="{{$zona->id}}">{{$zona->Nombre}}</option>
+          @endforeach
+        </x-ui-select>
+      </div>
+      <div>
+        <x-ui-label for="buscar">Buscar cliente</x-ui-label>
+        <x-ui-input type="text" id="buscar" autocomplete="off"/>
+      </div>
+      <div>
+        <x-ui-label for="cliente">Cliente</x-ui-label>
+        <x-ui-select name="cliente" id="cliente">
+          <option>Elige un cliente</option>
+          @foreach ($clientes as $cliente )
+            <option class="cliente" value="{{$cliente->id}}" @if(old('cliente') == $cliente->id ) selected @endif>{{$cliente->Nombre}}</option>
+          @endforeach
+        </x-ui-select>
+        <x-ui-error field="cliente"/>
+      </div>
+      <div>
+        <x-ui-label for="producto">Producto</x-ui-label>
+        <x-ui-select name="producto" id="producto">
+          <option>Elige un producto</option>
+          @foreach ($productos as $producto )
+            <option value="{{$producto->id}}" @if(old('producto') == $producto->id ) selected @endif>{{$producto->Nombre}}</option>
+          @endforeach
+        </x-ui-select>
+        <x-ui-error field="producto"/>
+      </div>
+      <div>
+        <x-ui-label for="unidades">Unidades</x-ui-label>
+        <x-ui-input type="text" name="unidades" id="unidades" inputmode="numeric" autocomplete="off" value="{{old("unidades")}}"/>
+        <x-ui-error field="unidades"/>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
+        <x-ui-ghost href="{{route('menu')}}" id="cancelar">Cancelar</x-ui-ghost>
+        <x-ui-primary id="enviar">Agregar</x-ui-primary>
+      </div>
+    </form>
+  </x-ui-card>
+</div>
 <script>
   var zona=document.getElementById("zona");
   zona.addEventListener('change',(event)=>{
@@ -70,13 +78,13 @@
 <script>
   $(document).ready(function() {
     $('#buscar').on('input', function() {
-      var textoBuscado = $(this).val().toLowerCase(); // Obtener el texto ingresado y convertirlo a minúsculas
+      var textoBuscado = $(this).val().toLowerCase();
       $('.cliente').each(function() {
-        var textoOpcion = $(this).text().toLowerCase(); // Obtener el texto de la opción y convertirlo a minúsculas
+        var textoOpcion = $(this).text().toLowerCase();
         if (textoOpcion.includes(textoBuscado)) {
-          $(this).show(); // Mostrar la opción si coincide con el texto buscado
+          $(this).show();
         } else {
-          $(this).hide(); // Ocultar la opción si no coincide con el texto buscado
+          $(this).hide();
         }
       });
     });

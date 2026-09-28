@@ -372,11 +372,31 @@ h3{
 #nav_backdrop{
     display: none;
 }
+#nav_close{
+    display: none;
+}
 @media (max-width: 920px){
+    #navbar.pocas .nav-links{
+        position: static;
+        transform: none;
+        display: contents;
+        background: none;
+        box-shadow: none;
+        padding: 0;
+        height: auto;
+        width: auto;
+    }
+    #navbar.pocas .nav-links .opciones_head{
+        display: inline-block;
+    }
+    #navbar.pocas #nav_close{
+        display: none;
+    }
     .nav-links{
         position: fixed;
         top: 0;
         right: 0;
+        height: 100%;
         height: 100dvh;
         width: min(78vw, 320px);
         display: flex;
@@ -398,6 +418,23 @@ h3{
         margin-left: 0;
         padding: .8rem 1rem;
         font-size: 17px;
+    }
+    #nav_close{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 44px;
+        height: 44px;
+        border-radius: 9999px;
+        border: none;
+        background: rgba(255,255,255,.15);
+        color: #fff;
+        font-size: 26px;
+        line-height: 1;
+        cursor: pointer;
     }
     #navbar.open #nav_backdrop{
         display: block;

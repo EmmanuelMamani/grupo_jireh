@@ -55,6 +55,7 @@
             <span id="titulo"><small>Grupo JIREH</small><strong id="seccion_actual">{{ $seccionActual }}</strong></span>
           </a>
           <div class="nav-links" id="nav_links">
+            <button type="button" id="nav_close" aria-label="Cerrar navegación">&times;</button>
             @auth
             <div class="drawer-profile">
               <span class="user-avatar drawer-avatar">{{ strtoupper(mb_substr(Auth::user()->Nombre, 0, 1)) }}</span>
@@ -117,7 +118,7 @@
       }
       if(opt.length<=1){
         menu.style.display="none";
-        navbar.classList.add("open");
+        navbar.classList.add("pocas");
         return;
       }
       function setNav(open){
@@ -131,6 +132,9 @@
         setNav(!navbar.classList.contains("open"));
       });
       document.getElementById("nav_backdrop").addEventListener("click",function(){
+        setNav(false);
+      });
+      document.getElementById("nav_close").addEventListener("click",function(){
         setNav(false);
       });
       document.addEventListener("keydown",function(e){

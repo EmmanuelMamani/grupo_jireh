@@ -41,4 +41,24 @@
         <div class="col"><button id="enviar">Registrar</button></div>
     </div>
 </form>
+@if (session('registrar') == 'ok')
+<div class="row mt-2" id="post_acciones">
+    <div class="col"><button type="button" id="otro_cliente" class="btn btn-secondary w-100">Registrar otro</button></div>
+    @if (Auth::user()->Rol == 'Administrador')
+    <div class="col"><a href="{{route('reporte_cliente')}}" class="btn w-100 text-white" style="background-color:#125149">Ver reporte</a></div>
+    @endif
+</div>
+<script>
+    (function(){
+        var nombre = document.querySelector('input[name="nombre"]');
+        var otro = document.getElementById('otro_cliente');
+        if (otro && nombre) {
+            otro.addEventListener('click', function(){
+                nombre.focus();
+                nombre.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        }
+    })();
+</script>
+@endif
 @endsection

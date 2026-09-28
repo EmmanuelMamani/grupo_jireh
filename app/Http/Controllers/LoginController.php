@@ -29,7 +29,12 @@ class LoginController extends Controller
         if ($usuario) {
                 Auth::login($usuario, $remember = true);
                 $request->session()->regenerate();
-                return redirect()->intended('/menu');
+                if ($request->session()->has('url.intended')) {
+                    return redirect()->intended('/menu');
+                }
+                return $usuario->Rol == 'Administrador'
+                    ? redirect()->route('menu')
+                    : redirect()->route('registro_cliente');
         }  
         return back()->withErrors([
             'contrasenia' => 'Contraseña incorrecta',

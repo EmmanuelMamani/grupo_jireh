@@ -56,7 +56,7 @@ class UserController extends Controller
     }
 
     public function vistaReporte(){
-        $user=User::where("Activo",1)->orderBy("Nombre")->get();
+        $user=User::where("Activo",1)->withCount('ventas')->orderBy("Nombre")->get();
         return view("reporte_empleados",["empleados"=>$user]);
     }
     public function perfil(){

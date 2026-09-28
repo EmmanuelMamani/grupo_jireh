@@ -12,6 +12,7 @@ use App\Models\Zona;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ListaController extends Controller
 {
@@ -32,8 +33,8 @@ class ListaController extends Controller
         return redirect()->route('registro_lista')->with('registrar','ok');
     }
     public function reporte(){
-        $listas=Lista::with('cliente', 'producto')->where("user_id",Auth::user()->id)->get();
-        $usuarios=User::all()->where("id","!=",Auth::user()->id);
+        $listas=Lista::with('cliente', 'producto')->where("user_id",Auth::user()->id)->latest()->get();
+        $usuarios=User::where("id","!=",Auth::user()->id)->select('id','Nombre')->get();
         return view("lista_reporte",["listas"=>$listas,"usuarios"=>$usuarios]);
     }
 
@@ -49,12 +50,22 @@ class ListaController extends Controller
         return view("completar_venta",["lista"=>$lista,"lotes"=>$lotes]);
     }
     public function transferir(Request $request){
-        $ids=explode(',',$request->lista);
-        foreach($ids as $id){
-            $lista= Lista::find($id);
-            $lista->user_id=$request->user;
-            $lista->save();
+        $request->validate([
+            'lista' => 'required|string',
+            'user' => 'required|exists:users,id',
+        ]);
+        $ids=array_filter(array_map('intval', explode(',', $request->lista)));
+        if (empty($ids)) {
+            return redirect()->route('lista_reporte')->withErrors(['lista' => 'Selecciona al menos un pedido.']);
         }
-        return redirect()->route('lista_reporte');
+        DB::beginTransaction();
+        try {
+            Lista::whereIn('id', $ids)->where('user_id', Auth::user()->id)->update(['user_id' => $request->user]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+        return redirect()->route('lista_reporte')->with('registrar', 'ok');
     }
 }

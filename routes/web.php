@@ -11,6 +11,7 @@ use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\SaldoController;
 use App\Http\Controllers\AsignacionController;
 use App\Http\Controllers\ListaController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PendienteController;
 use App\Http\Controllers\UserController;
 
@@ -44,7 +45,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get("/reporte_diario",[CuentaController::class,"reporteDiario"])->name("reporte_diario");
     Route::get("/venta_devolucion/{id}",[VentaController::class,"VistaDevolucion"])->name("venta_devolucion");
     Route::post("/devolucion/{id}",[VentaController::class,"Devolucion"])->name("devolucion");
-    Route::get('/menu', function () {return view('menu');})->name('menu');
+    Route::get('/menu', [MenuController::class, 'index'])->name('menu');
     Route::get("/registro_gasto",[CuentaController::class,"vistaRegistro"])->name("registro_gasto");
     Route::post("/registro_gasto",[CuentaController::class,"registro"])->name("registro_gasto");
     Route::get("/venta",[VentaController::class,"vistaRegistro"])->name("venta");

@@ -29,6 +29,13 @@
            <span id="titulo">@yield("titulo")</span>
           </a>
           @yield("opciones")
+          @auth
+          <span class="user-chip d-none d-md-inline-flex" title="{{ Auth::user()->Nombre }} ({{ Auth::user()->Rol }})">
+            <span class="user-avatar">{{ strtoupper(mb_substr(Auth::user()->Nombre, 0, 1)) }}</span>
+            <span>{{ Auth::user()->Nombre }}</span>
+            <span class="user-rol">{{ Auth::user()->Rol }}</span>
+          </span>
+          @endauth
           <button type="button" id="menu" aria-label="Mostrar u ocultar navegación" aria-expanded="false" aria-controls="navbar"><span id="menu_open"><x-icon name="menu"/></span><span id="menu_close" hidden><x-icon name="close"/></span></button>
             
         </div>
@@ -53,6 +60,17 @@
       var menu=document.getElementById("menu");
       var navbar=document.getElementById("navbar");
       var opt=document.getElementsByClassName("opciones_head");
+      var headerEl=document.querySelector("header");
+      window.addEventListener("scroll",function(){
+        if(headerEl)headerEl.classList.toggle("scrolled",window.scrollY>8);
+      },{passive:true});
+      var current=(location.pathname.replace(/\/$/,'')||'/');
+      for(var j=0;j<opt.length;j++){
+        var href=opt[j].getAttribute('href');
+        if(!href)continue;
+        var tmp=document.createElement('a');tmp.href=href;
+        if((tmp.pathname.replace(/\/$/,'')||'/')===current){opt[j].classList.add('activa');}
+      }
       if(opt.length<=1){
         menu.style.display="none";
         navbar.classList.add("open");

@@ -7,9 +7,7 @@
 <a href="{{route("reporte_lotes_total")}}" class="opciones_head">Reporte Total</a>
 @endsection
 @section("estilos")
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+@include('components.tablas_css')
 <link rel="stylesheet" href="{{asset("css/reporte.css")}}">
 @endsection
 @section("contenido")
@@ -72,11 +70,7 @@
     </tbody>
   </table>
   <a href="{{route('descarga_lotes')}}" id="descarga" aria-label="Descargar"><x-icon name="download" class="icono"/></a>
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-  <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-  <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+  @include('components.tablas_js')
   <script>
     function setupEliminarButtons() {
         $('.Eliminar').off('submit').on('submit', function(e){
@@ -98,22 +92,7 @@
     }
 
     $(document).ready(function() {
-        var table = $('#tabla').DataTable({
-            responsive: true,
-            autoWidth: false,
-            "language": {
-                "lengthMenu": "Mostrar _MENU_  ",
-                "zeroRecords": "No hay resultados",
-                "info": "Mostrando la página _PAGE_ de _PAGES_",
-                "infoEmpty": "No records available",
-                "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                "search":"Buscar",
-                "paginate":{
-                    "next":"Siguiente",
-                    "previous":"Anterior"
-                }
-            }
-        });
+        var table = $('#tabla').DataTable();
 
         // Vincular eventos después de que DataTables termine de procesar la tabla
         table.on('responsive-resize responsive-display', function() {

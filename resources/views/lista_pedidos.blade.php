@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @push('head-scripts')
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 @endpush
 @section("contenido")
 <form action="{{route("registro_lista")}}" method="post" id="formulario">

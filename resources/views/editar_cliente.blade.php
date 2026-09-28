@@ -42,7 +42,13 @@
     <label class="form-label">Mapa:</label>
     <input type="text" name="mapa"  class="form-control">
     <label class="form-label">Tienda:</label>
-    <input type="file" name="tienda" class="form-control">
+    @if ($cliente->tienda && Storage::disk('public')->exists($cliente->tienda))
+        <div class="mb-2"><img src="{{ Storage::disk('public')->url($cliente->tienda) }}" width="200"></div>
+    @endif
+    <input type="file" name="tienda" class="form-control" accept="image/*">
+    @if ($errors->has('tienda'))
+    <span class="error text-danger">{{ $errors->first('tienda') }}</span>
+    @endif <br>
     <div class="row" id="cont_btn">
         <div class="col"><a href="/menu" id="cancelar">Cancelar</a></div>
         <div class="col"><button id="enviar">Registrar</button></div>

@@ -7,7 +7,8 @@ use App\Models\Cliente;
 use App\Models\Zona;
 use Illuminate\Http\Request;
 use App\Http\Requests\editar_clienteRequest;
-use Nette\Utils\Image;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 class ClienteController extends Controller
 {
     public function vistaRegistro(){
@@ -93,12 +94,30 @@ class ClienteController extends Controller
     
         if ($request->hasFile('tienda')) {
             $imagen = $request->file('tienda');
-            $tipo_ext=$imagen->getClientOriginalExtension();
-            if($tipo_ext == "jpeg" || $tipo_ext == "jpg" || $tipo_ext == "png" || $tipo_ext == "gif" || $tipo_ext == "svg"){
-                $archivo=$imagen->getClientOriginalName();
-                $file=Image::fromFile($imagen)->resize(300, null);
-                $cliente->tienda=$file;
+
+            $anterior = $cliente->getRawOriginal('tienda');
+            if (is_string($anterior) && $anterior !== '' && Storage::disk('public')->exists($anterior)) {
+                Storage::disk('public')->delete($anterior);
             }
+
+            if (strtolower($imagen->getClientOriginalExtension()) === 'svg') {
+                $path = $imagen->storeAs(
+                    'tiendas',
+                    'cliente_' . $cliente->id . '_' . time() . '.svg',
+                    'public'
+                );
+            } else {
+                $img = Image::make($imagen->getRealPath())
+                    ->resize(800, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode('jpg', 80);
+                $path = 'tiendas/cliente_' . $cliente->id . '_' . time() . '.jpg';
+                Storage::disk('public')->put($path, (string) $img);
+            }
+
+            $cliente->tienda = $path;
         }
     
         $cliente->save();

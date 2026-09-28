@@ -52,9 +52,6 @@
           <span class="block font-semibold text-slate-800">Cobranza</span>
           <span class="block text-xs text-slate-500">Cobrar deudas de clientes</span>
         </span>
-        @if ($esAdmin && $deuda_total > 0)
-          <span class="shrink-0 text-xs font-bold px-2 py-1 rounded-full bg-red-100 text-red-800">Bs {{ number_format($deuda_total, 0, ',', '.') }}</span>
-        @endif
       </a>
       <a href="{{route("registro_cliente")}}" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex items-center gap-3 active:scale-[0.99] transition">
         <span class="shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-2xl text-white" style="background-color:#125149"><x-icon name="group"/></span>

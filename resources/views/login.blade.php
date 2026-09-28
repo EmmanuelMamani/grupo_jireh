@@ -1,24 +1,29 @@
 @extends('header')
 @section("titulo", "Grupo JIREH")
+@section("estilos")
+<script src="https://cdn.tailwindcss.com"></script>
+@endsection
 @section("contenido")
-<div id="login">
-  <h3>Inicia Sesión</h3>
-  <form action="{{ route('login') }}" method="POST">
-    @csrf
-    <label class="form-label" for="usuario">Usuario:</label>
-    <input type="text" name="usuario" id="usuario" class="form-control" value="{{old('usuario')}}" autofocus autocomplete="username">
-    @if ($errors->has('usuario'))
-               <span class="error text-danger" for="usuario">{{ $errors->first('usuario') }}</span>
-    @endif  
-    <br>
-    <label class="form-label" for="contrasenia">Contraseña:</label><br>
-    <input type="password" name="contrasenia" id="contrasenia" class="form-control" autocomplete="current-password">
-    @if ($errors->has('contrasenia'))
-               <span class="error text-danger" for="contrasenia">{{ $errors->first('contrasenia') }}</span>
-    @endif  
-    <br>
-    <br>
-    <button id="acceder" type="submit">Acceder</button>
-  </form>
+<div class="max-w-md mx-auto px-3 py-8">
+  <x-ui-card>
+    <form action="{{ route('login') }}" method="POST" class="space-y-4">
+      @csrf
+      <div class="text-center">
+        <img src="{{asset('img/logo.png')}}" alt="Grupo Jireh" width="72" class="mx-auto mb-2">
+        <h3 class="text-xl font-bold text-slate-800">Inicia sesión</h3>
+      </div>
+      <div>
+        <x-ui-label for="usuario">Usuario</x-ui-label>
+        <x-ui-input type="text" name="usuario" id="usuario" value="{{old('usuario')}}" autofocus autocomplete="username"/>
+        <x-ui-error field="usuario"/>
+      </div>
+      <div>
+        <x-ui-label for="contrasenia">Contraseña</x-ui-label>
+        <x-ui-input type="password" name="contrasenia" id="contrasenia" autocomplete="current-password"/>
+        <x-ui-error field="contrasenia"/>
+      </div>
+      <x-ui-primary>Acceder</x-ui-primary>
+    </form>
+  </x-ui-card>
 </div>
 @endsection

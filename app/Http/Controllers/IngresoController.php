@@ -44,7 +44,7 @@ class IngresoController extends Controller
     public function vistaReporte(){
         $lotes = Ingreso::orderBy('id', 'desc')
                 ->where("Activo", 1)
-                ->with('producto', 'salidas')
+                ->with('producto')
                 ->limit(50)
                 ->get();
         $this->enriquecerLotes($lotes);
@@ -55,7 +55,7 @@ class IngresoController extends Controller
     public function vistaReporteTotal(){
         $lotes = Ingreso::orderBy('id', 'desc')
                 ->where("Activo", 1)
-                ->with('producto', 'salidas')
+                ->with('producto')
                 ->get();
         $this->enriquecerLotes($lotes);
         $kpis = $this->kpisLotes($lotes);
@@ -63,12 +63,27 @@ class IngresoController extends Controller
         return view("reporte_lote",['lotes'=>$lotes,'kpis'=>$kpis,'productos'=>$productos,'alcance'=>'todos']);
     }
 
+    protected function agregadosVentas($ingresoIds){
+        if ($ingresoIds->isEmpty()) {
+            return collect();
+        }
+        return DB::table('ventas as v')
+            ->join('salidas as s', 's.id', '=', 'v.salida_id')
+            ->whereIn('v.ingreso_id', $ingresoIds->all())
+            ->groupBy('v.ingreso_id')
+            ->selectRaw('v.ingreso_id, COALESCE(SUM(s.Total), 0) as vendido, COALESCE(SUM(s.CantMoldes), 0) as vendidas, COALESCE(SUM(s.Peso), 0) as peso_v')
+            ->get()
+            ->keyBy('ingreso_id');
+    }
+
     protected function enriquecerLotes($lotes){
+        $agregados = $this->agregadosVentas($lotes->pluck('id'));
         foreach ($lotes as $lote) {
             $esKilo = $lote->producto && $lote->producto->Tipo == 'Por Kilo';
             $costo = $esKilo ? $lote->Precio * $lote->Peso : $lote->Precio * $lote->CantMoldes;
-            $vendido = (float) $lote->salidas->sum('Total');
-            $vendidas = (int) $lote->salidas->sum('CantMoldes');
+            $ag = $agregados->get($lote->id);
+            $vendido = $ag ? (float) $ag->vendido : 0;
+            $vendidas = $ag ? (int) $ag->vendidas : 0;
             $stock = $lote->CantMoldes - $vendidas;
             $lote->setAttribute('costo_total', round($costo, 2));
             $lote->setAttribute('vendido_total', round($vendido, 2));
@@ -76,7 +91,7 @@ class IngresoController extends Controller
             $lote->setAttribute('vendidas', $vendidas);
             $lote->setAttribute('stock_restante', $stock);
             $lote->setAttribute('pct_vendido', $lote->CantMoldes > 0 ? round($vendidas / $lote->CantMoldes * 100, 1) : 0);
-            $merma = (!$esKilo || $stock > 0) ? 0 : round($lote->Peso - (float) $lote->salidas->sum('Peso'), 2);
+            $merma = (!$esKilo || $stock > 0) ? 0 : round($lote->Peso - ($ag ? (float) $ag->peso_v : 0), 2);
             $lote->setAttribute('merma_kg', $merma);
         }
     }

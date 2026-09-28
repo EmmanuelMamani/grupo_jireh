@@ -69,6 +69,30 @@
     @case('workspace_premium')
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="jireh-icon {{ $class }}"><path d="m385-412 36-115-95-74h116l38-119 37 119h117l-95 74 35 115-94-71-95 71ZM244-40v-304q-45-47-64.5-103T160-560q0-136 92-228t228-92q136 0 228 92t92 228q0 57-19.5 113T716-344v304l-236-79-236 79Zm420.5-335.5Q740-451 740-560t-75.5-184.5Q589-820 480-820t-184.5 75.5Q220-669 220-560t75.5 184.5Q371-300 480-300t184.5-75.5ZM304-124l176-55 176 55v-171q-40 29-86 42t-90 13q-44 0-90-13t-86-42v171Zm176-86Z"/></svg>
         @break
+    @case('home')
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="jireh-icon {{ $class }}"><path d="M160-120v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>
+        @break
+    @case('person')
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="jireh-icon {{ $class }}"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z"/></svg>
+        @break
+    @case('logout')
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="jireh-icon {{ $class }}"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/></svg>
+        @break
+    @case('expand_more')
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="jireh-icon {{ $class }}"><path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z"/></svg>
+        @break
+    @case('edit')
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="jireh-icon {{ $class }}"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Z"/></svg>
+        @break
+    @case('add')
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="jireh-icon {{ $class }}"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
+        @break
+    @case('list')
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="jireh-icon {{ $class }}"><path d="M120-280v-80h360v80H120Zm0-160v-80h480v80H120Zm0-160v-80h480v80H120Zm520 440v-80h240v80H640Zm0-160v-80h240v80H640Zm0-160v-80h240v80H640Z"/></svg>
+        @break
+    @case('history')
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="jireh-icon {{ $class }}"><path d="M480-120q-138 0-240.5-91.5T122-440h60q5 79 48.5 139.5T360-200v-112l144 144-144 144v-112q-27-3-52.5-10.5T256-166q48 26 101 40.5T480-120Zm367-40L700-307q-13 7-26.5 11.5T646-288v-112l144 144-144 144v-112q-27-3-52.5-10.5T542-254q48 26 101 40.5T764-200l83-83 42 42-42 81ZM480-480Zm0 320Z"/></svg>
+        @break
     @default
         <span class="{{ $class }}" aria-hidden="true"></span>
 @endswitch

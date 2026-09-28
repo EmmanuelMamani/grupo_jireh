@@ -54,7 +54,10 @@
             <img src="{{asset('img/logo.png')}}" alt="Grupo Jireh" width="36" class="d-inline-block align-text-top">
             <span id="titulo"><small>Grupo JIREH</small><strong id="seccion_actual">{{ $seccionActual }}</strong></span>
           </a>
-          @yield("opciones")
+          <div class="nav-links" id="nav_links">
+            @yield("opciones")
+          </div>
+          <div id="nav_backdrop" aria-hidden="true"></div>
           @auth
           <details class="user-menu">
             <summary class="user-chip" aria-label="Cuenta de {{ Auth::user()->Nombre }}">
@@ -108,11 +111,24 @@
         navbar.classList.add("open");
         return;
       }
-      menu.addEventListener("click",function(){
-        var open=navbar.classList.toggle("open");
+      function setNav(open){
+        navbar.classList.toggle("open",open);
         menu.setAttribute("aria-expanded",open?"true":"false");
         document.getElementById("menu_open").hidden=open;
         document.getElementById("menu_close").hidden=!open;
+        document.body.style.overflow=open?"hidden":"";
+      }
+      menu.addEventListener("click",function(){
+        setNav(!navbar.classList.contains("open"));
+      });
+      document.getElementById("nav_backdrop").addEventListener("click",function(){
+        setNav(false);
+      });
+      document.addEventListener("keydown",function(e){
+        if(e.key==="Escape")setNav(false);
+      });
+      document.getElementById("nav_links").addEventListener("click",function(e){
+        if(e.target.closest("a"))setNav(false);
       });
       // Anti doble-envío global: en todo POST muestra el loader y bloquea el botón.
       document.addEventListener("submit",function(e){

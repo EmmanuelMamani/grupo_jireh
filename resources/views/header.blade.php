@@ -21,20 +21,52 @@
     <div id="contenedor_carga">
       <div class="loader"></div>
   </div>
+    @php
+    $secciones = [
+      'login' => 'Inicia sesión', 'menu' => 'Inicio',
+      'venta' => 'Pre-Venta', 'venta_rapida' => 'Venta rápida', 'venta_completa' => 'Completar venta',
+      'ventas_pendientes' => 'Ventas pendientes', 'venta_detalle' => 'Detalle de venta',
+      'venta_devolucion' => 'Devolución', 'devolucion' => 'Devolución', 'editar_venta' => 'Editar venta',
+      'saldos' => 'Cobranza', 'saldo_pasado' => 'Deudas pasadas',
+      'registro_cliente' => 'Registro de cliente', 'reporte_cliente' => 'Reporte de clientes',
+      'editar_cliente' => 'Editar cliente', 'ver_tienda' => 'Foto de tienda',
+      'ventas_periodo' => 'Kardex por período', 'reporte_periodo_ventas' => 'Kardex del cliente',
+      'reporte_ventas' => 'Lotes para vender', 'reporte_lote_ventas' => 'Ventas del lote',
+      'reporte_lotes' => 'Reporte de lotes', 'reporte_lotes_total' => 'Reporte total de lotes',
+      'registro_lote' => 'Registro de lote', 'editar_lote' => 'Editar lote',
+      'registro_producto' => 'Registro de producto', 'reporte_producto' => 'Reporte de productos',
+      'registro_zona' => 'Registro de zona', 'reporte_zona' => 'Reporte de zonas',
+      'registro_empleado' => 'Registro de empleado', 'reporte_empleados' => 'Reporte de empleados',
+      'registro_gasto' => 'Registro de gasto', 'reporte_cuenta' => 'Reporte de cuentas',
+      'reporte_historico' => 'Histórico de cuentas', 'reporte_diario' => 'Reporte diario',
+      'detalle_cuenta' => 'Detalle de cuenta', 'cuentas_periodo' => 'Cuentas por período',
+      'reporte_periodo' => 'Reporte de cuentas', 'estadisticas_cuentas' => 'Estadísticas',
+      'estado_cuentas.index' => 'Estado de cuentas', 'lista_reporte' => 'Mis pedidos',
+      'registro_lista' => 'Registrar pedido', 'completar_lista' => 'Completar pedido',
+      'transferir_lote' => 'Transferir lote', 'perfil' => 'Mi perfil',
+    ];
+    $seccionActual = $secciones[Route::currentRouteName() ?? ''] ?? 'Grupo JIREH';
+    @endphp
     <header> <div id="sup"></div>
       <nav class="navbar">
         <div class="container-fluid" id="navbar">
           <a class="navbar-brand" href="{{route('menu')}}" id="cont_nav">
-            <img src="{{asset('img/logo.png')}}" alt="Grupo Jireh" width="50" class="d-inline-block align-text-top">
-           <span id="titulo">@yield("titulo")</span>
+            <img src="{{asset('img/logo.png')}}" alt="Grupo Jireh" width="36" class="d-inline-block align-text-top">
+            <span id="titulo"><small>Grupo JIREH</small><strong id="seccion_actual">{{ $seccionActual }}</strong></span>
           </a>
           @yield("opciones")
           @auth
-          <span class="user-chip d-none d-md-inline-flex" title="{{ Auth::user()->Nombre }} ({{ Auth::user()->Rol }})">
-            <span class="user-avatar">{{ strtoupper(mb_substr(Auth::user()->Nombre, 0, 1)) }}</span>
-            <span>{{ Auth::user()->Nombre }}</span>
-            <span class="user-rol">{{ Auth::user()->Rol }}</span>
-          </span>
+          <details class="user-menu">
+            <summary class="user-chip" aria-label="Cuenta de {{ Auth::user()->Nombre }}">
+              <span class="user-avatar">{{ strtoupper(mb_substr(Auth::user()->Nombre, 0, 1)) }}</span>
+            </summary>
+            <div class="user-drop">
+              <p class="user-drop-name">{{ Auth::user()->Nombre }}</p>
+              <p class="user-drop-rol">{{ Auth::user()->Rol }}</p>
+              <a href="{{route('perfil')}}">Mi perfil</a>
+              <a href="{{route('logout')}}">Salir</a>
+            </div>
+          </details>
           @endauth
           <button type="button" id="menu" aria-label="Mostrar u ocultar navegación" aria-expanded="false" aria-controls="navbar"><span id="menu_open"><x-icon name="menu"/></span><span id="menu_close" hidden><x-icon name="close"/></span></button>
             

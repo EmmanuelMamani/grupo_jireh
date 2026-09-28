@@ -11,18 +11,41 @@ header.scrolled .navbar{
     box-shadow: 0 2px 12px rgba(0,0,0,.25);
 }
 .navbar{
-    background-color:#125149;
+    background: linear-gradient(135deg,#125149 0%,#0B3B35 100%);
     padding-right: 5%;
     padding-left: 5%;
+    padding-top: .4rem;
+    padding-bottom: .4rem;
 }
 #titulo{
     color: white;
     font-family: 'Space Grotesk', sans-serif;
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 1.15;
+    vertical-align: middle;
+}
+#titulo small{
+    font-size: 10px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    opacity: .75;
+}
+#seccion_actual{
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 38vw;
 }
 #cont_nav{
-    
-    padding-top: 1%;
-    padding-bottom: 1%;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    margin-right: auto;
 }
 #login{
     margin-left: 35%;
@@ -88,13 +111,19 @@ h3{
     background-color: rgba(255,255,255,.22);
     font-weight: 700;
 }
+.user-menu{
+    position: relative;
+    margin-left: 1rem;
+}
 .user-chip{
     display: inline-flex;
     align-items: center;
-    gap: .45rem;
-    margin-left: 5%;
     color: white;
-    text-decoration: none;
+    cursor: pointer;
+    list-style: none;
+}
+.user-chip::-webkit-details-marker{
+    display: none;
 }
 .user-chip:hover{
     color: white;
@@ -103,19 +132,47 @@ h3{
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 9999px;
     background-color: #DA7922;
     color: #fff;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 16px;
+    border: 2px solid rgba(255,255,255,.5);
 }
-.user-rol{
+.user-drop{
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    min-width: 200px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.22);
+    padding: .75rem;
+    z-index: 1040;
+}
+.user-drop-name{
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    font-size: 14px;
+}
+.user-drop-rol{
     font-size: 11px;
-    padding: .1rem .5rem;
-    border-radius: 9999px;
-    background-color: rgba(255,255,255,.18);
+    color: #64748b;
+    margin: 0 0 .5rem 0;
+}
+.user-drop a{
+    display: block;
+    color: #125149;
+    text-decoration: none;
+    font-size: 14px;
+    padding: .4rem .5rem;
+    border-radius: 8px;
+}
+.user-drop a:hover{
+    background-color: #f1f5f9;
 }
 #menu{
     color: white;

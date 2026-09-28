@@ -39,7 +39,7 @@
         <x-ui-error field="costo"/>
       </div>
       <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
-        <x-ui-ghost href="{{route("reporte_lotes")}}" id="cancelar">Cancelar</x-ui-ghost>
+        <x-ui-ghost href="{{route('reporte_lotes')}}" id="cancelar">Cancelar</x-ui-ghost>
         <x-ui-primary id="enviar">Modificar</x-ui-primary>
       </div>
     </form>

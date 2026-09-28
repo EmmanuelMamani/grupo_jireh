@@ -21,7 +21,7 @@
         <x-ui-error field="monto"/>
       </div>
       <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
-        <x-ui-ghost href="{{route("reporte_ventas")}}" id="cancelar">Cancelar</x-ui-ghost>
+        <x-ui-ghost href="{{route('reporte_ventas')}}" id="cancelar">Cancelar</x-ui-ghost>
         <x-ui-primary id="enviar">Devolver</x-ui-primary>
       </div>
     </form>

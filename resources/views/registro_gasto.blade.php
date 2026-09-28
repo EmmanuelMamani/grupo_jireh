@@ -21,7 +21,7 @@
       <h3 id="titulo_formulario" class="text-xl font-bold text-slate-800">Registro de gasto</h3>
       <div class="flex items-center gap-2">
         <input type="checkbox" name="cuenta" id="cuenta" value=-1 class="h-5 w-5 accent-[#125149]">
-        <x-ui-label for="cuenta" class="!mb-0">Es ingreso (en vez de gasto)</x-ui-label>
+        <x-ui-label for="cuenta" style="margin-bottom:0">Es ingreso (en vez de gasto)</x-ui-label>
       </div>
       <div>
         <x-ui-label for="monto" id="titulo_monto">Monto gastado</x-ui-label>
@@ -34,7 +34,7 @@
         <x-ui-error field="detalle"/>
       </div>
       <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
-        <x-ui-ghost href="{{route("menu")}}" id="cancelar">Cancelar</x-ui-ghost>
+        <x-ui-ghost href="{{route('menu')}}" id="cancelar">Cancelar</x-ui-ghost>
         <x-ui-primary id="enviar">Registrar</x-ui-primary>
       </div>
     </form>

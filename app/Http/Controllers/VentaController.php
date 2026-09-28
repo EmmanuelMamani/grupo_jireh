@@ -253,8 +253,29 @@ class VentaController extends Controller
     }
 
     public function vistaReporteVentas($id){
-        $ventas=Venta::where('ingreso_id',$id)->with('cliente', 'user', 'ingreso.producto', 'salida')->orderByDesc('id')->get();
-        return view('reporte_lote_ventas',["ventas"=>$ventas,'id'=>$id]);
+        $lote = Ingreso::with('producto')->findOrFail($id);
+        $ventas = Venta::where('ingreso_id',$id)->with('cliente', 'user', 'salida', 'pagos')->orderByDesc('id')->get();
+        $vendido = 0;
+        $cobrado = 0;
+        foreach ($ventas as $venta) {
+            $total = $venta->salida ? (float) $venta->salida->Total : 0;
+            $pagado = (float) $venta->pagos->sum('monto');
+            $vendido += $total;
+            $cobrado += min($pagado, $total);
+            $venta->setAttribute('cobrado', round(min($pagado, $total), 2));
+            $venta->setAttribute('pendiente', round(max($total - $pagado, 0), 2));
+        }
+        $esKilo = $lote->producto && $lote->producto->Tipo == 'Por Kilo';
+        $costo = $esKilo ? $lote->Precio * $lote->Peso : $lote->Precio * $lote->CantMoldes;
+        $kpis = [
+            'vendido' => round($vendido, 2),
+            'cobrado' => round($cobrado, 2),
+            'pendiente' => round($vendido - $cobrado, 2),
+            'ganancia' => round($vendido - $costo, 2),
+            'costo' => round($costo, 2),
+        ];
+        $vendedores = $ventas->map(function ($v) { return $v->user; })->filter()->unique('id')->values();
+        return view('reporte_lote_ventas',["ventas"=>$ventas,'id'=>$id,'lote'=>$lote,'kpis'=>$kpis,'vendedores'=>$vendedores]);
     }
 
     public function detalle($id){

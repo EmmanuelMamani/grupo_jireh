@@ -16,11 +16,11 @@ class Asignacion extends Model
 
     public function asignador(){
 
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'asignador_id');
     }
     public function asignado(){
 
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'asignado_id');
     }
 }
 

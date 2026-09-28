@@ -18,9 +18,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'CI',
+        'Nombre',
         'Email',
-        'password',
+        'Telefono',
+        'Rol',
+        'Usuario',
+        'Contrasenia',
+        'Activo',
     ];
 
     /**
@@ -39,7 +44,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'Activo' => 'boolean',
     ];
 
     public function ventas(){

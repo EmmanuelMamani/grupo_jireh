@@ -18,7 +18,8 @@ class Ingreso extends Model
         return $this->hasMany(Asignacion::class);
     }
     public function salidas(){
-        return $this->belongsToMany(Salida::class,Venta::class);
+        // Relación a través de la tabla ventas (ingreso_id <-> salida_id).
+        return $this->belongsToMany(Salida::class, Venta::class, 'ingreso_id', 'salida_id');
     }
     public function merma(){
         return $this->hasOne(Merma::class);

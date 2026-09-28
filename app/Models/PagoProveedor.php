@@ -14,4 +14,7 @@ class PagoProveedor extends Model
     public function cuenta(){
         return $this->belongsTo(Cuenta::class);
     }
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

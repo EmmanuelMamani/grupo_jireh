@@ -13,6 +13,8 @@ class Salida extends Model
     }
 
     public function lotes(){
-        return $this->belongsToMany(Ingreso::class);
+        // Relación a través de la tabla ventas (salida_id <-> ingreso_id).
+        // Antes sin tabla pivote resolvía a `ingreso_salida` (inexistente).
+        return $this->belongsToMany(Ingreso::class, Venta::class, 'salida_id', 'ingreso_id');
     }
 }

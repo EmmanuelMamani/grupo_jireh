@@ -113,5 +113,36 @@
         }
     });
 </script>
+<script>
+    // Deep-link desde reporte_cliente (?cliente=&zona=): preselecciona y carga.
+    (function(){
+        var params = new URLSearchParams(window.location.search);
+        var zonaId = params.get('zona');
+        var clienteId = params.get('cliente');
+        if(!zonaId && !clienteId) return;
+        if(zonaId){
+            var zonaSel = document.getElementById('zona');
+            if(zonaSel.querySelector('option[value="' + zonaId + '"]')){
+                zonaSel.value = zonaId;
+                cambio();
+            }
+        }
+        if(clienteId){
+            var intentos = 0;
+            var iv = setInterval(function(){
+                var cli = document.getElementById('cliente');
+                var opt = cli ? cli.querySelector('option[value="' + clienteId + '"]') : null;
+                intentos++;
+                if(opt || intentos > 40){
+                    clearInterval(iv);
+                    if(opt){
+                        cli.value = clienteId;
+                        cli.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                }
+            }, 150);
+        }
+    })();
+</script>
 
 @endsection

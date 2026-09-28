@@ -59,7 +59,7 @@ class ClienteController extends Controller
             'Activo',
             \DB::raw('CASE WHEN tienda IS NOT NULL THEN "si" ELSE "no" END as getTienda')
         ])
-        ->with('saldos:id,cliente_id,Saldo')
+        ->with('saldos:id,cliente_id,Saldo', 'zona:id,Nombre')
         ->where('Activo', 1)
         ->get();
         $zonas=Zona::all();
@@ -68,13 +68,33 @@ class ClienteController extends Controller
             $zona_saldo[$zona->id]=0;
         }
         $total=0;
+        $conDeuda=0;
         foreach ($clientes as $cliente){
-            if($cliente->saldos->isNotEmpty()){
-                $total+= $cliente->saldos->last()->Saldo;
-                $zona_saldo[$cliente->zona_id]+= $cliente->saldos->last()->Saldo;
+            $saldo = $cliente->saldos->isNotEmpty() ? (float) $cliente->saldos->last()->Saldo : 0;
+            $cliente->setAttribute('deuda_actual', $saldo);
+            if($saldo > 0){
+                $total += $saldo;
+                $conDeuda++;
+                $zona_saldo[$cliente->zona_id] = ($zona_saldo[$cliente->zona_id] ?? 0) + $saldo;
             }
         }
-        return view("reporte_cliente",['clientes'=>$clientes, 'total' =>$total,'zonas'=>$zonas,'zona_saldo'=>$zona_saldo]);
+        $topZonaId = null;
+        $topZonaMonto = 0;
+        foreach($zona_saldo as $zid => $monto){
+            if($monto > $topZonaMonto){
+                $topZonaMonto = $monto;
+                $topZonaId = $zid;
+            }
+        }
+        $kpis = [
+            'total' => round($total, 2),
+            'con_deuda' => $conDeuda,
+            'sin_deuda' => $clientes->count() - $conDeuda,
+            'ticket' => $conDeuda > 0 ? round($total / $conDeuda, 2) : 0,
+            'top_zona' => $topZonaId ? ($zonas->firstWhere('id', $topZonaId)->Nombre ?? '—') : '—',
+            'top_zona_monto' => round($topZonaMonto, 2),
+        ];
+        return view("reporte_cliente",['clientes'=>$clientes, 'total' =>$total,'zonas'=>$zonas,'zona_saldo'=>$zona_saldo,'kpis'=>$kpis]);
     }
 
     public function vistaEditar($id){

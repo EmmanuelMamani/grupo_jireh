@@ -15,10 +15,10 @@
 
 @section("contenido")
     @php
-        $totalVentas = collect($ventas)->sum(fn($venta) => $venta->salida->Total ?? 0);
-        $totalPeso = collect($ventas)->sum(fn($venta) => ($venta->salida->Peso === '' || $venta->salida->Peso === null) ? 0 : $venta->salida->Peso);
-        $totalPagos = collect($saldos)->sum(fn($saldo) => $saldo->Monto ?? 0);
-        $ultimoSaldo = collect($saldos)->last();
+        $totalVentas = $totales['ventas'] ?? 0;
+        $totalPeso = $totales['peso'] ?? 0;
+        $totalPagos = $totales['pagos'] ?? 0;
+        $ultimoSaldo = $totales['ultimo_saldo'] ?? null;
     @endphp
 
     <div class="min-h-screen bg-slate-100">

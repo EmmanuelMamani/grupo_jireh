@@ -279,7 +279,7 @@ class VentaController extends Controller
     }
 
     public function detalle($id){
-        $venta=Venta::find($id);
+        $venta=Venta::with('cliente', 'user', 'ingreso.producto', 'salida')->findOrFail($id);
         return view("detalle_venta",["venta"=>$venta]);
     }
     public function VistaDevolucion($id){
@@ -475,20 +475,32 @@ class VentaController extends Controller
         $ventas = Venta::where('cliente_id', $id)
                         ->where('created_at', '>=', $fecha_inicio)
                         ->where('created_at', '<=', $fecha_fin)
+                        ->with('salida', 'ingreso.producto', 'user')
+                        ->orderBy('created_at')
                         ->get();
         $saldos = DB::select("
-        SELECT s.*, u.Nombre 
-        FROM saldos s 
-        LEFT JOIN cuentas c ON c.Detalle LIKE ? 
-            AND DATE(c.created_at) = DATE(s.created_at) 
-            AND c.Monto = s.Monto 
-        LEFT JOIN users u ON c.user_id = u.id 
-        WHERE s.cliente_id = ? 
-            AND DATE(s.created_at) >= ? 
+        SELECT s.*, u.Nombre
+        FROM saldos s
+        LEFT JOIN cuentas c ON c.Detalle LIKE ?
+            AND DATE(c.created_at) = DATE(s.created_at)
+            AND c.Monto = s.Monto
+        LEFT JOIN users u ON c.user_id = u.id
+        WHERE s.cliente_id = ?
+            AND DATE(s.created_at) >= ?
             AND DATE(s.created_at) <= ?
     ", ["%{$cliente->Nombre}%", $id, $fecha_inicio, $fecha_fin]);
-                    
-        return view('reporte_periodo_ventas',['ventas'=>$ventas,'cliente'=>$cliente,'inicio'=>$request->inicio,"fin"=>$request->fin,"saldos"=>$saldos]);
+
+        $totales = [
+            'ventas' => round($ventas->sum(function ($v) { return $v->salida->Total ?? 0; }), 2),
+            'peso' => round($ventas->sum(function ($v) {
+                $p = $v->salida->Peso ?? null;
+                return ($p === '' || $p === null) ? 0 : $p;
+            }), 2),
+            'pagos' => round(collect($saldos)->sum(function ($s) { return $s->Monto ?? 0; }), 2),
+        ];
+        $totales['ultimo_saldo'] = collect($saldos)->last();
+
+        return view('reporte_periodo_ventas',['ventas'=>$ventas,'cliente'=>$cliente,'inicio'=>$request->inicio,"fin"=>$request->fin,"saldos"=>$saldos,'totales'=>$totales]);
     } 
     public function ReportePeriodoPDF($id,$inicio,$fin)
     {

@@ -41,7 +41,7 @@ class ProductoController extends Controller
     }
 
     public function vistaReporte(){
-        $productos= Producto::all()->where("Activo",1);
+        $productos= Producto::where("Activo",1)->orderBy("Nombre")->get();
         return view("reporte_producto",["productos"=>$productos]);
     }
 }

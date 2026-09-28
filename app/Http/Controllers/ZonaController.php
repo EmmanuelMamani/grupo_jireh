@@ -40,7 +40,7 @@ class ZonaController extends Controller
     }
 
     public function vistaReporte(){
-        $zonas=Zona::all()->where('Activo',1);
+        $zonas=Zona::where('Activo',1)->orderBy('Nombre')->get();
         return view('reporte_zona',['zonas'=>$zonas]);
     } 
 }

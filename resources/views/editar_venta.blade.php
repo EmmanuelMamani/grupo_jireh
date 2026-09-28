@@ -76,7 +76,7 @@
         </div>
     </div>
     <div class="row" id="cont_btn">
-        <div class="col"><a id="cancelar" href="/menu">Cancelar</a></div>
+        <div class="col"><a id="cancelar" href="{{route('menu')}}">Cancelar</a></div>
         <div class="col"><button id="enviar" type='submit'>Vender</button></div>
     </div>
 </form>

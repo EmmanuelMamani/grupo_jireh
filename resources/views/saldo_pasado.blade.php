@@ -2,14 +2,17 @@
 @section("titulo", "Grupo JIREH")
 @section("opciones")
 <a href="{{route("menu")}}"  class="opciones_head">Inicio</a>
-<a href="/saldos" class="opciones_head">Cobranza</a>
+<a href="{{route('saldos')}}" class="opciones_head">Cobranza</a>
 @if (Auth::user()->Rol=='Administrador')
-<a href="/saldo_pasado" class="opciones_head">C. Pasados</a>
+<a href="{{route('saldo_pasado')}}" class="opciones_head">C. Pasados</a>
 @endif
 @endsection
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
+@push('head-scripts')
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+@endpush
 @section("contenido")
 <form id="formulario" method="POST" action="{{route('saldo_pasado')}}">
     @csrf
@@ -42,7 +45,7 @@
     <span class="error text-danger">{{ $errors->first('motivo') }}</span>
     @endif <br>
     <div class="row" id="cont_btn">
-        <div class="col"><a href="/menu" id="cancelar">Cancelar</a></div>
+        <div class="col"><a href="{{route('menu')}}" id="cancelar">Cancelar</a></div>
         <div class="col"><button id="enviar">Registrar</button></div>
     </div>
 </form>

@@ -17,7 +17,7 @@
         <span class="material-symbols-outlined icono col">group</span>
     </a>
     @if (Auth::user()->Rol=='Administrador')
-        <a href="/reporte_empleados" class="opcion row">
+        <a href="{{route("reporte_empleados")}}" class="opcion row">
             <span class="funciones col-8">Empleados</span>
             <span class="material-symbols-outlined icono col"> business_center</span>
         </a>
@@ -25,32 +25,32 @@
             <span class="funciones col-8">Lotes</span>
             <span class="material-symbols-outlined icono col">local_shipping</span>
         </a>
-        <a href="/registro_producto" class="opcion row">
+        <a href="{{route("registro_producto")}}" class="opcion row">
             <span class="funciones col-8">Productos</span>
             <span class="material-symbols-outlined icono col">local_pizza</span>
         </a>
-        <a href="/registro_zona" class="opcion row">
+        <a href="{{route("registro_zona")}}" class="opcion row">
             <span class="funciones col-8">Zonas</span>
             <span class="material-symbols-outlined icono col">map</span>
         </a>
-        <a href="/estadisticas_cuentas" class="opcion row">
+        <a href="{{route("estadisticas_cuentas")}}" class="opcion row">
             <span class="funciones col-8">estadisticas</span>
             <span class="material-symbols-outlined icono col">analytics</span>
         </a>
     @endif
-    <a class="opcion row" href="/venta">
+    <a class="opcion row" href="{{route("venta")}}">
         <span class="funciones col-8">Pre-Venta</span>
         <span class="material-symbols-outlined icono col">shopping_cart</span>
     </a>
-    <a href="/venta_rapida" class="opcion row">
+    <a href="{{route("venta_rapida")}}" class="opcion row">
         <span class="funciones col-8">Venta rapida</span>
         <span class="material-symbols-outlined icono col">shopping_cart_checkout</span>
     </a>
-    <a href="/saldos" class="opcion row">
+    <a href="{{route("saldos")}}" class="opcion row">
         <span class="funciones col-8">Cobranza</span>
         <span class="material-symbols-outlined icono col">payments</span>
     </a>
-    <a href="/transferir_lote" class="opcion row">
+    <a href="{{route("transferir_lote")}}" class="opcion row">
         <span class="funciones col-8">Transferir lote</span>
         <span class="material-symbols-outlined icono col"> swap_horiz</span>
     </a>

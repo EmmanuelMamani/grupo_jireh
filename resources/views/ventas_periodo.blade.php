@@ -3,10 +3,10 @@
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
 @section("opciones")
-<a href="/menu" class="opciones_head">Inicio</a>
-<a href="/registro_cliente" class="opciones_head">Registro</a>
+<a href="{{route('menu')}}" class="opciones_head">Inicio</a>
+<a href="{{route('registro_cliente')}}" class="opciones_head">Registro</a>
 @if (Auth::user()->Rol=='Administrador')
-<a href="/reporte_cliente" class="opciones_head">Reporte</a>
+<a href="{{route('reporte_cliente')}}" class="opciones_head">Reporte</a>
 @endif
 @endsection
 @section("contenido")
@@ -28,7 +28,7 @@
     <span class="error text-danger">{{ $errors->first('fin') }}</span>
     @endif <br>
     <div class="row" id="cont_btn">
-        <div class="col"><a href="/menu" id="cancelar">Cancelar</a></div>
+        <div class="col"><a href="{{route('menu')}}" id="cancelar">Cancelar</a></div>
         <div class="col"><button id="enviar">Aceptar</button></div>
     </div>
 </form>

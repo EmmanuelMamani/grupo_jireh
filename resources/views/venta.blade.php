@@ -9,6 +9,9 @@
 @section("estilos")
 <link rel="stylesheet" href="{{asset("css/formulario.css")}}">
 @endsection
+@push('head-scripts')
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+@endpush
 @section("contenido")
 <form action="{{route('venta')}}" id="formulario" method="POST">
     <h3>Pre-Venta</h3>
@@ -193,7 +196,7 @@
         <span class="error text-danger" for="acuenta">{{ $errors->first('acuenta') }}</span>
     @endif  
     <div class="row" id="cont_btn">
-        <div class="col"><a id="cancelar" href="/menu">Cancelar</a></div>
+        <div class="col"><a id="cancelar" href="{{route('menu')}}">Cancelar</a></div>
         <div class="col"><button id="enviar" type='submit'>Vender</button></div>
     </div>
 </form>

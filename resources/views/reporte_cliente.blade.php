@@ -1,9 +1,9 @@
 @extends("header")
 @section("titulo", "Grupo JIREH")
 @section("opciones")
-<a href="/menu" class="opciones_head">Inicio</a>
-<a href="/registro_cliente" class="opciones_head">Registro</a>
-<a href="/reporte_cliente" class="opciones_head">Reporte</a>
+<a href="{{route('menu')}}" class="opciones_head">Inicio</a>
+<a href="{{route('registro_cliente')}}" class="opciones_head">Registro</a>
+<a href="{{route('reporte_cliente')}}" class="opciones_head">Reporte</a>
 @if (Auth::user()->Rol=='Administrador')
 
 @endif

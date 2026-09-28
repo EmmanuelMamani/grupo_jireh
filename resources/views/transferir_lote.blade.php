@@ -28,7 +28,7 @@
     <input type="number" name="cantidad_moldes" class="form-control" id="moldes">
     <p id="alerta"></p>
     <div class="row" id="cont_btn">
-        <div class="col"><a href="/menu" id="cancelar">Cancelar</a></div>
+        <div class="col"><a href="{{route('menu')}}" id="cancelar">Cancelar</a></div>
         <div class="col"><button id="enviar">Transferir</button></div>
     </div>
 </form>

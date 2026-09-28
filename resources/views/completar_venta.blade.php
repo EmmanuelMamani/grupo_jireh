@@ -119,7 +119,7 @@
         </div>
     </div>
     <div class="row" id="cont_btn">
-        <div class="col"><a id="cancelar" href="/lista_reporte">Cancelar</a></div>
+        <div class="col"><a id="cancelar" href="{{route('lista_reporte')}}">Cancelar</a></div>
         <div class="col"><button id="enviar" type='submit'>Aceptar</button></div>
     </div>
     <input type="text" value="0" id="costo" name="costo" class ="oculto">

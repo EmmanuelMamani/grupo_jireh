@@ -1,8 +1,4 @@
 @extends("header")
-@section("opciones")
-<a href="{{route('logout')}}" class="opciones_head">Salir</a>
-<a href="{{route("perfil")}}" class="opciones_head">{{Auth::user()->Nombre}}</a>
-@endsection
 @section("estilos")
 <script src="https://cdn.tailwindcss.com"></script>
 @endsection

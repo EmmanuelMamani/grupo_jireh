@@ -170,7 +170,7 @@ class IngresoController extends Controller
 
     }
     public function descarga(){
-        $lotes=Ingreso::orderBy('id','desc')->where("Activo",1)->get();
+        $lotes=Ingreso::orderBy('id','desc')->where("Activo",1)->with('producto')->get();
         $pdf = PDF::setOptions(['dpi' => 96])->loadView("reporte_lote_pdf",compact('lotes'));
         return  $pdf->download('reporteLotes.pdf');
 

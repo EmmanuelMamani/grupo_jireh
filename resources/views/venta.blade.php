@@ -95,12 +95,7 @@
           <x-ui-input type="text" name="precio" id="precio" inputmode="decimal" autocomplete="off" value="{{old('precio')}}"/>
           <x-ui-error field="precio"/>
         </div>
-        <div>
-          <x-ui-label for="acuenta">Dinero a cuenta</x-ui-label>
-          <x-ui-input type="text" name="acuenta" id="acuenta" inputmode="decimal" autocomplete="off" value="0.00"/>
-          <x-ui-error field="acuenta"/>
-        </div>
-        <div id="total_box" class="rounded-xl text-white text-center px-3 py-3" style="background-color:#125149">Total: <strong id="total_vivo" class="text-xl">—</strong> Bs | Resta: <strong id="resto_vivo" class="text-xl">—</strong> Bs</div>
+        <div id="total_box" class="rounded-xl text-white text-center px-3 py-3" style="background-color:#125149">Total: <strong id="total_vivo" class="text-xl">—</strong> Bs</div>
       </section>
       <div class="grid grid-cols-2 gap-3 pt-1" id="cont_btn">
         <x-ui-ghost href="{{route('menu')}}" id="cancelar">Cancelar</x-ui-ghost>
@@ -111,7 +106,7 @@
 </div>
 <script src="{{asset('js/venta_total.js')}}"></script>
 <script>
-    initVentaTotal({formId:"formulario",productoId:"producto",moldesId:"cantidad_moldes",pesoId:"peso",precioId:"precio",roundId:"tipo",acuentaId:"acuenta",totalId:"total_vivo",restoId:"resto_vivo",clienteId:"cliente",loteId:"lote"});
+    initVentaTotal({formId:"formulario",productoId:"producto",moldesId:"cantidad_moldes",pesoId:"peso",precioId:"precio",roundId:"tipo",totalId:"total_vivo",clienteId:"cliente",loteId:"lote"});
 </script>
 <script>
     var zona=document.getElementById("zona");

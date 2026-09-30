@@ -53,11 +53,6 @@ class VentaController extends Controller
             }else{
                 $total=$request->precio*$request->cantidad_moldes;
             }
-            if($request->acuenta>$total){
-                return redirect()->back()
-                        ->withErrors(['acuenta' => 'El dinero a cuenta no puede ser mayor que el total.'])
-                        ->withInput();
-            }
             if($request->tipo==0){
                 //sin redondear total
                 $salida->Total=round($total,2);
@@ -95,29 +90,10 @@ class VentaController extends Controller
                 }else{
                     $saldo->Saldo=$saldoActual->Saldo + $total;
                 }
-                if($request->acuenta>0){
-                    $saldo->Saldo-=$request->acuenta;
-                    $cuenta=new Cuenta();
-                    $cuenta->user_id= Auth::user()->id;
-                    $cuenta->Monto=$request->acuenta;
-                    $cuenta->Detalle="Dinero a cuenta por venta";
-                    $cuenta->Fecha=date("Y-m-d");
-                    $cuenta->save();
-                }
                 $saldo->Detalle="Pre-Venta";
                 $saldo->cliente_id= $request->cliente;
         
                 $saldo->save();
-                if ($request->acuenta > 0 && isset($cuenta) && $cuenta->id) {
-                    $pagoAcuenta = new Pago();
-                    $pagoAcuenta->venta_id = $venta->id;
-                    $pagoAcuenta->saldo_id = $saldo->id;
-                    $pagoAcuenta->cuenta_id = $cuenta->id;
-                    $pagoAcuenta->cliente_id = $venta->cliente_id;
-                    $pagoAcuenta->monto = $request->acuenta;
-                    $pagoAcuenta->fecha = date('Y-m-d');
-                    $pagoAcuenta->save();
-                }
             }else{
                 $saldo=new Saldo();
                 $saldo->Monto=$total;

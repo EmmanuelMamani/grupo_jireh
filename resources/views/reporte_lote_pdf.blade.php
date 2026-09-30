@@ -18,11 +18,11 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>Proveedor</th>
+        <th>Proveedor (Estado pago)</th>
         <th>Producto</th>
         <th>Unidades</th>
         <th>Peso total</th>
-        <th>Precio unitario</th>
+        <th>Precio por Kg</th>
         <th>Precio total</th>
         <th>Ganancia de ventas</th>
         <th>Unidades vendidas</th>
@@ -33,11 +33,11 @@
       @foreach ($lotes as $key=>$lote)
         <tr class="fila">
           <td>{{$key+1}}</td>
-          <td>{{$lote->Proveedor}}</td>
+          <td>{{$lote->Proveedor}} ({{ $lote->Pagado == 1 ? 'Pagado' : 'Pago pendiente' }})</td>
           <td>{{$lote->producto->Nombre}} {{$lote->producto->Tipo}}</td>
           <td>{{$lote->CantMoldes}}</td>
           <td>{{$lote->Peso}} Kg</td>
-          <td>{{$lote->Precio}} Bs</td>
+          <td>{{$lote->Precio}} Bs / {{ ($lote->producto && $lote->producto->Tipo == 'Por Kilo') ? 'Kg' : 'ud' }}</td>
           @if($lote->producto->Tipo=="Por Kilo")
             <td>{{$lote->Peso * $lote->Precio}} Bs</td>
             <td>{{$lote->salidas->sum('Total')-$lote->Peso * $lote->Precio}} Bs</td>

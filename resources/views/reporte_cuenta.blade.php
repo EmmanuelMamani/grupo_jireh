@@ -27,6 +27,7 @@
     <p class="text-lg font-bold text-slate-800">{{ $kpis['empleados'] }}</p>
   </div>
 </div>
+@include('components.categorias_totales')
 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
 <div class="overflow-x-auto">
 <table id="tabla" class="table w-full text-sm">

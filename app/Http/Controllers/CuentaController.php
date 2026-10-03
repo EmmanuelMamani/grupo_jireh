@@ -13,24 +13,64 @@ use PDF;
 class CuentaController extends Controller
 {
     //
+    // Mismas categorías que Control de Gastos (estadísticas): keywords sobre cuentas.Detalle.
+    private const CATEGORIAS_GASTO = [
+        'almuerzo' => 'almuerzo',
+        'desayuno' => 'desayuno',
+        'gasolina' => 'gasolina',
+        'diesel' => 'diesel',
+        'transporte' => 'transporte',
+        'aceite' => 'cambio aceite',
+        'proveedor' => 'pago a proveedor',
+    ];
+
+    // Totales por categoría (ABS de Monto, como en estadísticas) para un alcance dado.
+    // Devuelve ['totales' => [key => monto], 'otros' => no clasificado, 'totalGeneral' => SUM ABS].
+    private function totalesPorCategoria(string $where = '', array $bindings = []): array
+    {
+        $cases = [];
+        $catBindings = [];
+        foreach (self::CATEGORIAS_GASTO as $key => $keyword) {
+            $cases[] = "SUM(CASE WHEN LOWER(Detalle) LIKE ? THEN ABS(Monto) ELSE 0 END) AS {$key}";
+            $catBindings[] = '%' . strtolower($keyword) . '%';
+        }
+        $sql = "SELECT " . implode(', ', $cases) . ", SUM(ABS(Monto)) AS total_abs FROM cuentas";
+        if ($where !== '') {
+            $sql .= " WHERE {$where}";
+        }
+        $row = DB::selectOne($sql, array_merge($catBindings, $bindings));
+        $totales = [];
+        foreach (self::CATEGORIAS_GASTO as $key => $keyword) {
+            $totales[$key] = round((float) ($row->$key ?? 0), 2);
+        }
+        $totalGeneral = round((float) ($row->total_abs ?? 0), 2);
+        $otros = round($totalGeneral - array_sum($totales), 2);
+        return ['totales' => $totales, 'otros' => $otros, 'totalGeneral' => $totalGeneral];
+    }
+
+    // Datos del bloque de categorías listos para pasar a las vistas de reportes.
+    private function datosBloqueCategorias(string $where = '', array $bindings = []): array
+    {
+        $bloque = $this->totalesPorCategoria($where, $bindings);
+        return [
+            'categoriasDisponibles' => self::CATEGORIAS_GASTO,
+            'totalesCategoria' => $bloque['totales'],
+            'otrosCategoria' => $bloque['otros'],
+            'totalGeneralCategoria' => $bloque['totalGeneral'],
+        ];
+    }
+
     public function vistaRegistro(){
         return view("registro_gasto");
     }
     public function estadisticas(Request $request){
-        $categoriasDisponibles = [
-            'almuerzo' => 'almuerzo',
-            'desayuno' => 'desayuno',
-            'gasolina' => 'gasolina',
-            'diesel' => 'diesel',
-            'transporte' => 'transporte',
-            'aceite' => 'cambio aceite',
-        ];
+        $categoriasDisponibles = self::CATEGORIAS_GASTO;
 
         $validated = $request->validate([
             'desde' => 'nullable|date',
             'hasta' => 'nullable|date',
             'categorias' => 'nullable|array',
-            'categorias.*' => 'in:almuerzo,desayuno,gasolina,diesel,transporte,aceite',
+            'categorias.*' => 'in:almuerzo,desayuno,gasolina,diesel,transporte,aceite,proveedor',
         ], [
             'hasta.date' => 'La fecha hasta no es válida',
             'desde.date' => 'La fecha desde no es válida',
@@ -160,7 +200,7 @@ class CuentaController extends Controller
             'total' => round(collect($cuentas)->sum('monto'), 2),
             'empleados' => collect($cuentas)->pluck('user_id')->unique()->count(),
         ];
-        return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo,'kpis'=>$kpis]);
+        return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo,'kpis'=>$kpis] + $this->datosBloqueCategorias('Fecha = ?', [$fecha]));
     }
 
     public function reporteDiario(){
@@ -168,13 +208,13 @@ class CuentaController extends Controller
         $titulo="Diario";
         $cuentas=Cuenta::where('user_id',Auth::user()->id)->where("Fecha",$fecha)->get();
         $user=User::find(Auth::user()->id);
-        return view("detalle_cuenta",["cuentas"=>$cuentas,"titulo"=>$titulo,"user"=>$user]);
+        return view("detalle_cuenta",["cuentas"=>$cuentas,"titulo"=>$titulo,"user"=>$user] + $this->datosBloqueCategorias('user_id = ? AND Fecha = ?', [Auth::user()->id, $fecha]));
     }
 
     public function DetalleCuenta($id,$fecha){
         $cuentas=Cuenta::where("user_id",$id)->where("Fecha",$fecha)->get();
         $user=User::find($id);
-     return view("detalle_cuenta",["cuentas"=>$cuentas,"user"=>$user]);
+     return view("detalle_cuenta",["cuentas"=>$cuentas,"user"=>$user] + $this->datosBloqueCategorias('user_id = ? AND Fecha = ?', [$id, $fecha]));
     }
     public function VistaPeriodo(){
         return view("cuentas_periodo");
@@ -195,7 +235,7 @@ class CuentaController extends Controller
             'empleados' => collect($cuentas)->pluck('user_id')->unique()->count(),
             'dias' => collect($cuentas)->pluck('Fecha')->unique()->count(),
         ];
-        return view("reporte_periodo",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"monto"=>$monto,'inicio'=>$inicio,'fin'=>$fin,"titulo"=>$titulo,'kpis'=>$kpis]);
+        return view("reporte_periodo",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"monto"=>$monto,'inicio'=>$inicio,'fin'=>$fin,"titulo"=>$titulo,'kpis'=>$kpis] + $this->datosBloqueCategorias('Fecha BETWEEN ? AND ?', [$inicio, $fin]));
     }
     public function reporteHistorico(){
         $consultas=DB::select("SELECT user_id ,Fecha , SUM(Monto) as monto FROM cuentas GROUP BY user_id,Fecha ORDER BY Fecha DESC");
@@ -209,7 +249,7 @@ class CuentaController extends Controller
             'total' => round(collect($cuentas)->sum('monto'), 2),
             'empleados' => collect($cuentas)->pluck('user_id')->unique()->count(),
         ];
-        return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo,'kpis'=>$kpis]);
+        return view("reporte_cuenta",["cuentas"=>$cuentas,"usuarios"=>$usuarios,"titulo"=>$titulo,'kpis'=>$kpis] + $this->datosBloqueCategorias());
     }
     public function descarga_diario($user_id){
         $fecha=date('Y-m-d');

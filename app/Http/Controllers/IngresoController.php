@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Salida;
 use App\Models\Merma;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use PDF;
 
 class IngresoController extends Controller
@@ -164,7 +165,8 @@ class IngresoController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            throw $e;
+            Log::error('Error al pagar lote #' . $id . ': ' . $e->getMessage(), ['exception' => $e]);
+            return redirect()->route('reporte_lotes')->withErrors(['pago' => 'No se pudo registrar el pago. Intenta de nuevo.']);
         }
         return redirect()->route('reporte_lotes')->with('registrar', 'ok');
 

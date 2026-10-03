@@ -12,6 +12,11 @@
 @endsection
 @section("contenido")
 <div class="max-w-6xl mx-auto px-3 py-4">
+  @if ($errors->has('pago') || $errors->has('monto'))
+    <div class="mb-3 rounded-xl border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+      {{ $errors->first('pago') }}{{ $errors->first('monto') }}
+    </div>
+  @endif
   <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
     <h3 class="text-xl font-bold text-slate-800">Reporte de lotes <span class="text-sm font-normal text-slate-500">({{$alcance}})</span></h3>
     <a href="{{route('descarga_lotes')}}" class="text-white text-sm font-medium px-4 py-2 rounded-xl" style="background-color:#125149" aria-label="Descargar">Descargar</a>
@@ -190,9 +195,16 @@
   .lote-opts summary::-webkit-details-marker { display: none; }
   .lote-opts summary::after { content: '+'; float: right; font-weight: 700; }
   .lote-opts[open] summary::after { content: '−'; }
+  /* El loader global es z-index 10000: el modal debe quedar por encima. */
+  .swal2-container { z-index: 20000 !important; }
 </style>
 <script>
-  var tablaLotes = $('#tabla').DataTable({ dom: 'rtip', order: [[0, 'desc']], responsive: true, columnDefs: [{ responsivePriority: 1, targets: 0 }, { responsivePriority: 2, targets: 1 }, { responsivePriority: 3, targets: 2 }] });
+  var tablaLotes = null;
+  try {
+    if (window.jQuery && $.fn.dataTable) {
+      tablaLotes = $('#tabla').DataTable({ dom: 'rtip', order: [[0, 'desc']], responsive: true, columnDefs: [{ responsivePriority: 1, targets: 0 }, { responsivePriority: 2, targets: 1 }, { responsivePriority: 3, targets: 2 }] });
+    }
+  } catch (err) { console.error('DataTable no disponible:', err); }
   var filtroEstado = 'todos';
   var filtroProductoVal = '';
   var buscarTexto = '';
@@ -218,27 +230,31 @@
     var btn = document.getElementById('verMasLotes');
     if (btn) btn.style.display = (totalOk > visiblesCards) ? '' : 'none';
   }
-  $('#buscarLote').on('input', function () { buscarTexto = this.value.toLowerCase(); visiblesCards = 20; tablaLotes.search(this.value).draw(); filtrarCards(); });
-  $('#filtroProducto').on('change', function () { filtroProductoVal = this.value; visiblesCards = 20; tablaLotes.column(0).search(this.value).draw(); filtrarCards(); });
+  $('#buscarLote').on('input', function () { buscarTexto = this.value.toLowerCase(); visiblesCards = 20; if (tablaLotes) tablaLotes.search(this.value).draw(); filtrarCards(); });
+  $('#filtroProducto').on('change', function () { filtroProductoVal = this.value; visiblesCards = 20; if (tablaLotes) tablaLotes.column(0).search(this.value).draw(); filtrarCards(); });
+  if (window.jQuery && $.fn.dataTable) {
   $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-    if (settings.nTable !== document.getElementById('tabla') || filtroEstado === 'todos') return true;
+    if (!tablaLotes || settings.nTable !== document.getElementById('tabla') || filtroEstado === 'todos') return true;
     var estados = (tablaLotes.row(dataIndex).node().dataset.estado || '').split(' ');
     return estados.indexOf(filtroEstado) !== -1;
   });
+  }
   document.querySelectorAll('#estadoPills .estado-pill').forEach(function (btn) {
     btn.addEventListener('click', function () {
       document.querySelectorAll('#estadoPills .estado-pill').forEach(function (b) { b.classList.remove('active'); });
       btn.classList.add('active');
       filtroEstado = btn.dataset.estado;
       visiblesCards = 20;
-      tablaLotes.draw();
+      if (tablaLotes) tablaLotes.draw();
       filtrarCards();
     });
   });
   var verMasBtn = document.getElementById('verMasLotes');
   if (verMasBtn) verMasBtn.addEventListener('click', function () { visiblesCards += 20; filtrarCards(); });
   function setupEliminarButtons() {
+    if (!window.jQuery) return;
     $('.Eliminar').off('submit').on('submit', function (e) {
+      if (typeof Swal === 'undefined') return; // sin Swal: submit nativo + loader global
       e.preventDefault();
       var form = this;
       Swal.fire({
@@ -250,9 +266,19 @@
         cancelButtonColor: '#d33',
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'No'
-      }).then((result) => { if (result.isConfirmed) { form.submit(); } });
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (window.mostrarCarga) window.mostrarCarga();
+          var btn = form.querySelector('button[type="submit"], button:not([type])');
+          if (btn) btn.disabled = true;
+          HTMLFormElement.prototype.submit.call(form);
+        } else if (window.ocultarCarga) {
+          window.ocultarCarga();
+        }
+      }).catch(() => { if (window.ocultarCarga) window.ocultarCarga(); });
     });
     $('.PagarLote').off('submit').on('submit', function (e) {
+      if (typeof Swal === 'undefined') return; // sin Swal: submit nativo + loader global
       e.preventDefault();
       var form = this;
       Swal.fire({
@@ -264,13 +290,29 @@
         cancelButtonColor: '#d33',
         confirmButtonText: 'Pagar',
         cancelButtonText: 'Cancelar'
-      }).then((result) => { if (result.isConfirmed) { form.submit(); } });
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (window.mostrarCarga) window.mostrarCarga();
+          var btn = form.querySelector('button[type="submit"], button:not([type])');
+          if (btn) btn.disabled = true;
+          HTMLFormElement.prototype.submit.call(form);
+        } else if (window.ocultarCarga) {
+          window.ocultarCarga();
+        }
+      }).catch(() => { if (window.ocultarCarga) window.ocultarCarga(); });
     });
   }
   $(document).ready(function () {
     setupEliminarButtons();
-    tablaLotes.on('responsive-resize responsive-display draw', function () { setupEliminarButtons(); });
+    if (tablaLotes) tablaLotes.on('responsive-resize responsive-display draw', function () { setupEliminarButtons(); });
     filtrarCards();
   });
 </script>
+@if ($errors->has('pago') || $errors->has('monto'))
+<script>
+  if (typeof Swal !== 'undefined') {
+    Swal.fire({ icon: 'error', title: 'No se pudo pagar', text: "{{ $errors->first('pago') }}{{ $errors->first('monto') }}" });
+  }
+</script>
+@endif
 @endsection

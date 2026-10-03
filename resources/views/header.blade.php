@@ -385,12 +385,28 @@
         });
       }
 
-      // Anti doble-envío global: en todo POST muestra el loader y bloquea el botón.
-      document.addEventListener("submit", function(e){
-        var form = e.target;
-        if (!form || form.tagName !== "FORM" || form.method.toLowerCase() !== "post") return;
+      // Helpers loader global (también usados por confirmaciones Swal).
+      window.mostrarCarga = function(){
         var carga = document.getElementById("contenedor_carga");
         if (carga) carga.style.visibility = "visible";
+      };
+      window.ocultarCarga = function(){
+        var carga = document.getElementById("contenedor_carga");
+        if (carga) carga.style.visibility = "hidden";
+      };
+      // Al volver con back/forward (bfcache) nunca dejar el loader pegado.
+      window.addEventListener("pageshow", function(){ window.ocultarCarga(); });
+
+      // Anti doble-envío global: solo en POST que sí van a navegar.
+      // Si otro handler hizo preventDefault (ej. confirmación Swal), NO mostrar
+      // loader ni bloquear el botón; la vista lo hará solo tras confirmar.
+      document.addEventListener("submit", function(e){
+        if (e.defaultPrevented) return;
+        var form = e.target;
+        if (!form || form.tagName !== "FORM") return;
+        var method = (form.method || form.getAttribute("method") || "get").toLowerCase();
+        if (method !== "post") return;
+        window.mostrarCarga();
         var btn = form.querySelector('button[type="submit"], button:not([type])');
         if (btn) btn.disabled = true;
       });
